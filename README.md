@@ -10,7 +10,7 @@ with hand-derived FLOP/byte accounting and a KV-cache decode path.
 
 ## Status
 - [x] M0 — Setup
-- [ ] M1 — JAX basics: softmax, `jit`, jaxpr
+- [x] M1 — JAX basics: stable softmax, `jit` tracing and retracing, jaxpr
 - [ ] M2 — Single-head attention
 - [ ] M3 — Causal mask, batching with `vmap`
 - [ ] M4 — Multi-head attention
@@ -25,10 +25,14 @@ with hand-derived FLOP/byte accounting and a KV-cache decode path.
     uv sync
     uv run pytest
 
+Experiments run as modules from the project root, e.g.:
+
+    uv run python -m experiments.m1_softmax_ir
+
 ## Layout
-- `model/` — attention, block, model, KV cache
+- `tinytr/` — the model: ops, attention, block, model, KV cache
 - `tests/` — shape, reference, and causality tests
-- `ir/` — dumped jaxpr / StableHLO / HLO
-- `notes/` — write-up per milestone
+- `experiments/` — scripts that trace, dump IR, and analyze cost
+- `ir/` — dumped jaxpr / StableHLO / HLO, organized by milestone
 
 Full milestone plan: [docs/PLAN.md](docs/PLAN.md)

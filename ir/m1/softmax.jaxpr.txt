@@ -1,0 +1,9 @@
+{ [34;1mlambda [39;22m; a[35m:f32[3][39m. [34;1mlet
+    [39;22mb[35m:f32[][39m = reduce_max[axes=(0,) out_sharding=None] a
+    c[35m:f32[1][39m = broadcast_in_dim b
+    d[35m:f32[3][39m = sub a c
+    e[35m:f32[3][39m = exp d
+    f[35m:f32[][39m = reduce_sum[axes=(0,) out_sharding=None] e
+    g[35m:f32[1][39m = broadcast_in_dim f
+    h[35m:f32[3][39m = div e g
+  [34;1min [39;22m(h,) }

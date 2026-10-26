@@ -315,7 +315,7 @@ wheels = [
 [[package]]
 name = "tiny-transformer-ir"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "jax" },
     { name = "pytest" },
