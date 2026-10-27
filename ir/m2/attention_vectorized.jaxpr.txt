@@ -1,0 +1,33 @@
+{ lambda ; a:f32[8,64] b:f32[64,16] c:f32[64,16] d:f32[64,16]. let
+    e:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a b
+    f:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a c
+    g:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a d
+    h:f32[16,8] = transpose[permutation=(1, 0)] f
+    i:f32[8,8] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] e h
+    j:f32[] = sqrt 16.0:f32[]
+    k:f32[] = convert_element_type[new_dtype=float32 weak_type=False] j
+    l:f32[8,8] = div i k
+    m:f32[8] = reduce_max[axes=(1,) out_sharding=None] l
+    n:f32[8,1] = broadcast_in_dim[broadcast_dimensions=(0,)] m
+    o:f32[8,8] = sub l n
+    p:f32[8,8] = exp o
+    q:f32[8] = reduce_sum[axes=(1,) out_sharding=None] p
+    r:f32[8,1] = broadcast_in_dim[broadcast_dimensions=(0,)] q
+    s:f32[8,8] = div p r
+    t:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] s g
+  in (t,) }
