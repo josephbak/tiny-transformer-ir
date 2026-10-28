@@ -11,8 +11,8 @@ with hand-derived FLOP/byte accounting and a KV-cache decode path.
 ## Status
 - [x] M0 — Setup
 - [x] M1 — JAX basics: stable softmax, `jit` tracing and retracing, jaxpr
-- [ ] M2 — Single-head attention
-- [ ] M3 — Causal mask, batching with `vmap`
+- [x] M2 — Single-head attention
+- [x] M3 — Causal mask, batching with `vmap`
 - [ ] M4 — Multi-head attention
 - [ ] M5 — Transformer block
 - [ ] M6 — Full model

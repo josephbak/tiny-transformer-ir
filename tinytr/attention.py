@@ -2,7 +2,7 @@ import jax
 import jax.numpy as jnp
 from tinytr.ops import softmax
 
-def attention(x, wq, wk, wv):
+def attention(x, wq, wk, wv, causal: bool = False):
     # S = sequence length, D = model width, d_k = query/key/value width
     # x: input tensor of shape [S, D] = [8, 64] 
     # wq, wk, wv: weight matrices for query, key, and value projections of shape [D, d_k] = [64, 16]
@@ -14,6 +14,13 @@ def attention(x, wq, wk, wv):
 
     # compute attention scores and weights
     attention_scores = (q @ k.T) / jnp.sqrt(k.shape[-1]) # [S, S] = [8, 8]
+
+    if causal:
+        # create a causal mask
+        S = x.shape[0]
+        mask = jnp.tril(jnp.ones((S, S), dtype=bool))
+        # apply the mask to the attention scores
+        attention_scores = jnp.where(mask, attention_scores, -jnp.inf)
 
     # compute attention weights using the numerically stable softmax along the last axis
     attention_weights = softmax(attention_scores) # [S, S] = [8, 8]

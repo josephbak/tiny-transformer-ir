@@ -28,3 +28,25 @@ def test_attention_matches_loop_reference():
         rtol=1e-5,
         atol=1e-6,
     )
+
+
+T = 5  # the token we perturb
+
+def _perturbed(x):
+    return x.at[T].set(x[T] + 10.0)   # change token T only (arrays are immutable: .at[].set)
+
+
+def test_causal_earlier_outputs_ignore_later_tokens():
+    x, wq, wk, wv = _inputs()
+    out1 = attention(x, wq, wk, wv, causal=True)
+    out2 = attention(_perturbed(x), wq, wk, wv, causal=True)
+    np.testing.assert_allclose(out1[:T], out2[:T], rtol=1e-6)   # tokens 0..T-1: unchanged
+    assert not np.allclose(out1[T:], out2[T:])                   # tokens T..: did change
+
+
+def test_noncausal_earlier_outputs_do_change():
+    # sanity check: without the mask, every token sees token T
+    x, wq, wk, wv = _inputs()
+    out1 = attention(x, wq, wk, wv, causal=False)
+    out2 = attention(_perturbed(x), wq, wk, wv, causal=False)
+    assert not np.allclose(out1[:T], out2[:T])

@@ -1,0 +1,53 @@
+{ lambda ; a:f32[8,64] b:f32[64,16] c:f32[64,16] d:f32[64,16]. let
+    e:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a b
+    f:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a c
+    g:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a d
+    h:f32[16,8] = transpose[permutation=(1, 0)] f
+    i:f32[8,8] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] e h
+    j:f32[] = sqrt 16.0:f32[]
+    k:f32[] = convert_element_type[new_dtype=float32 weak_type=False] j
+    l:f32[8,8] = div i k
+    m:bool[8,8] = broadcast_in_dim True:bool[]
+    n:bool[8,8] = jit[
+      name=tril
+      jaxpr={ lambda ; m:bool[8,8]. let
+          o:i32[8,8] = iota[dimension=0 dtype=int32 shape=(8, 8) sharding=None] 
+          p:i32[8,8] = add o 0:i32[]
+          q:i32[8,8] = iota[dimension=1 dtype=int32 shape=(8, 8) sharding=None] 
+          r:bool[8,8] = ge p q
+          s:bool[8,8] = broadcast_in_dim False:bool[]
+          n:bool[8,8] = select_n r s m
+        in (n,) }
+    ] m
+    t:f32[8,8] = jit[
+      name=_where
+      jaxpr={ lambda ; n:bool[8,8] l:f32[8,8] u:f32[]. let
+          v:f32[] = convert_element_type[new_dtype=float32 weak_type=False] u
+          w:f32[8,8] = broadcast_in_dim v
+          t:f32[8,8] = select_n n w l
+        in (t,) }
+    ] n l -inf:f32[]
+    x:f32[8] = reduce_max[axes=(1,) out_sharding=None] t
+    y:f32[8,1] = broadcast_in_dim[broadcast_dimensions=(0,)] x
+    z:f32[8,8] = sub t y
+    ba:f32[8,8] = exp z
+    bb:f32[8] = reduce_sum[axes=(1,) out_sharding=None] ba
+    bc:f32[8,1] = broadcast_in_dim[broadcast_dimensions=(0,)] bb
+    bd:f32[8,8] = div ba bc
+    be:f32[8,16] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] bd g
+  in (be,) }
