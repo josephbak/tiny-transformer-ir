@@ -3,6 +3,7 @@ import numpy as np
 
 from tinytr.attention import attention, init_attention_weights
 from tinytr.reference import attention_loop
+from tinytr.attention import init_mha_weights, multi_head_attention
 
 S, D, DK = 8, 64, 16
 
@@ -50,3 +51,32 @@ def test_noncausal_earlier_outputs_do_change():
     out1 = attention(x, wq, wk, wv, causal=False)
     out2 = attention(_perturbed(x), wq, wk, wv, causal=False)
     assert not np.allclose(out1[:T], out2[:T])
+
+H = 4
+
+
+def _mha_inputs(seed=0):
+    kx, kw = jax.random.split(jax.random.key(seed))
+    x = jax.random.normal(kx, (S, D))
+    return (x, *init_mha_weights(kw, D))
+
+
+def test_mha_shape():
+    x, wq, wk, wv, wo = _mha_inputs()
+    assert multi_head_attention(x, wq, wk, wv, wo, n_heads=H).shape == (S, D)
+
+
+def test_mha_one_head_equals_single_head():
+    x, wq, wk, wv, wo = _mha_inputs()
+    np.testing.assert_allclose(
+        multi_head_attention(x, wq, wk, wv, wo, n_heads=1, causal=True),
+        attention(x, wq, wk, wv, causal=True) @ wo,
+        rtol=1e-5, atol=1e-6,
+    )
+
+
+def test_mha_causal():
+    x, wq, wk, wv, wo = _mha_inputs()
+    out1 = multi_head_attention(x, wq, wk, wv, wo, n_heads=H, causal=True)
+    out2 = multi_head_attention(_perturbed(x), wq, wk, wv, wo, n_heads=H, causal=True)
+    np.testing.assert_allclose(out1[:T], out2[:T], rtol=1e-6)

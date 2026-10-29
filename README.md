@@ -13,7 +13,7 @@ with hand-derived FLOP/byte accounting and a KV-cache decode path.
 - [x] M1 — JAX basics: stable softmax, `jit` tracing and retracing, jaxpr
 - [x] M2 — Single-head attention
 - [x] M3 — Causal mask, batching with `vmap`
-- [ ] M4 — Multi-head attention
+- [x] M4 — Multi-head attention
 - [ ] M5 — Transformer block
 - [ ] M6 — Full model
 - [ ] M7 — Reading the compiler's output

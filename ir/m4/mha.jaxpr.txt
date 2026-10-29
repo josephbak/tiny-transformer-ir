@@ -1,0 +1,68 @@
+{ lambda ; a:f32[8,64] b:f32[64,64] c:f32[64,64] d:f32[64,64] e:f32[64,64]. let
+    f:f32[8,64] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a b
+    g:f32[8,4,16] = reshape[dimensions=None new_sizes=(8, 4, 16) sharding=None] f
+    h:f32[8,64] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a c
+    i:f32[8,4,16] = reshape[dimensions=None new_sizes=(8, 4, 16) sharding=None] h
+    j:f32[8,64] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] a d
+    k:f32[8,4,16] = reshape[dimensions=None new_sizes=(8, 4, 16) sharding=None] j
+    l:f32[4,16,8] = transpose[permutation=(1, 2, 0)] i
+    m:f32[4,8,8] = dot_general[
+      dimension_numbers=(([2], [1]), ([1], [0]))
+      preferred_element_type=float32
+    ] g l
+    n:f32[] = sqrt 16.0:f32[]
+    o:f32[] = convert_element_type[new_dtype=float32 weak_type=False] n
+    p:f32[4,8,8] = div m o
+    q:bool[8,8] = broadcast_in_dim True:bool[]
+    r:bool[8,8] = jit[
+      name=tril
+      jaxpr={ lambda ; q:bool[8,8]. let
+          s:i32[8,8] = iota[dimension=0 dtype=int32 shape=(8, 8) sharding=None] 
+          t:i32[8,8] = add s 0:i32[]
+          u:i32[8,8] = iota[dimension=1 dtype=int32 shape=(8, 8) sharding=None] 
+          v:bool[8,8] = ge t u
+          w:bool[8,8] = broadcast_in_dim False:bool[]
+          r:bool[8,8] = select_n v w q
+        in (r,) }
+    ] q
+    x:f32[4,8,8] = jit[
+      name=_where
+      jaxpr={ lambda ; r:bool[8,8] p:f32[4,8,8] y:f32[]. let
+          z:f32[] = convert_element_type[new_dtype=float32 weak_type=False] y
+          ba:f32[8,8] = broadcast_in_dim z
+          bb:bool[4,8,8] = broadcast_in_dim[
+            broadcast_dimensions=(np.int64(1), np.int64(2))
+          ] r
+          bc:f32[4,8,8] = broadcast_in_dim[
+            broadcast_dimensions=(np.int64(1), np.int64(2))
+          ] ba
+          x:f32[4,8,8] = select_n bb bc p
+        in (x,) }
+    ] r p -inf:f32[]
+    bd:f32[4,8] = reduce_max[axes=(np.int64(2),) out_sharding=None] x
+    be:f32[4,8,1] = broadcast_in_dim[broadcast_dimensions=(0, np.int64(1))] bd
+    bf:f32[4,8,8] = sub x be
+    bg:f32[4,8,8] = exp bf
+    bh:f32[4,8] = reduce_sum[axes=(np.int64(2),) out_sharding=None] bg
+    bi:f32[4,8,1] = broadcast_in_dim[broadcast_dimensions=(0, np.int64(1))] bh
+    bj:f32[4,8,8] = div bg bi
+    bk:f32[4,8,16] = dot_general[
+      dimension_numbers=(([2], [0]), ([0], [1]))
+      preferred_element_type=float32
+    ] bj k
+    bl:f32[8,4,16] = transpose[permutation=(1, 0, 2)] bk
+    bm:f32[8,64] = reshape[dimensions=None new_sizes=(8, 64) sharding=None] bl
+    bn:f32[8,64] = dot_general[
+      dimension_numbers=(([1], [0]), ([], []))
+      preferred_element_type=float32
+    ] bm e
+  in (bn,) }
