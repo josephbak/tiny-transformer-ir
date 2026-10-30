@@ -1,0 +1,502 @@
+HloModule jit_transformer_block, is_scheduled=true, entry_computation_layout={(f32[8,64]{1,0}, f32[64,64]{1,0}, f32[64,64]{1,0}, f32[64,64]{1,0}, f32[64,64]{1,0}, /*index=5*/f32[256]{0}, f32[64]{0}, f32[64,256]{1,0}, f32[256,64]{1,0}, f32[64]{0}, /*index=10*/f32[64]{0}, f32[64]{0}, f32[64]{0})->f32[8,64]{1,0}}, allow_spmd_sharding_propagation_to_parameters={true,true,true,true,true,true,true,true,true,true,true,true,true}, allow_spmd_sharding_propagation_to_output={true}
+
+FileNames
+1 "<frozen runpy>"
+2 "/Users/josephbak/dev/tiny-transformer-ir/experiments/m5_block_hlo.py"
+3 "/Users/josephbak/dev/tiny-transformer-ir/tinytr/block.py"
+4 "/Users/josephbak/dev/tiny-transformer-ir/tinytr/ops.py"
+5 "/Users/josephbak/dev/tiny-transformer-ir/tinytr/attention.py"
+
+FunctionNames
+1 "_run_module_as_main"
+2 "_run_code"
+3 "<module>"
+4 "main"
+5 "transformer_block"
+6 "layer_norm"
+7 "multi_head_attention"
+8 "scaled_dot_product_attention"
+9 "softmax"
+10 "ffn"
+11 "linear"
+
+FileLocations
+1 {file_name_id=1 function_name_id=1 line=198 end_line=199 column=11 end_column=42}
+2 {file_name_id=1 function_name_id=2 line=88 end_line=88 column=4 end_column=27}
+3 {file_name_id=2 function_name_id=3 line=52 end_line=52 column=4 end_column=10}
+4 {file_name_id=2 function_name_id=4 line=19 end_line=19 column=14 end_column=45}
+5 {file_name_id=3 function_name_id=5 line=48 end_line=48 column=8 end_column=48}
+6 {file_name_id=4 function_name_id=6 line=26 end_line=26 column=11 end_column=46}
+7 {file_name_id=4 function_name_id=6 line=28 end_line=28 column=15 end_column=64}
+8 {file_name_id=3 function_name_id=5 line=49 end_line=50 column=12 end_column=64}
+9 {file_name_id=5 function_name_id=7 line=60 end_line=60 column=12 end_column=66}
+10 {file_name_id=5 function_name_id=8 line=30 end_line=30 column=14 end_column=29}
+11 {file_name_id=4 function_name_id=9 line=11 end_line=11 column=12 end_column=48}
+12 {file_name_id=4 function_name_id=9 line=15 end_line=15 column=14 end_column=60}
+13 {file_name_id=3 function_name_id=5 line=53 end_line=53 column=8 end_column=48}
+14 {file_name_id=3 function_name_id=5 line=54 end_line=54 column=15 end_column=36}
+15 {file_name_id=3 function_name_id=10 line=24 end_line=24 column=9 end_column=27}
+16 {file_name_id=5 function_name_id=8 line=25 end_line=25 column=24 end_column=52}
+17 {file_name_id=5 function_name_id=8 line=20 end_line=20 column=13 end_column=46}
+18 {file_name_id=4 function_name_id=6 line=28 end_line=28 column=25 end_column=33}
+19 {file_name_id=4 function_name_id=6 line=28 end_line=28 column=24 end_column=39}
+20 {file_name_id=4 function_name_id=6 line=29 end_line=29 column=20 end_column=28}
+21 {file_name_id=4 function_name_id=6 line=29 end_line=29 column=41 end_column=55}
+22 {file_name_id=4 function_name_id=6 line=29 end_line=29 column=32 end_column=56}
+23 {file_name_id=4 function_name_id=6 line=29 end_line=29 column=19 end_column=56}
+24 {file_name_id=4 function_name_id=6 line=30 end_line=30 column=11 end_column=31}
+25 {file_name_id=5 function_name_id=7 line=54 end_line=54 column=9 end_column=15}
+26 {file_name_id=5 function_name_id=7 line=54 end_line=54 column=8 end_column=41}
+27 {file_name_id=5 function_name_id=7 line=55 end_line=55 column=9 end_column=15}
+28 {file_name_id=5 function_name_id=7 line=55 end_line=55 column=8 end_column=41}
+29 {file_name_id=5 function_name_id=7 line=56 end_line=56 column=9 end_column=15}
+30 {file_name_id=5 function_name_id=7 line=56 end_line=56 column=8 end_column=41}
+31 {file_name_id=5 function_name_id=8 line=20 end_line=20 column=18 end_column=21}
+32 {file_name_id=5 function_name_id=8 line=20 end_line=20 column=14 end_column=21}
+33 {file_name_id=5 function_name_id=8 line=25 end_line=25 column=15 end_column=53}
+34 {file_name_id=5 function_name_id=8 line=27 end_line=27 column=17 end_column=50}
+35 {file_name_id=4 function_name_id=9 line=13 end_line=13 column=26 end_column=35}
+36 {file_name_id=4 function_name_id=9 line=13 end_line=13 column=18 end_column=36}
+37 {file_name_id=4 function_name_id=9 line=17 end_line=17 column=11 end_column=32}
+38 {file_name_id=5 function_name_id=8 line=33 end_line=33 column=13 end_column=24}
+39 {file_name_id=5 function_name_id=7 line=63 end_line=63 column=11 end_column=30}
+40 {file_name_id=3 function_name_id=5 line=49 end_line=50 column=8 end_column=64}
+41 {file_name_id=3 function_name_id=10 line=21 end_line=21 column=9 end_column=26}
+42 {file_name_id=4 function_name_id=11 line=5 end_line=5 column=11 end_column=16}
+43 {file_name_id=3 function_name_id=10 line=29 end_line=29 column=8 end_column=26}
+44 {file_name_id=3 function_name_id=5 line=54 end_line=54 column=11 end_column=36}
+
+StackFrames
+1 {file_location_id=1 parent_frame_id=1}
+2 {file_location_id=2 parent_frame_id=2}
+3 {file_location_id=3 parent_frame_id=3}
+4 {file_location_id=4 parent_frame_id=4}
+5 {file_location_id=5 parent_frame_id=5}
+6 {file_location_id=6 parent_frame_id=6}
+7 {file_location_id=7 parent_frame_id=6}
+8 {file_location_id=8 parent_frame_id=5}
+9 {file_location_id=9 parent_frame_id=9}
+10 {file_location_id=10 parent_frame_id=10}
+11 {file_location_id=11 parent_frame_id=11}
+12 {file_location_id=12 parent_frame_id=11}
+13 {file_location_id=13 parent_frame_id=5}
+14 {file_location_id=6 parent_frame_id=14}
+15 {file_location_id=7 parent_frame_id=14}
+16 {file_location_id=14 parent_frame_id=5}
+17 {file_location_id=15 parent_frame_id=17}
+18 {file_location_id=16 parent_frame_id=10}
+19 {file_location_id=17 parent_frame_id=10}
+20 {file_location_id=18 parent_frame_id=6}
+21 {file_location_id=19 parent_frame_id=6}
+22 {file_location_id=20 parent_frame_id=6}
+23 {file_location_id=21 parent_frame_id=6}
+24 {file_location_id=22 parent_frame_id=6}
+25 {file_location_id=23 parent_frame_id=6}
+26 {file_location_id=24 parent_frame_id=6}
+27 {file_location_id=25 parent_frame_id=9}
+28 {file_location_id=26 parent_frame_id=9}
+29 {file_location_id=27 parent_frame_id=9}
+30 {file_location_id=28 parent_frame_id=9}
+31 {file_location_id=29 parent_frame_id=9}
+32 {file_location_id=30 parent_frame_id=9}
+33 {file_location_id=31 parent_frame_id=10}
+34 {file_location_id=32 parent_frame_id=10}
+35 {file_location_id=33 parent_frame_id=10}
+36 {file_location_id=34 parent_frame_id=10}
+37 {file_location_id=35 parent_frame_id=11}
+38 {file_location_id=36 parent_frame_id=11}
+39 {file_location_id=37 parent_frame_id=11}
+40 {file_location_id=38 parent_frame_id=10}
+41 {file_location_id=39 parent_frame_id=9}
+42 {file_location_id=40 parent_frame_id=5}
+43 {file_location_id=18 parent_frame_id=14}
+44 {file_location_id=19 parent_frame_id=14}
+45 {file_location_id=20 parent_frame_id=14}
+46 {file_location_id=21 parent_frame_id=14}
+47 {file_location_id=22 parent_frame_id=14}
+48 {file_location_id=23 parent_frame_id=14}
+49 {file_location_id=24 parent_frame_id=14}
+50 {file_location_id=41 parent_frame_id=17}
+51 {file_location_id=42 parent_frame_id=51}
+52 {file_location_id=43 parent_frame_id=17}
+53 {file_location_id=42 parent_frame_id=53}
+54 {file_location_id=44 parent_frame_id=5}
+
+
+%fused_computation (param_0: f32[8,256], param_1: f32[256,64]) -> f32[8,64] {
+  %param_0 = f32[8,256]{1,0} parameter(0)
+  %param_1 = f32[256,64]{1,0} parameter(1)
+  ROOT %dot_general.0 = f32[8,64]{1,0} dot(%param_0, %param_1), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=53}
+}
+
+%fused_computation.1 (param_0.1: f32[8,64], param_1.1: f32[64,256]) -> f32[8,256] {
+  %param_0.1 = f32[8,64]{1,0} parameter(0)
+  %param_1.1 = f32[64,256]{1,0} parameter(1)
+  ROOT %dot_general.1 = f32[8,256]{1,0} dot(%param_0.1, %param_1.1), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=51}
+}
+
+%fused_computation.2 (param_0.2: f32[8,64], param_1.2: f32[64,64]) -> f32[8,64] {
+  %param_0.2 = f32[8,64]{1,0} parameter(0)
+  %param_1.2 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.2 = f32[8,64]{1,0} dot(%param_0.2, %param_1.2), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=41}
+}
+
+%fused_computation.3 (param_0.3: f32[4,8,8], param_1.3: f32[4,8,16]) -> f32[4,8,16] {
+  %param_0.3 = f32[4,8,8]{2,1,0} parameter(0)
+  %param_1.3 = f32[4,8,16]{2,1,0} parameter(1)
+  ROOT %dot.2 = f32[4,8,16]{2,1,0} dot(%param_0.3, %param_1.3), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}, metadata={op_name="jit(transformer_block)/vmap()/dot_general" stack_frame_id=40}
+}
+
+%fused_computation.4 (param_0.4: f32[8,64], param_1.4: f32[64,64]) -> f32[8,64] {
+  %param_0.4 = f32[8,64]{1,0} parameter(0)
+  %param_1.4 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.3 = f32[8,64]{1,0} dot(%param_0.4, %param_1.4), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=31}
+}
+
+%fused_computation.5 (param_0.5: f32[4,8,16], param_1.5: f32[4,16,8]) -> f32[4,8,8] {
+  %param_0.5 = f32[4,8,16]{2,1,0} parameter(0)
+  %param_1.5 = f32[4,16,8]{2,1,0} parameter(1)
+  ROOT %dot.3 = f32[4,8,8]{2,1,0} dot(%param_0.5, %param_1.5), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}, metadata={op_name="jit(transformer_block)/vmap()/dot_general" stack_frame_id=34}
+}
+
+%fused_computation.6 (param_0.6: f32[8,64], param_1.6: f32[64,64]) -> f32[8,64] {
+  %param_0.6 = f32[8,64]{1,0} parameter(0)
+  %param_1.6 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.4 = f32[8,64]{1,0} dot(%param_0.6, %param_1.6), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=29}
+}
+
+%fused_computation.7 (param_0.7: f32[8,64], param_1.7: f32[64,64]) -> f32[8,64] {
+  %param_0.7 = f32[8,64]{1,0} parameter(0)
+  %param_1.7 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.5 = f32[8,64]{1,0} dot(%param_0.7, %param_1.7), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=27}
+}
+
+%fused_computation.8 (param_0.8: f32[8,64], param_1.9: f32[8,64], param_2.1: f32[64]) -> f32[8,64] {
+  %param_0.8 = f32[8,64]{1,0} parameter(0)
+  %param_1.9 = f32[8,64]{1,0} parameter(1)
+  %param_2.1 = f32[64]{0} parameter(2)
+  %add.4 = f32[8,64]{1,0} broadcast(%param_2.1), dimensions={1}, metadata={op_name="jit(transformer_block)/add" stack_frame_id=53}
+  %add.3 = f32[8,64]{1,0} add(%param_1.9, %add.4), metadata={op_name="jit(transformer_block)/add" stack_frame_id=53}
+  ROOT %add.2 = f32[8,64]{1,0} add(%param_0.8, %add.3), metadata={op_name="jit(transformer_block)/add" stack_frame_id=54}
+}
+
+%fused_computation.9 (param_0.11: f32[8,256], param_1.13: f32[256]) -> f32[8,256] {
+  %param_0.11 = f32[8,256]{1,0} parameter(0)
+  %param_1.13 = f32[256]{0} parameter(1)
+  %add.6 = f32[8,256]{1,0} broadcast(%param_1.13), dimensions={1}, metadata={op_name="jit(transformer_block)/add" stack_frame_id=51}
+  %add.5 = f32[8,256]{1,0} add(%param_0.11, %add.6), metadata={op_name="jit(transformer_block)/add" stack_frame_id=51}
+  %constant.17 = f32[] constant(0)
+  %max.1 = f32[8,256]{1,0} broadcast(%constant.17), dimensions={}, metadata={op_name="jit(transformer_block)/max" stack_frame_id=17}
+  ROOT %max.0 = f32[8,256]{1,0} maximum(%add.5, %max.1), metadata={op_name="jit(transformer_block)/max" stack_frame_id=17}
+}
+
+%fused_computation.10 (param_0.13: f32[64], param_1.17: f32[8], param_2.7: f32[8,64], param_3.3: f32[8], param_4.4: f32[64]) -> f32[8,64] {
+  %param_4.4 = f32[64]{0} parameter(4)
+  %mul.1 = f32[8,64]{1,0} broadcast(%param_4.4), dimensions={1}, metadata={op_name="jit(transformer_block)/mul" stack_frame_id=49}
+  %param_2.7 = f32[8,64]{1,0} parameter(2)
+  %param_3.3 = f32[8]{0} parameter(3)
+  %constant.18 = f32[] constant(0.015625)
+  %broadcast.42 = f32[8]{0} broadcast(%constant.18), dimensions={}
+  %multiply.15 = f32[8]{0} multiply(%param_3.3, %broadcast.42), metadata={op_name="jit(transformer_block)/div" stack_frame_id=14}
+  %sub.1 = f32[8,64]{1,0} broadcast(%multiply.15), dimensions={0}, metadata={op_name="jit(transformer_block)/sub" stack_frame_id=45}
+  %sub.0 = f32[8,64]{1,0} subtract(%param_2.7, %sub.1), metadata={op_name="jit(transformer_block)/sub" stack_frame_id=45}
+  %param_1.17 = f32[8]{0} parameter(1)
+  %broadcast.41 = f32[8,64]{1,0} broadcast(%param_1.17), dimensions={0}, metadata={op_name="jit(transformer_block)/div" stack_frame_id=48}
+  %multiply.14 = f32[8,64]{1,0} multiply(%sub.0, %broadcast.41), metadata={op_name="jit(transformer_block)/div" stack_frame_id=48}
+  %mul.0 = f32[8,64]{1,0} multiply(%mul.1, %multiply.14), metadata={op_name="jit(transformer_block)/mul" stack_frame_id=49}
+  %param_0.13 = f32[64]{0} parameter(0)
+  %add.8 = f32[8,64]{1,0} broadcast(%param_0.13), dimensions={1}, metadata={op_name="jit(transformer_block)/add" stack_frame_id=49}
+  ROOT %add.7 = f32[8,64]{1,0} add(%mul.0, %add.8), metadata={op_name="jit(transformer_block)/add" stack_frame_id=49}
+}
+
+%region_5.8.clone (reduce_sum.15: f32[], reduce_sum.16: f32[]) -> f32[] {
+  %reduce_sum.15 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.16 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.20 = f32[] add(%reduce_sum.15, %reduce_sum.16), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=15}
+}
+
+%fused_computation.11 (param_0.18: f32[8,2]) -> f32[8] {
+  %param_0.18 = f32[8,2]{1,0} parameter(0)
+  %constant.21 = f32[] constant(0)
+  %reduce_sum.21 = f32[8]{0} reduce(%param_0.18, %constant.21), dimensions={1}, to_apply=%region_5.8.clone, metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=15}
+  %constant.20 = f32[] constant(0.015625)
+  %broadcast.44 = f32[8]{0} broadcast(%constant.20), dimensions={}
+  %multiply.16 = f32[8]{0} multiply(%reduce_sum.21, %broadcast.44), metadata={op_name="jit(transformer_block)/div" stack_frame_id=15}
+  %constant.19 = f32[] constant(1e-05)
+  %broadcast.43 = f32[8]{0} broadcast(%constant.19), dimensions={}
+  %add.9 = f32[8]{0} add(%multiply.16, %broadcast.43), metadata={op_name="jit(transformer_block)/add" stack_frame_id=46}
+  ROOT %rsqrt.4 = f32[8]{0} rsqrt(%add.9), metadata={op_name="jit(transformer_block)/sqrt" stack_frame_id=47}
+}
+
+%fused_computation.12 (param_0.20: f32[8,64], param_1.25: f32[8]) -> f32[8,64] {
+  %param_0.20 = f32[8,64]{1,0} parameter(0)
+  %param_1.25 = f32[8]{0} parameter(1)
+  %constant.22 = f32[] constant(0.015625)
+  %broadcast.45 = f32[8]{0} broadcast(%constant.22), dimensions={}
+  %multiply.17 = f32[8]{0} multiply(%param_1.25, %broadcast.45), metadata={op_name="jit(transformer_block)/div" stack_frame_id=14}
+  %sub.3 = f32[8,64]{1,0} broadcast(%multiply.17), dimensions={0}, metadata={op_name="jit(transformer_block)/sub" stack_frame_id=45}
+  %sub.2 = f32[8,64]{1,0} subtract(%param_0.20, %sub.3), metadata={op_name="jit(transformer_block)/sub" stack_frame_id=45}
+  ROOT %integer_pow.0 = f32[8,64]{1,0} multiply(%sub.2, %sub.2), metadata={op_name="jit(transformer_block)/integer_pow" stack_frame_id=44}
+}
+
+%fused_computation.13 (param_0.23: f32[4,8,16]) -> f32[8,64] {
+  %param_0.23 = f32[4,8,16]{2,1,0} parameter(0)
+  %transpose.6 = f32[8,4,16]{2,0,1} transpose(%param_0.23), dimensions={1,0,2}, metadata={op_name="jit(transformer_block)/vmap()/transpose" stack_frame_id=9}
+  %copy.4 = f32[8,4,16]{2,1,0} copy(%transpose.6), metadata={op_name="jit(transformer_block)/vmap()/transpose" stack_frame_id=9}
+  ROOT %bitcast.4 = f32[8,64]{1,0} bitcast(%copy.4), metadata={op_name="jit(transformer_block)/vmap()/transpose" stack_frame_id=9}
+}
+
+%fused_computation.14 (param_0.26: f32[8,64]) -> f32[4,8,16] {
+  %param_0.26 = f32[8,64]{1,0} parameter(0)
+  %bitcast.5 = f32[8,4,16]{2,1,0} bitcast(%param_0.26), metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=31}
+  %transpose.7 = f32[4,8,16]{2,0,1} transpose(%bitcast.5), dimensions={1,0,2}, metadata={op_name="jit(transformer_block)/reshape" stack_frame_id=32}
+  ROOT %copy.5 = f32[4,8,16]{2,1,0} copy(%transpose.7), metadata={op_name="jit(transformer_block)/reshape" stack_frame_id=32}
+}
+
+%fused_computation.15 (param_0.27: f32[4,8,8], param_1.27: f32[4,8]) -> f32[4,8,8] {
+  %param_0.27 = f32[4,8,8]{2,1,0} parameter(0)
+  %param_1.27 = f32[4,8]{1,0} parameter(1)
+  %broadcast.46 = f32[4,8,8]{2,1,0} broadcast(%param_1.27), dimensions={0,1}, metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=39}
+  ROOT %multiply.18 = f32[4,8,8]{2,1,0} multiply(%param_0.27, %broadcast.46), metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=39}
+}
+
+%region_3.6 (reduce_sum.17: f32[], reduce_sum.18: f32[]) -> f32[] {
+  %reduce_sum.17 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.18 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.19 = f32[] add(%reduce_sum.17, %reduce_sum.18), metadata={op_name="jit(transformer_block)/vmap()/reduce_sum" stack_frame_id=12}
+}
+
+%fused_computation.16 (param_0.29: f32[4,8,8]) -> f32[4,8] {
+  %constant.23 = f32[] constant(1), metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=39}
+  %broadcast.47 = f32[4,8]{1,0} broadcast(%constant.23), dimensions={}, metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=39}
+  %param_0.29 = f32[4,8,8]{2,1,0} parameter(0)
+  %constant.24 = f32[] constant(0)
+  %reduce_sum.22 = f32[4,8]{1,0} reduce(%param_0.29, %constant.24), dimensions={2}, to_apply=%region_3.6, metadata={op_name="jit(transformer_block)/vmap()/reduce_sum" stack_frame_id=12}
+  ROOT %divide.5 = f32[4,8]{1,0} divide(%broadcast.47, %reduce_sum.22), metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=39}
+}
+
+%fused_computation.17 (param_0.31: f32[4,8,8], param_1.32: f32[4,8]) -> f32[4,8,8] {
+  %param_0.31 = f32[4,8,8]{2,1,0} parameter(0)
+  %param_1.32 = f32[4,8]{1,0} parameter(1)
+  %sub.5 = f32[4,8,8]{2,1,0} broadcast(%param_1.32), dimensions={0,1}, metadata={op_name="jit(transformer_block)/vmap()/sub" stack_frame_id=37}
+  %sub.4 = f32[4,8,8]{2,1,0} subtract(%param_0.31, %sub.5), metadata={op_name="jit(transformer_block)/vmap()/sub" stack_frame_id=37}
+  ROOT %exp.0 = f32[4,8,8]{2,1,0} exponential(%sub.4), metadata={op_name="jit(transformer_block)/vmap()/exp" stack_frame_id=38}
+}
+
+%fused_computation.18 (param_0.33: f32[4,8,8]) -> f32[4,8,8] {
+  %iota.11 = s32[8,8]{1,0} iota(), iota_dimension=0, metadata={op_name="jit(transformer_block)/vmap(jit(tril))/iota" stack_frame_id=35}
+  %iota.10 = s32[8,8]{1,0} iota(), iota_dimension=1, metadata={op_name="jit(transformer_block)/vmap(jit(tril))/iota" stack_frame_id=35}
+  %ge.2 = pred[8,8]{1,0} compare(%iota.11, %iota.10), direction=GE, metadata={op_name="jit(transformer_block)/vmap(jit(tril))/ge" stack_frame_id=35}
+  %broadcast_in_dim.4 = pred[4,8,8]{2,1,0} broadcast(%ge.2), dimensions={1,2}, metadata={op_name="jit(transformer_block)/vmap(jit(_where))/broadcast_in_dim" stack_frame_id=36}
+  %param_0.33 = f32[4,8,8]{2,1,0} parameter(0)
+  %constant.26 = f32[] constant(0.25)
+  %broadcast.48 = f32[4,8,8]{2,1,0} broadcast(%constant.26), dimensions={}, metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=19}
+  %multiply.19 = f32[4,8,8]{2,1,0} multiply(%param_0.33, %broadcast.48), metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=19}
+  %constant.25 = f32[] constant(-inf)
+  %broadcast_in_dim.3 = f32[4,8,8]{2,1,0} broadcast(%constant.25), dimensions={}, metadata={op_name="jit(transformer_block)/vmap(jit(_where))/broadcast_in_dim" stack_frame_id=36}
+  ROOT %select_n.4 = f32[4,8,8]{2,1,0} select(%broadcast_in_dim.4, %multiply.19, %broadcast_in_dim.3), metadata={op_name="jit(transformer_block)/vmap(jit(_where))/select_n" stack_frame_id=36}
+}
+
+%fused_computation.19 (param_0.36: f32[8,64]) -> f32[4,16,8] {
+  %param_0.36 = f32[8,64]{1,0} parameter(0)
+  %bitcast.6 = f32[8,4,16]{2,1,0} bitcast(%param_0.36), metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=29}
+  %transpose.8 = f32[4,16,8]{1,0,2} transpose(%bitcast.6), dimensions={1,2,0}, metadata={op_name="jit(transformer_block)/vmap()/transpose" stack_frame_id=33}
+  ROOT %copy.6 = f32[4,16,8]{2,1,0} copy(%transpose.8), metadata={op_name="jit(transformer_block)/vmap()/transpose" stack_frame_id=33}
+}
+
+%fused_computation.20 (param_0.39: f32[8,64]) -> f32[4,8,16] {
+  %param_0.39 = f32[8,64]{1,0} parameter(0)
+  %bitcast.7 = f32[8,4,16]{2,1,0} bitcast(%param_0.39), metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=27}
+  %transpose.9 = f32[4,8,16]{2,0,1} transpose(%bitcast.7), dimensions={1,0,2}, metadata={op_name="jit(transformer_block)/reshape" stack_frame_id=28}
+  ROOT %copy.7 = f32[4,8,16]{2,1,0} copy(%transpose.9), metadata={op_name="jit(transformer_block)/reshape" stack_frame_id=28}
+}
+
+%fused_computation.21 (param_0.41: f32[64], param_1.40: f32[8], param_2.24: f32[8,64], param_3.9: f32[8], param_4.8: f32[64]) -> f32[8,64] {
+  %param_4.8 = f32[64]{0} parameter(4)
+  %mul.3 = f32[8,64]{1,0} broadcast(%param_4.8), dimensions={1}, metadata={op_name="jit(transformer_block)/mul" stack_frame_id=26}
+  %param_2.24 = f32[8,64]{1,0} parameter(2)
+  %param_3.9 = f32[8]{0} parameter(3)
+  %constant.27 = f32[] constant(0.015625)
+  %broadcast.50 = f32[8]{0} broadcast(%constant.27), dimensions={}
+  %multiply.21 = f32[8]{0} multiply(%param_3.9, %broadcast.50), metadata={op_name="jit(transformer_block)/div" stack_frame_id=6}
+  %sub.7 = f32[8,64]{1,0} broadcast(%multiply.21), dimensions={0}, metadata={op_name="jit(transformer_block)/sub" stack_frame_id=22}
+  %sub.6 = f32[8,64]{1,0} subtract(%param_2.24, %sub.7), metadata={op_name="jit(transformer_block)/sub" stack_frame_id=22}
+  %param_1.40 = f32[8]{0} parameter(1)
+  %broadcast.49 = f32[8,64]{1,0} broadcast(%param_1.40), dimensions={0}, metadata={op_name="jit(transformer_block)/div" stack_frame_id=25}
+  %multiply.20 = f32[8,64]{1,0} multiply(%sub.6, %broadcast.49), metadata={op_name="jit(transformer_block)/div" stack_frame_id=25}
+  %mul.2 = f32[8,64]{1,0} multiply(%mul.3, %multiply.20), metadata={op_name="jit(transformer_block)/mul" stack_frame_id=26}
+  %param_0.41 = f32[64]{0} parameter(0)
+  %add.11 = f32[8,64]{1,0} broadcast(%param_0.41), dimensions={1}, metadata={op_name="jit(transformer_block)/add" stack_frame_id=26}
+  ROOT %add.10 = f32[8,64]{1,0} add(%mul.2, %add.11), metadata={op_name="jit(transformer_block)/add" stack_frame_id=26}
+}
+
+%region_1.2.clone (reduce_sum.6: f32[], reduce_sum.7: f32[]) -> f32[] {
+  %reduce_sum.6 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.7 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.8 = f32[] add(%reduce_sum.6, %reduce_sum.7), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=7}
+}
+
+%fused_computation.22 (param_0.46: f32[8,2]) -> f32[8] {
+  %param_0.46 = f32[8,2]{1,0} parameter(0)
+  %constant.30 = f32[] constant(0)
+  %reduce_sum.23 = f32[8]{0} reduce(%param_0.46, %constant.30), dimensions={1}, to_apply=%region_1.2.clone, metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=7}
+  %constant.29 = f32[] constant(0.015625)
+  %broadcast.52 = f32[8]{0} broadcast(%constant.29), dimensions={}
+  %multiply.22 = f32[8]{0} multiply(%reduce_sum.23, %broadcast.52), metadata={op_name="jit(transformer_block)/div" stack_frame_id=7}
+  %constant.28 = f32[] constant(1e-05)
+  %broadcast.51 = f32[8]{0} broadcast(%constant.28), dimensions={}
+  %add.12 = f32[8]{0} add(%multiply.22, %broadcast.51), metadata={op_name="jit(transformer_block)/add" stack_frame_id=23}
+  ROOT %rsqrt.5 = f32[8]{0} rsqrt(%add.12), metadata={op_name="jit(transformer_block)/sqrt" stack_frame_id=24}
+}
+
+%fused_computation.23 (param_0.48: f32[8,64], param_1.48: f32[8]) -> f32[8,64] {
+  %param_0.48 = f32[8,64]{1,0} parameter(0)
+  %param_1.48 = f32[8]{0} parameter(1)
+  %constant.31 = f32[] constant(0.015625)
+  %broadcast.53 = f32[8]{0} broadcast(%constant.31), dimensions={}
+  %multiply.23 = f32[8]{0} multiply(%param_1.48, %broadcast.53), metadata={op_name="jit(transformer_block)/div" stack_frame_id=6}
+  %sub.9 = f32[8,64]{1,0} broadcast(%multiply.23), dimensions={0}, metadata={op_name="jit(transformer_block)/sub" stack_frame_id=22}
+  %sub.8 = f32[8,64]{1,0} subtract(%param_0.48, %sub.9), metadata={op_name="jit(transformer_block)/sub" stack_frame_id=22}
+  ROOT %integer_pow.1 = f32[8,64]{1,0} multiply(%sub.8, %sub.8), metadata={op_name="jit(transformer_block)/integer_pow" stack_frame_id=21}
+}
+
+%region_0.1 (reduce_sum.3: f32[], reduce_sum.4: f32[]) -> f32[] {
+  %reduce_sum.3 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.4 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.5 = f32[] add(%reduce_sum.3, %reduce_sum.4), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=6}
+}
+
+%wrapped_reduce-window_computation (param_0.49: f32[8,64], param_1.49: f32[]) -> f32[8,2] {
+  %param_0.49 = f32[8,64]{1,0} parameter(0)
+  %param_1.49 = f32[] parameter(1)
+  ROOT %reduce-window.4 = f32[8,2]{1,0} reduce-window(%param_0.49, %param_1.49), window={size=1x32 stride=1x32}, to_apply=%region_0.1
+}
+
+%region_0.1.clone (reduce_sum.0: f32[], reduce_sum.1: f32[]) -> f32[] {
+  %reduce_sum.0 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.1 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.2 = f32[] add(%reduce_sum.0, %reduce_sum.1), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=6}
+}
+
+%wrapped_reduce_computation (param_0.50: f32[8,2], param_1.50: f32[]) -> f32[8] {
+  %param_0.50 = f32[8,2]{1,0} parameter(0)
+  %param_1.50 = f32[] parameter(1)
+  ROOT %reduce_sum.27 = f32[8]{0} reduce(%param_0.50, %param_1.50), dimensions={1}, to_apply=%region_0.1.clone, metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=6}
+}
+
+%region_1.2 (reduce_sum.10: f32[], reduce_sum.11: f32[]) -> f32[] {
+  %reduce_sum.10 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.11 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.12 = f32[] add(%reduce_sum.10, %reduce_sum.11), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=7}
+}
+
+%wrapped_reduce-window_computation.1 (param_0.51: f32[8,64], param_1.51: f32[]) -> f32[8,2] {
+  %param_0.51 = f32[8,64]{1,0} parameter(0)
+  %param_1.51 = f32[] parameter(1)
+  ROOT %reduce-window.5 = f32[8,2]{1,0} reduce-window(%param_0.51, %param_1.51), window={size=1x32 stride=1x32}, to_apply=%region_1.2
+}
+
+%region_2.5 (reduce_max.3: f32[], reduce_max.4: f32[]) -> f32[] {
+  %reduce_max.3 = f32[] parameter(0), metadata={op_name="reduce_max"}
+  %reduce_max.4 = f32[] parameter(1), metadata={op_name="reduce_max"}
+  ROOT %reduce_max.5 = f32[] maximum(%reduce_max.3, %reduce_max.4), metadata={op_name="jit(transformer_block)/vmap()/reduce_max" stack_frame_id=11}
+}
+
+%wrapped_reduce_computation.1 (param_0.52: f32[4,8,8], param_1.52: f32[]) -> f32[4,8] {
+  %param_0.52 = f32[4,8,8]{2,1,0} parameter(0)
+  %param_1.52 = f32[] parameter(1)
+  ROOT %reduce_max.0 = f32[4,8]{1,0} reduce(%param_0.52, %param_1.52), dimensions={2}, to_apply=%region_2.5, metadata={op_name="jit(transformer_block)/vmap()/reduce_max" stack_frame_id=11}
+}
+
+%wrapped_add_computation (param_0.53: f32[8,64], param_1.53: f32[8,64]) -> f32[8,64] {
+  %param_0.53 = f32[8,64]{1,0} parameter(0)
+  %param_1.53 = f32[8,64]{1,0} parameter(1)
+  ROOT %add.13 = f32[8,64]{1,0} add(%param_0.53, %param_1.53), metadata={op_name="jit(transformer_block)/add" stack_frame_id=42}
+}
+
+%region_4.7 (reduce_sum.24: f32[], reduce_sum.25: f32[]) -> f32[] {
+  %reduce_sum.24 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.25 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.26 = f32[] add(%reduce_sum.24, %reduce_sum.25), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce-window_computation.2 (param_0.54: f32[8,64], param_1.54: f32[]) -> f32[8,2] {
+  %param_0.54 = f32[8,64]{1,0} parameter(0)
+  %param_1.54 = f32[] parameter(1)
+  ROOT %reduce-window.6 = f32[8,2]{1,0} reduce-window(%param_0.54, %param_1.54), window={size=1x32 stride=1x32}, to_apply=%region_4.7
+}
+
+%region_4.7.clone (reduce_sum.9: f32[], reduce_sum.13: f32[]) -> f32[] {
+  %reduce_sum.9 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.13 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.14 = f32[] add(%reduce_sum.9, %reduce_sum.13), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce_computation.2 (param_0.55: f32[8,2], param_1.55: f32[]) -> f32[8] {
+  %param_0.55 = f32[8,2]{1,0} parameter(0)
+  %param_1.55 = f32[] parameter(1)
+  ROOT %reduce_sum.28 = f32[8]{0} reduce(%param_0.55, %param_1.55), dimensions={1}, to_apply=%region_4.7.clone, metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=14}
+}
+
+%region_5.8 (reduce_sum.31: f32[], reduce_sum.32: f32[]) -> f32[] {
+  %reduce_sum.31 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.32 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.33 = f32[] add(%reduce_sum.31, %reduce_sum.32), metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=15}
+}
+
+%wrapped_reduce-window_computation.3 (param_0.56: f32[8,64], param_1.56: f32[]) -> f32[8,2] {
+  %param_0.56 = f32[8,64]{1,0} parameter(0)
+  %param_1.56 = f32[] parameter(1)
+  ROOT %reduce-window.7 = f32[8,2]{1,0} reduce-window(%param_0.56, %param_1.56), window={size=1x32 stride=1x32}, to_apply=%region_5.8
+}
+
+ENTRY %main.9 (x.1: f32[8,64], params__attn____wk__.1: f32[64,64], params__attn____wo__.1: f32[64,64], params__attn____wq__.1: f32[64,64], params__attn____wv__.1: f32[64,64], params__ffn____b1__.1: f32[256], params__ffn____b2__.1: f32[64], params__ffn____w1__.1: f32[64,256], params__ffn____w2__.1: f32[256,64], params__ln1____beta__.1: f32[64], params__ln1____gamma__.1: f32[64], params__ln2____beta__.1: f32[64], params__ln2____gamma__.1: f32[64]) -> f32[8,64] {
+  %x.1 = f32[8,64]{1,0} parameter(0), metadata={op_name="x"}
+  %params__attn____wk__.1 = f32[64,64]{1,0} parameter(1), metadata={op_name="params[\'attn\'][\'wk\']"}
+  %params__attn____wo__.1 = f32[64,64]{1,0} parameter(2), metadata={op_name="params[\'attn\'][\'wo\']"}
+  %params__attn____wq__.1 = f32[64,64]{1,0} parameter(3), metadata={op_name="params[\'attn\'][\'wq\']"}
+  %params__attn____wv__.1 = f32[64,64]{1,0} parameter(4), metadata={op_name="params[\'attn\'][\'wv\']"}
+  %params__ffn____b1__.1 = f32[256]{0} parameter(5), metadata={op_name="params[\'ffn\'][\'b1\']"}
+  %params__ffn____b2__.1 = f32[64]{0} parameter(6), metadata={op_name="params[\'ffn\'][\'b2\']"}
+  %params__ffn____w1__.1 = f32[64,256]{1,0} parameter(7), metadata={op_name="params[\'ffn\'][\'w1\']"}
+  %params__ffn____w2__.1 = f32[256,64]{1,0} parameter(8), metadata={op_name="params[\'ffn\'][\'w2\']"}
+  %params__ln1____beta__.1 = f32[64]{0} parameter(9), metadata={op_name="params[\'ln1\'][\'beta\']"}
+  %params__ln1____gamma__.1 = f32[64]{0} parameter(10), metadata={op_name="params[\'ln1\'][\'gamma\']"}
+  %params__ln2____beta__.1 = f32[64]{0} parameter(11), metadata={op_name="params[\'ln2\'][\'beta\']"}
+  %params__ln2____gamma__.1 = f32[64]{0} parameter(12), metadata={op_name="params[\'ln2\'][\'gamma\']"}
+  %constant.9 = f32[] constant(0)
+  %constant.14 = f32[] constant(-inf)
+  %wrapped_reduce-window = f32[8,2]{1,0} fusion(%x.1, %constant.9), kind=kLoop, calls=%wrapped_reduce-window_computation
+  %wrapped_reduce = f32[8]{0} fusion(%wrapped_reduce-window, %constant.9), kind=kLoop, calls=%wrapped_reduce_computation, metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=6}
+  %subtract_multiply_fusion.1 = f32[8,64]{1,0} fusion(%x.1, %wrapped_reduce), kind=kLoop, calls=%fused_computation.23, metadata={op_name="jit(transformer_block)/integer_pow" stack_frame_id=21}
+  %wrapped_reduce-window.1 = f32[8,2]{1,0} fusion(%subtract_multiply_fusion.1, %constant.9), kind=kLoop, calls=%wrapped_reduce-window_computation.1
+  %add_rsqrt_fusion.1 = f32[8]{0} fusion(%wrapped_reduce-window.1), kind=kLoop, calls=%fused_computation.22, metadata={op_name="jit(transformer_block)/sqrt" stack_frame_id=24}
+  %broadcast_add_fusion.1 = f32[8,64]{1,0} fusion(%params__ln1____beta__.1, %add_rsqrt_fusion.1, %x.1, %wrapped_reduce, %params__ln1____gamma__.1), kind=kLoop, calls=%fused_computation.21, metadata={op_name="jit(transformer_block)/add" stack_frame_id=26}
+  %ynn_fusion.7 = f32[8,64]{1,0} fusion(%broadcast_add_fusion.1, %params__attn____wq__.1), kind=kCustom, calls=%fused_computation.7, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=27}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.6 = f32[8,64]{1,0} fusion(%broadcast_add_fusion.1, %params__attn____wk__.1), kind=kCustom, calls=%fused_computation.6, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=29}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.4 = f32[8,64]{1,0} fusion(%broadcast_add_fusion.1, %params__attn____wv__.1), kind=kCustom, calls=%fused_computation.4, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=31}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %transpose_copy_fusion.2 = f32[4,8,16]{2,1,0} fusion(%ynn_fusion.7), kind=kLoop, calls=%fused_computation.20, metadata={op_name="jit(transformer_block)/reshape" stack_frame_id=28}
+  %transpose_copy_fusion.1 = f32[4,16,8]{2,1,0} fusion(%ynn_fusion.6), kind=kLoop, calls=%fused_computation.19, metadata={op_name="jit(transformer_block)/vmap()/transpose" stack_frame_id=33}
+  %transpose_copy_fusion = f32[4,8,16]{2,1,0} fusion(%ynn_fusion.4), kind=kLoop, calls=%fused_computation.14, metadata={op_name="jit(transformer_block)/reshape" stack_frame_id=32}
+  %ynn_fusion.5 = f32[4,8,8]{2,1,0} fusion(%transpose_copy_fusion.2, %transpose_copy_fusion.1), kind=kCustom, calls=%fused_computation.5, metadata={op_name="jit(transformer_block)/vmap()/dot_general" stack_frame_id=34}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %broadcast_select_fusion = f32[4,8,8]{2,1,0} fusion(%ynn_fusion.5), kind=kLoop, calls=%fused_computation.18, metadata={op_name="jit(transformer_block)/vmap(jit(_where))/select_n" stack_frame_id=36}
+  %wrapped_reduce.1 = f32[4,8]{1,0} fusion(%broadcast_select_fusion, %constant.14), kind=kLoop, calls=%wrapped_reduce_computation.1, metadata={op_name="jit(transformer_block)/vmap()/reduce_max" stack_frame_id=11}
+  %subtract_exponential_fusion = f32[4,8,8]{2,1,0} fusion(%broadcast_select_fusion, %wrapped_reduce.1), kind=kLoop, calls=%fused_computation.17, metadata={op_name="jit(transformer_block)/vmap()/exp" stack_frame_id=38}
+  %reduce_divide_fusion = f32[4,8]{1,0} fusion(%subtract_exponential_fusion), kind=kLoop, calls=%fused_computation.16, metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=39}
+  %broadcast_multiply_fusion = f32[4,8,8]{2,1,0} fusion(%subtract_exponential_fusion, %reduce_divide_fusion), kind=kLoop, calls=%fused_computation.15, metadata={op_name="jit(transformer_block)/vmap()/div" stack_frame_id=39}
+  %ynn_fusion.3 = f32[4,8,16]{2,1,0} fusion(%broadcast_multiply_fusion, %transpose_copy_fusion), kind=kCustom, calls=%fused_computation.3, metadata={op_name="jit(transformer_block)/vmap()/dot_general" stack_frame_id=40}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %copy_bitcast_fusion = f32[8,64]{1,0} fusion(%ynn_fusion.3), kind=kLoop, calls=%fused_computation.13, metadata={op_name="jit(transformer_block)/vmap()/transpose" stack_frame_id=9}
+  %ynn_fusion.2 = f32[8,64]{1,0} fusion(%copy_bitcast_fusion, %params__attn____wo__.1), kind=kCustom, calls=%fused_computation.2, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=41}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %wrapped_add = f32[8,64]{1,0} fusion(%x.1, %ynn_fusion.2), kind=kLoop, calls=%wrapped_add_computation, metadata={op_name="jit(transformer_block)/add" stack_frame_id=42}
+  %wrapped_reduce-window.2 = f32[8,2]{1,0} fusion(%wrapped_add, %constant.9), kind=kLoop, calls=%wrapped_reduce-window_computation.2
+  %wrapped_reduce.2 = f32[8]{0} fusion(%wrapped_reduce-window.2, %constant.9), kind=kLoop, calls=%wrapped_reduce_computation.2, metadata={op_name="jit(transformer_block)/reduce_sum" stack_frame_id=14}
+  %subtract_multiply_fusion = f32[8,64]{1,0} fusion(%wrapped_add, %wrapped_reduce.2), kind=kLoop, calls=%fused_computation.12, metadata={op_name="jit(transformer_block)/integer_pow" stack_frame_id=44}
+  %wrapped_reduce-window.3 = f32[8,2]{1,0} fusion(%subtract_multiply_fusion, %constant.9), kind=kLoop, calls=%wrapped_reduce-window_computation.3
+  %add_rsqrt_fusion = f32[8]{0} fusion(%wrapped_reduce-window.3), kind=kLoop, calls=%fused_computation.11, metadata={op_name="jit(transformer_block)/sqrt" stack_frame_id=47}
+  %broadcast_add_fusion = f32[8,64]{1,0} fusion(%params__ln2____beta__.1, %add_rsqrt_fusion, %wrapped_add, %wrapped_reduce.2, %params__ln2____gamma__.1), kind=kLoop, calls=%fused_computation.10, metadata={op_name="jit(transformer_block)/add" stack_frame_id=49}
+  %ynn_fusion.1 = f32[8,256]{1,0} fusion(%broadcast_add_fusion, %params__ffn____w1__.1), kind=kCustom, calls=%fused_computation.1, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=51}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %broadcast_maximum_fusion = f32[8,256]{1,0} fusion(%ynn_fusion.1, %params__ffn____b1__.1), kind=kLoop, calls=%fused_computation.9, metadata={op_name="jit(transformer_block)/max" stack_frame_id=17}
+  %ynn_fusion = f32[8,64]{1,0} fusion(%broadcast_maximum_fusion, %params__ffn____w2__.1), kind=kCustom, calls=%fused_computation, metadata={op_name="jit(transformer_block)/dot_general" stack_frame_id=53}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  ROOT %add_add_fusion = f32[8,64]{1,0} fusion(%wrapped_add, %ynn_fusion, %params__ffn____b2__.1), kind=kLoop, calls=%fused_computation.8, metadata={op_name="jit(transformer_block)/add" stack_frame_id=54}
+}
+

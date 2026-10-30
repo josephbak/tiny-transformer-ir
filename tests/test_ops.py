@@ -3,6 +3,7 @@ import jax.numpy as jnp
 import numpy as np
 
 from tinytr.ops import linear, softmax
+from tinytr.ops import layer_norm
 
 # float32 carries ~7 significant digits; 1e-6 allows for 1-ulp rounding differences
 RTOL = 1e-6
@@ -66,3 +67,26 @@ def test_softmax_other_axis():
     x = jax.random.normal(jax.random.key(2), (4, 6))
     out = softmax(x, axis=0)
     np.testing.assert_allclose(jnp.sum(out, axis=0), jnp.ones(6), rtol=RTOL)
+
+
+# ---------- layer_norm ----------
+
+def test_layer_norm_rows_standardized():
+    x = jax.random.normal(jax.random.key(3), (8, 64)) * 5.0 + 2.0   # arbitrary scale and offset
+    out = layer_norm(x, jnp.ones(64), jnp.zeros(64))
+    np.testing.assert_allclose(jnp.mean(out, axis=-1), jnp.zeros(8), atol=1e-5)
+    np.testing.assert_allclose(jnp.var(out, axis=-1), jnp.ones(8), rtol=1e-4)
+
+
+def test_layer_norm_hand_example():
+    # mean 5, variance 5 → (x - 5) / sqrt(5)
+    out = layer_norm(jnp.array([[2.0, 4.0, 6.0, 8.0]]), jnp.ones(4), jnp.zeros(4))
+    np.testing.assert_allclose(out, [[-1.3416, -0.4472, 0.4472, 1.3416]], rtol=1e-4)
+
+
+def test_layer_norm_gamma_beta():
+    # with constant gamma=g, beta=b: each row's mean becomes b, its variance g**2
+    x = jax.random.normal(jax.random.key(4), (8, 64))
+    out = layer_norm(x, jnp.full(64, 3.0), jnp.full(64, 0.5))
+    np.testing.assert_allclose(jnp.mean(out, axis=-1), jnp.full(8, 0.5), atol=1e-5)
+    np.testing.assert_allclose(jnp.var(out, axis=-1), jnp.full(8, 9.0), rtol=1e-4)

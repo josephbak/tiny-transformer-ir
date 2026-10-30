@@ -21,3 +21,10 @@ def softmax_naive(x: jax.Array, axis: int = -1) -> jax.Array: # [..., n]
     x_exp = jnp.exp(x)
     exp_sum = jnp.sum(x_exp, axis=axis, keepdims=True)
     return x_exp / exp_sum
+
+def layer_norm(x, gamma, beta, eps=1e-5):
+    mean = jnp.mean(x, axis=-1, keepdims=True)
+    # variance = jnp.var(x, axis=-1, keepdims=True) # this calculates mean again
+    variance = jnp.mean((x - mean) ** 2, axis=-1, keepdims=True)
+    normalized_x = (x - mean) / jnp.sqrt(variance + eps)
+    return gamma * normalized_x + beta

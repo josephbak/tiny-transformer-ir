@@ -14,7 +14,7 @@ with hand-derived FLOP/byte accounting and a KV-cache decode path.
 - [x] M2 — Single-head attention
 - [x] M3 — Causal mask, batching with `vmap`
 - [x] M4 — Multi-head attention
-- [ ] M5 — Transformer block
+- [x] M5 — Transformer block
 - [ ] M6 — Full model
 - [ ] M7 — Reading the compiler's output
 - [ ] M8 — Cost accounting
