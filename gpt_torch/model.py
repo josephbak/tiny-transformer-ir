@@ -33,11 +33,6 @@ block_size	maximum context length: the most tokens the model sees at once	32
 """
 
 # %%
-x = torch.randn(4, 8, 32)
-# print(Head(16)(x).shape)   # check shapes as you go
-print (Head(32, 16, 8)(x).shape)
-
-# %%
 class MultiHeadAttention(nn.Module):
     def __init__(self, n_embd, n_head, block_size):
         super().__init__()
@@ -49,12 +44,6 @@ class MultiHeadAttention(nn.Module):
         out = torch.cat([h(x) for h in self.heads], dim=-1)    # Q4: run each head; concatenate along which dim?
                                                                 #     shape after cat? [B, T, n_embd]
         return self.proj(out)                                   # shape? [B, T, n_embd]
-
-# %%
-print(MultiHeadAttention(32, 4, 8))
-
-# %%
-MultiHeadAttention(32, 4, 8)(torch.randn(4, 8, 32)).shape
 
 # %%
 class FeedForward(nn.Module):
@@ -69,8 +58,6 @@ class FeedForward(nn.Module):
     def forward(self, x):            # x: [B, T, n_embd]
         return self.net(x)                   # Q4: shape of the result? # [B, T, n_embd]
 # %%
-FeedForward(32)(torch.randn(4, 8, 32)).shape
-# %%
 class Block(nn.Module):
     def __init__(self, n_embd, n_head, block_size):
         super().__init__()
@@ -84,11 +71,10 @@ class Block(nn.Module):
         x = x + self.ffwd(self.ln2(x))                  # Q5: FFN sublayer, pre-norm, with residual
         return x                                        # shape?
 # %%
-Block(32, 4, 8)(torch.randn(4, 8, 32)).shape
-# %%
 class GPT(nn.Module):
     def __init__(self, vocab_size, n_embd, n_head, n_layer, block_size):
         super().__init__()
+        self.block_size = block_size
         self.token_embedding    = nn.Embedding(vocab_size, n_embd)    # Q1: one row per what? vocab how long is each row? embedding space
         self.position_embedding = nn.Embedding(block_size, n_embd)    # Q2: one row per what? block_size
         self.blocks = nn.Sequential(*[Block(n_embd, n_head, block_size) for _ in range(n_layer)])
@@ -110,9 +96,26 @@ class GPT(nn.Module):
         loss = F.cross_entropy(logits.view(B * T, C), targets.view(B * T)) # Q8: cross-entropy; what reshaping does it need?
         return logits, loss
 
+    def generate(self, idx, max_new_tokens):         # idx: [B, T] the starting context
+        for _ in range(max_new_tokens):
+            idx_cond = idx[:, -self.block_size:]            # Q1: the model's position table has block_size rows.
+                                                            # What must happen once idx grows longer than that?
+            logits, _ = self(idx_cond)                      # shape?
+            logits = logits[:, -1, :]                       # Q2: which position's logits predict the next token? shape?
+            probs = F.softmax(logits, dim=-1)        # Q3: softmax over which axis?
+            idx_next = torch.multinomial(probs, num_samples=1)   # shape? [B, 1]
+            idx = torch.cat((idx, idx_next), dim=1) # Q4: append along which axis? [B, T+1]
+        return idx
+
 # %%
-model = GPT(vocab_size=65, n_embd=32, n_head=4, n_layer=2, block_size=8)
-idx = torch.randint(0, 65, (4, 8))
-logits, loss = model(idx, idx)
-print(logits.shape, loss)
-# %%
+if __name__ == "__main__":
+    x = torch.randn(4, 8, 32)
+    print(Head(32, 16, 8)(x).shape)                   # [4, 8, 16]
+    print(MultiHeadAttention(32, 4, 8)(x).shape)      # [4, 8, 32]
+    print(FeedForward(32)(x).shape)                   # [4, 8, 32]
+    print(Block(32, 4, 8)(x).shape)                   # [4, 8, 32]
+
+    model = GPT(vocab_size=65, n_embd=32, n_head=4, n_layer=2, block_size=8)
+    idx = torch.randint(0, 65, (4, 8))
+    logits, loss = model(idx, idx)
+    print(logits.shape, loss)                         # [4, 8, 65], ≈ 4.2

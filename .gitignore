@@ -11,3 +11,5 @@ wheels/
 ir/xla/
 notes/
 .vscode/
+
+gpt_torch/input.txt
