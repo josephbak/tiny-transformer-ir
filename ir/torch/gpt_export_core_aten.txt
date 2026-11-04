@@ -1,0 +1,214 @@
+class GraphModule(torch.nn.Module):
+    def forward(self, p_token_embedding_weight: "f32[65, 32]", p_position_embedding_weight: "f32[8, 32]", p_blocks_0_sa_qkv_weight: "f32[96, 32]", p_blocks_0_sa_proj_weight: "f32[32, 32]", p_blocks_0_sa_proj_bias: "f32[32]", p_blocks_0_ffwd_net_0_weight: "f32[128, 32]", p_blocks_0_ffwd_net_0_bias: "f32[128]", p_blocks_0_ffwd_net_2_weight: "f32[32, 128]", p_blocks_0_ffwd_net_2_bias: "f32[32]", p_blocks_0_ln1_weight: "f32[32]", p_blocks_0_ln1_bias: "f32[32]", p_blocks_0_ln2_weight: "f32[32]", p_blocks_0_ln2_bias: "f32[32]", p_blocks_1_sa_qkv_weight: "f32[96, 32]", p_blocks_1_sa_proj_weight: "f32[32, 32]", p_blocks_1_sa_proj_bias: "f32[32]", p_blocks_1_ffwd_net_0_weight: "f32[128, 32]", p_blocks_1_ffwd_net_0_bias: "f32[128]", p_blocks_1_ffwd_net_2_weight: "f32[32, 128]", p_blocks_1_ffwd_net_2_bias: "f32[32]", p_blocks_1_ln1_weight: "f32[32]", p_blocks_1_ln1_bias: "f32[32]", p_blocks_1_ln2_weight: "f32[32]", p_blocks_1_ln2_bias: "f32[32]", p_ln_f_weight: "f32[32]", p_ln_f_bias: "f32[32]", p_lm_head_weight: "f32[65, 32]", p_lm_head_bias: "f32[65]", b_blocks_0_sa_tril: "f32[8, 8]", b_blocks_1_sa_tril: "f32[8, 8]", idx: "i64[4, 6]"):
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/sparse.py:189 in forward, code: return F.embedding(
+        embedding: "f32[4, 6, 32]" = torch.ops.aten.embedding.default(p_token_embedding_weight, idx);  p_token_embedding_weight = idx = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:146 in forward, code: pos = self.position_embedding(torch.arange(T))     # Q5: shape? (positions 0 … T−1)
+        arange: "i64[6]" = torch.ops.aten.arange.start_step(0, 6, layout = torch.strided, device = device(type='cpu'), pin_memory = False)
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/sparse.py:189 in forward, code: return F.embedding(
+        embedding_1: "f32[6, 32]" = torch.ops.aten.embedding.default(p_position_embedding_weight, arange);  p_position_embedding_weight = arange = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:147 in forward, code: x = tok + pos                                             # Q6: combine tok and pos. Shape? [B, T, n_embd]
+        add: "f32[4, 6, 32]" = torch.ops.aten.add.Tensor(embedding, embedding_1);  embedding = embedding_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py:228 in forward, code: return F.layer_norm(
+        native_layer_norm = torch.ops.aten.native_layer_norm.default(add, [32], p_blocks_0_ln1_weight, p_blocks_0_ln1_bias, 1e-05);  p_blocks_0_ln1_weight = p_blocks_0_ln1_bias = None
+        getitem: "f32[4, 6, 32]" = native_layer_norm[0];  native_layer_norm = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        permute: "f32[32, 96]" = torch.ops.aten.permute.default(p_blocks_0_sa_qkv_weight, [1, 0]);  p_blocks_0_sa_qkv_weight = None
+        view: "f32[24, 32]" = torch.ops.aten.view.default(getitem, [24, 32]);  getitem = None
+        mm: "f32[24, 96]" = torch.ops.aten.mm.default(view, permute);  view = permute = None
+        view_1: "f32[4, 6, 96]" = torch.ops.aten.view.default(mm, [4, 6, 96]);  mm = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:93 in forward, code: q, k, v = self.qkv(x).split(C, dim=-1)                  # [B, T, 3C] → three [B, T, C]
+        split_with_sizes = torch.ops.aten.split_with_sizes.default(view_1, [32, 32, 32], -1);  view_1 = None
+        getitem_3: "f32[4, 6, 32]" = split_with_sizes[0]
+        getitem_4: "f32[4, 6, 32]" = split_with_sizes[1]
+        getitem_5: "f32[4, 6, 32]" = split_with_sizes[2];  split_with_sizes = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:94 in forward, code: q = q.view(B, T, H, hs).transpose(1, 2)                 # [B, H, T, hs]
+        view_2: "f32[4, 6, 4, 8]" = torch.ops.aten.view.default(getitem_3, [4, 6, 4, 8]);  getitem_3 = None
+        permute_1: "f32[4, 4, 6, 8]" = torch.ops.aten.permute.default(view_2, [0, 2, 1, 3]);  view_2 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:95 in forward, code: k = k.view(B, T, H, hs).transpose(1, 2)
+        view_3: "f32[4, 6, 4, 8]" = torch.ops.aten.view.default(getitem_4, [4, 6, 4, 8]);  getitem_4 = None
+        permute_2: "f32[4, 4, 6, 8]" = torch.ops.aten.permute.default(view_3, [0, 2, 1, 3]);  view_3 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:96 in forward, code: v = v.view(B, T, H, hs).transpose(1, 2)
+        view_4: "f32[4, 6, 4, 8]" = torch.ops.aten.view.default(getitem_5, [4, 6, 4, 8]);  getitem_5 = None
+        permute_3: "f32[4, 4, 6, 8]" = torch.ops.aten.permute.default(view_4, [0, 2, 1, 3]);  view_4 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:98 in forward, code: wei = q @ k.transpose(-2, -1) * hs ** -0.5             # [B, H, T, T]
+        permute_4: "f32[4, 4, 8, 6]" = torch.ops.aten.permute.default(permute_2, [0, 1, 3, 2]);  permute_2 = None
+        expand: "f32[4, 4, 6, 8]" = torch.ops.aten.expand.default(permute_1, [4, 4, 6, 8]);  permute_1 = None
+        clone: "f32[4, 4, 6, 8]" = torch.ops.aten.clone.default(expand, memory_format = torch.contiguous_format);  expand = None
+        view_5: "f32[16, 6, 8]" = torch.ops.aten.view.default(clone, [16, 6, 8]);  clone = None
+        expand_1: "f32[4, 4, 8, 6]" = torch.ops.aten.expand.default(permute_4, [4, 4, 8, 6]);  permute_4 = None
+        clone_1: "f32[4, 4, 8, 6]" = torch.ops.aten.clone.default(expand_1, memory_format = torch.contiguous_format);  expand_1 = None
+        view_6: "f32[16, 8, 6]" = torch.ops.aten.view.default(clone_1, [16, 8, 6]);  clone_1 = None
+        bmm: "f32[16, 6, 6]" = torch.ops.aten.bmm.default(view_5, view_6);  view_5 = view_6 = None
+        view_7: "f32[4, 4, 6, 6]" = torch.ops.aten.view.default(bmm, [4, 4, 6, 6]);  bmm = None
+        mul: "f32[4, 4, 6, 6]" = torch.ops.aten.mul.Tensor(view_7, 0.3535533905932738);  view_7 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:99 in forward, code: wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
+        slice_1: "f32[6, 8]" = torch.ops.aten.slice.Tensor(b_blocks_0_sa_tril, 0, 0, 6);  b_blocks_0_sa_tril = None
+        slice_2: "f32[6, 6]" = torch.ops.aten.slice.Tensor(slice_1, 1, 0, 6);  slice_1 = None
+        eq: "b8[6, 6]" = torch.ops.aten.eq.Scalar(slice_2, 0);  slice_2 = None
+        scalar_tensor: "f32[]" = torch.ops.aten.scalar_tensor.default(-inf, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'))
+        where: "f32[4, 4, 6, 6]" = torch.ops.aten.where.self(eq, scalar_tensor, mul);  eq = scalar_tensor = mul = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:100 in forward, code: wei = F.softmax(wei, dim=-1)
+        _softmax: "f32[4, 4, 6, 6]" = torch.ops.aten._softmax.default(where, -1, False);  where = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:101 in forward, code: out = wei @ v                                           # [B, H, T, hs]
+        expand_2: "f32[4, 4, 6, 6]" = torch.ops.aten.expand.default(_softmax, [4, 4, 6, 6]);  _softmax = None
+        view_8: "f32[16, 6, 6]" = torch.ops.aten.view.default(expand_2, [16, 6, 6]);  expand_2 = None
+        expand_3: "f32[4, 4, 6, 8]" = torch.ops.aten.expand.default(permute_3, [4, 4, 6, 8]);  permute_3 = None
+        clone_2: "f32[4, 4, 6, 8]" = torch.ops.aten.clone.default(expand_3, memory_format = torch.contiguous_format);  expand_3 = None
+        view_9: "f32[16, 6, 8]" = torch.ops.aten.view.default(clone_2, [16, 6, 8]);  clone_2 = None
+        bmm_1: "f32[16, 6, 8]" = torch.ops.aten.bmm.default(view_8, view_9);  view_8 = view_9 = None
+        view_10: "f32[4, 4, 6, 8]" = torch.ops.aten.view.default(bmm_1, [4, 4, 6, 8]);  bmm_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:103 in forward, code: out = out.transpose(1, 2).contiguous().view(B, T, C)   # [B, T, C]
+        permute_5: "f32[4, 6, 4, 8]" = torch.ops.aten.permute.default(view_10, [0, 2, 1, 3]);  view_10 = None
+        clone_3: "f32[4, 6, 4, 8]" = torch.ops.aten.clone.default(permute_5, memory_format = torch.contiguous_format);  permute_5 = None
+        view_11: "f32[4, 6, 32]" = torch.ops.aten.view.default(clone_3, [4, 6, 32]);  clone_3 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        view_12: "f32[24, 32]" = torch.ops.aten.view.default(view_11, [24, 32]);  view_11 = None
+        permute_6: "f32[32, 32]" = torch.ops.aten.permute.default(p_blocks_0_sa_proj_weight, [1, 0]);  p_blocks_0_sa_proj_weight = None
+        addmm: "f32[24, 32]" = torch.ops.aten.addmm.default(p_blocks_0_sa_proj_bias, view_12, permute_6);  p_blocks_0_sa_proj_bias = view_12 = permute_6 = None
+        view_13: "f32[4, 6, 32]" = torch.ops.aten.view.default(addmm, [4, 6, 32]);  addmm = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:128 in forward, code: x = x + self.sa(self.ln1(x))                    # Q4: attention sublayer, pre-norm, with residual
+        add_1: "f32[4, 6, 32]" = torch.ops.aten.add.Tensor(add, view_13);  add = view_13 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py:228 in forward, code: return F.layer_norm(
+        native_layer_norm_1 = torch.ops.aten.native_layer_norm.default(add_1, [32], p_blocks_0_ln2_weight, p_blocks_0_ln2_bias, 1e-05);  p_blocks_0_ln2_weight = p_blocks_0_ln2_bias = None
+        getitem_6: "f32[4, 6, 32]" = native_layer_norm_1[0];  native_layer_norm_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        view_14: "f32[24, 32]" = torch.ops.aten.view.default(getitem_6, [24, 32]);  getitem_6 = None
+        permute_7: "f32[32, 128]" = torch.ops.aten.permute.default(p_blocks_0_ffwd_net_0_weight, [1, 0]);  p_blocks_0_ffwd_net_0_weight = None
+        addmm_1: "f32[24, 128]" = torch.ops.aten.addmm.default(p_blocks_0_ffwd_net_0_bias, view_14, permute_7);  p_blocks_0_ffwd_net_0_bias = view_14 = permute_7 = None
+        view_15: "f32[4, 6, 128]" = torch.ops.aten.view.default(addmm_1, [4, 6, 128]);  addmm_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/activation.py:143 in forward, code: return F.relu(input, inplace=self.inplace)
+        relu: "f32[4, 6, 128]" = torch.ops.aten.relu.default(view_15);  view_15 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        view_16: "f32[24, 128]" = torch.ops.aten.view.default(relu, [24, 128]);  relu = None
+        permute_8: "f32[128, 32]" = torch.ops.aten.permute.default(p_blocks_0_ffwd_net_2_weight, [1, 0]);  p_blocks_0_ffwd_net_2_weight = None
+        addmm_2: "f32[24, 32]" = torch.ops.aten.addmm.default(p_blocks_0_ffwd_net_2_bias, view_16, permute_8);  p_blocks_0_ffwd_net_2_bias = view_16 = permute_8 = None
+        view_17: "f32[4, 6, 32]" = torch.ops.aten.view.default(addmm_2, [4, 6, 32]);  addmm_2 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:129 in forward, code: x = x + self.ffwd(self.ln2(x))                  # Q5: FFN sublayer, pre-norm, with residual
+        add_2: "f32[4, 6, 32]" = torch.ops.aten.add.Tensor(add_1, view_17);  add_1 = view_17 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py:228 in forward, code: return F.layer_norm(
+        native_layer_norm_2 = torch.ops.aten.native_layer_norm.default(add_2, [32], p_blocks_1_ln1_weight, p_blocks_1_ln1_bias, 1e-05);  p_blocks_1_ln1_weight = p_blocks_1_ln1_bias = None
+        getitem_9: "f32[4, 6, 32]" = native_layer_norm_2[0];  native_layer_norm_2 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        permute_9: "f32[32, 96]" = torch.ops.aten.permute.default(p_blocks_1_sa_qkv_weight, [1, 0]);  p_blocks_1_sa_qkv_weight = None
+        view_18: "f32[24, 32]" = torch.ops.aten.view.default(getitem_9, [24, 32]);  getitem_9 = None
+        mm_1: "f32[24, 96]" = torch.ops.aten.mm.default(view_18, permute_9);  view_18 = permute_9 = None
+        view_19: "f32[4, 6, 96]" = torch.ops.aten.view.default(mm_1, [4, 6, 96]);  mm_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:93 in forward, code: q, k, v = self.qkv(x).split(C, dim=-1)                  # [B, T, 3C] → three [B, T, C]
+        split_with_sizes_1 = torch.ops.aten.split_with_sizes.default(view_19, [32, 32, 32], -1);  view_19 = None
+        getitem_12: "f32[4, 6, 32]" = split_with_sizes_1[0]
+        getitem_13: "f32[4, 6, 32]" = split_with_sizes_1[1]
+        getitem_14: "f32[4, 6, 32]" = split_with_sizes_1[2];  split_with_sizes_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:94 in forward, code: q = q.view(B, T, H, hs).transpose(1, 2)                 # [B, H, T, hs]
+        view_20: "f32[4, 6, 4, 8]" = torch.ops.aten.view.default(getitem_12, [4, 6, 4, 8]);  getitem_12 = None
+        permute_10: "f32[4, 4, 6, 8]" = torch.ops.aten.permute.default(view_20, [0, 2, 1, 3]);  view_20 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:95 in forward, code: k = k.view(B, T, H, hs).transpose(1, 2)
+        view_21: "f32[4, 6, 4, 8]" = torch.ops.aten.view.default(getitem_13, [4, 6, 4, 8]);  getitem_13 = None
+        permute_11: "f32[4, 4, 6, 8]" = torch.ops.aten.permute.default(view_21, [0, 2, 1, 3]);  view_21 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:96 in forward, code: v = v.view(B, T, H, hs).transpose(1, 2)
+        view_22: "f32[4, 6, 4, 8]" = torch.ops.aten.view.default(getitem_14, [4, 6, 4, 8]);  getitem_14 = None
+        permute_12: "f32[4, 4, 6, 8]" = torch.ops.aten.permute.default(view_22, [0, 2, 1, 3]);  view_22 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:98 in forward, code: wei = q @ k.transpose(-2, -1) * hs ** -0.5             # [B, H, T, T]
+        permute_13: "f32[4, 4, 8, 6]" = torch.ops.aten.permute.default(permute_11, [0, 1, 3, 2]);  permute_11 = None
+        expand_4: "f32[4, 4, 6, 8]" = torch.ops.aten.expand.default(permute_10, [4, 4, 6, 8]);  permute_10 = None
+        clone_4: "f32[4, 4, 6, 8]" = torch.ops.aten.clone.default(expand_4, memory_format = torch.contiguous_format);  expand_4 = None
+        view_23: "f32[16, 6, 8]" = torch.ops.aten.view.default(clone_4, [16, 6, 8]);  clone_4 = None
+        expand_5: "f32[4, 4, 8, 6]" = torch.ops.aten.expand.default(permute_13, [4, 4, 8, 6]);  permute_13 = None
+        clone_5: "f32[4, 4, 8, 6]" = torch.ops.aten.clone.default(expand_5, memory_format = torch.contiguous_format);  expand_5 = None
+        view_24: "f32[16, 8, 6]" = torch.ops.aten.view.default(clone_5, [16, 8, 6]);  clone_5 = None
+        bmm_2: "f32[16, 6, 6]" = torch.ops.aten.bmm.default(view_23, view_24);  view_23 = view_24 = None
+        view_25: "f32[4, 4, 6, 6]" = torch.ops.aten.view.default(bmm_2, [4, 4, 6, 6]);  bmm_2 = None
+        mul_1: "f32[4, 4, 6, 6]" = torch.ops.aten.mul.Tensor(view_25, 0.3535533905932738);  view_25 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:99 in forward, code: wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
+        slice_3: "f32[6, 8]" = torch.ops.aten.slice.Tensor(b_blocks_1_sa_tril, 0, 0, 6);  b_blocks_1_sa_tril = None
+        slice_4: "f32[6, 6]" = torch.ops.aten.slice.Tensor(slice_3, 1, 0, 6);  slice_3 = None
+        eq_1: "b8[6, 6]" = torch.ops.aten.eq.Scalar(slice_4, 0);  slice_4 = None
+        scalar_tensor_1: "f32[]" = torch.ops.aten.scalar_tensor.default(-inf, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'))
+        where_1: "f32[4, 4, 6, 6]" = torch.ops.aten.where.self(eq_1, scalar_tensor_1, mul_1);  eq_1 = scalar_tensor_1 = mul_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:100 in forward, code: wei = F.softmax(wei, dim=-1)
+        _softmax_1: "f32[4, 4, 6, 6]" = torch.ops.aten._softmax.default(where_1, -1, False);  where_1 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:101 in forward, code: out = wei @ v                                           # [B, H, T, hs]
+        expand_6: "f32[4, 4, 6, 6]" = torch.ops.aten.expand.default(_softmax_1, [4, 4, 6, 6]);  _softmax_1 = None
+        view_26: "f32[16, 6, 6]" = torch.ops.aten.view.default(expand_6, [16, 6, 6]);  expand_6 = None
+        expand_7: "f32[4, 4, 6, 8]" = torch.ops.aten.expand.default(permute_12, [4, 4, 6, 8]);  permute_12 = None
+        clone_6: "f32[4, 4, 6, 8]" = torch.ops.aten.clone.default(expand_7, memory_format = torch.contiguous_format);  expand_7 = None
+        view_27: "f32[16, 6, 8]" = torch.ops.aten.view.default(clone_6, [16, 6, 8]);  clone_6 = None
+        bmm_3: "f32[16, 6, 8]" = torch.ops.aten.bmm.default(view_26, view_27);  view_26 = view_27 = None
+        view_28: "f32[4, 4, 6, 8]" = torch.ops.aten.view.default(bmm_3, [4, 4, 6, 8]);  bmm_3 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:103 in forward, code: out = out.transpose(1, 2).contiguous().view(B, T, C)   # [B, T, C]
+        permute_14: "f32[4, 6, 4, 8]" = torch.ops.aten.permute.default(view_28, [0, 2, 1, 3]);  view_28 = None
+        clone_7: "f32[4, 6, 4, 8]" = torch.ops.aten.clone.default(permute_14, memory_format = torch.contiguous_format);  permute_14 = None
+        view_29: "f32[4, 6, 32]" = torch.ops.aten.view.default(clone_7, [4, 6, 32]);  clone_7 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        view_30: "f32[24, 32]" = torch.ops.aten.view.default(view_29, [24, 32]);  view_29 = None
+        permute_15: "f32[32, 32]" = torch.ops.aten.permute.default(p_blocks_1_sa_proj_weight, [1, 0]);  p_blocks_1_sa_proj_weight = None
+        addmm_3: "f32[24, 32]" = torch.ops.aten.addmm.default(p_blocks_1_sa_proj_bias, view_30, permute_15);  p_blocks_1_sa_proj_bias = view_30 = permute_15 = None
+        view_31: "f32[4, 6, 32]" = torch.ops.aten.view.default(addmm_3, [4, 6, 32]);  addmm_3 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:128 in forward, code: x = x + self.sa(self.ln1(x))                    # Q4: attention sublayer, pre-norm, with residual
+        add_3: "f32[4, 6, 32]" = torch.ops.aten.add.Tensor(add_2, view_31);  add_2 = view_31 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py:228 in forward, code: return F.layer_norm(
+        native_layer_norm_3 = torch.ops.aten.native_layer_norm.default(add_3, [32], p_blocks_1_ln2_weight, p_blocks_1_ln2_bias, 1e-05);  p_blocks_1_ln2_weight = p_blocks_1_ln2_bias = None
+        getitem_15: "f32[4, 6, 32]" = native_layer_norm_3[0];  native_layer_norm_3 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        view_32: "f32[24, 32]" = torch.ops.aten.view.default(getitem_15, [24, 32]);  getitem_15 = None
+        permute_16: "f32[32, 128]" = torch.ops.aten.permute.default(p_blocks_1_ffwd_net_0_weight, [1, 0]);  p_blocks_1_ffwd_net_0_weight = None
+        addmm_4: "f32[24, 128]" = torch.ops.aten.addmm.default(p_blocks_1_ffwd_net_0_bias, view_32, permute_16);  p_blocks_1_ffwd_net_0_bias = view_32 = permute_16 = None
+        view_33: "f32[4, 6, 128]" = torch.ops.aten.view.default(addmm_4, [4, 6, 128]);  addmm_4 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/activation.py:143 in forward, code: return F.relu(input, inplace=self.inplace)
+        relu_1: "f32[4, 6, 128]" = torch.ops.aten.relu.default(view_33);  view_33 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        view_34: "f32[24, 128]" = torch.ops.aten.view.default(relu_1, [24, 128]);  relu_1 = None
+        permute_17: "f32[128, 32]" = torch.ops.aten.permute.default(p_blocks_1_ffwd_net_2_weight, [1, 0]);  p_blocks_1_ffwd_net_2_weight = None
+        addmm_5: "f32[24, 32]" = torch.ops.aten.addmm.default(p_blocks_1_ffwd_net_2_bias, view_34, permute_17);  p_blocks_1_ffwd_net_2_bias = view_34 = permute_17 = None
+        view_35: "f32[4, 6, 32]" = torch.ops.aten.view.default(addmm_5, [4, 6, 32]);  addmm_5 = None
+
+        # File: ~/dev/tiny-transformer-ir/gpt_torch/model.py:129 in forward, code: x = x + self.ffwd(self.ln2(x))                  # Q5: FFN sublayer, pre-norm, with residual
+        add_4: "f32[4, 6, 32]" = torch.ops.aten.add.Tensor(add_3, view_35);  add_3 = view_35 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py:228 in forward, code: return F.layer_norm(
+        native_layer_norm_4 = torch.ops.aten.native_layer_norm.default(add_4, [32], p_ln_f_weight, p_ln_f_bias, 1e-05);  add_4 = p_ln_f_weight = p_ln_f_bias = None
+        getitem_18: "f32[4, 6, 32]" = native_layer_norm_4[0];  native_layer_norm_4 = None
+
+        # File: ~/dev/tiny-transformer-ir/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        view_36: "f32[24, 32]" = torch.ops.aten.view.default(getitem_18, [24, 32]);  getitem_18 = None
+        permute_18: "f32[32, 65]" = torch.ops.aten.permute.default(p_lm_head_weight, [1, 0]);  p_lm_head_weight = None
+        addmm_6: "f32[24, 65]" = torch.ops.aten.addmm.default(p_lm_head_bias, view_36, permute_18);  p_lm_head_bias = view_36 = permute_18 = None
+        view_37: "f32[4, 6, 65]" = torch.ops.aten.view.default(addmm_6, [4, 6, 65]);  addmm_6 = None
+        return (view_37, None)
