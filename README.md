@@ -42,5 +42,6 @@ The PyTorch port runs cell by cell in VS Code (`# %%` cells), or as a script:
 - `tests/` — shape, reference, and causality tests
 - `experiments/` — scripts that trace, dump IR, and analyze cost
 - `ir/` — dumped jaxpr / StableHLO / HLO, organized by milestone
+- `docs/NOTATION.md` — names and shapes, JAX vs. PyTorch
 
 Full milestone plan: [docs/PLAN.md](docs/PLAN.md)
