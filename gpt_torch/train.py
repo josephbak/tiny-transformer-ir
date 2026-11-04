@@ -87,3 +87,4 @@ for step in range(max_iters):
 # generate from the trained model
 context = torch.zeros((1, 1), dtype=torch.long, device=device)   # start from id 0 (newline)
 print(decode(model.generate(context, max_new_tokens=300)[0].tolist()))
+# %%

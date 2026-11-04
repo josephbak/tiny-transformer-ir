@@ -46,6 +46,63 @@ class MultiHeadAttention(nn.Module):
         return self.proj(out)                                   # shape? [B, T, n_embd]
 
 # %%
+# %%
+class BatchedMultiHeadAttention(nn.Module):
+    def __init__(self, n_embd, n_head, block_size):
+        super().__init__()
+        assert n_embd % n_head == 0               # the heads must split n_embd evenly
+        self.n_head = n_head
+        self.head_size = n_embd // n_head                      # Q1
+        self.query = nn.Linear(n_embd, n_embd, bias=False)   # Q2: ONE layer for all heads' queries. Sizes?
+        self.key   = nn.Linear(n_embd, n_embd, bias=False)
+        self.value = nn.Linear(n_embd, n_embd, bias=False)
+        self.proj  = nn.Linear(n_embd, n_embd)
+        self.register_buffer("tril", torch.tril(torch.ones(block_size, block_size)))
+
+    def forward(self, x):                         # x: [B, T, n_embd]
+        B, T, C = x.shape
+        H, hs = self.n_head, self.head_size
+
+        q = self.query(x).view(B, T, H, hs).transpose(1, 2)   # Q3: → [B, H, T, hs]
+        k = self.key(x).view(B, T, H, hs).transpose(1, 2)
+        v = self.value(x).view(B, T, H, hs).transpose(1, 2)
+
+        wei = q @ k.transpose(-2, -1) * hs ** -0.5     # Q4: scores. Shape? [B, H, T, T]
+        wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))   # Q5: the mask is [T, T] but wei is 4-D. Why does this still work?
+        wei = F.softmax(wei, dim=-1)
+        out = wei @ v                             # Q6: shape? [B, H, T, hs]
+
+        out = out.transpose(1, 2).contiguous().view(B, T, C)   # back to [B, T, n_embd]
+        return self.proj(out)
+
+# %%
+class FusedMultiHeadAttention(nn.Module):
+    def __init__(self, n_embd, n_head, block_size):
+        super().__init__()
+        assert n_embd % n_head == 0
+        self.n_head = n_head
+        self.head_size = n_embd // n_head
+        self.qkv  = nn.Linear(n_embd, 3 * n_embd, bias=False)   # all heads' Q, K, V in one layer
+        self.proj = nn.Linear(n_embd, n_embd)
+        self.register_buffer("tril", torch.tril(torch.ones(block_size, block_size)))
+
+    def forward(self, x):                                       # x: [B, T, n_embd]
+        B, T, C = x.shape
+        H, hs = self.n_head, self.head_size
+
+        q, k, v = self.qkv(x).split(C, dim=-1)                  # [B, T, 3C] → three [B, T, C]
+        q = q.view(B, T, H, hs).transpose(1, 2)                 # [B, H, T, hs]
+        k = k.view(B, T, H, hs).transpose(1, 2)
+        v = v.view(B, T, H, hs).transpose(1, 2)
+
+        wei = q @ k.transpose(-2, -1) * hs ** -0.5             # [B, H, T, T]
+        wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
+        wei = F.softmax(wei, dim=-1)
+        out = wei @ v                                           # [B, H, T, hs]
+
+        out = out.transpose(1, 2).contiguous().view(B, T, C)   # [B, T, C]
+        return self.proj(out)
+# %%
 class FeedForward(nn.Module):
     def __init__(self, n_embd):
         super().__init__()
@@ -61,7 +118,8 @@ class FeedForward(nn.Module):
 class Block(nn.Module):
     def __init__(self, n_embd, n_head, block_size):
         super().__init__()
-        self.sa   = MultiHeadAttention(n_embd, n_head, block_size)   # Q1: arguments?
+        # self.sa   = MultiHeadAttention(n_embd, n_head, block_size)   # Q1: arguments?
+        self.sa   = FusedMultiHeadAttention(n_embd, n_head, block_size)   # Q1: arguments?
         self.ffwd = FeedForward(n_embd)                    # Q2: argument?
         self.ln1  = nn.LayerNorm(n_embd)                   # Q3: normalizes vectors of what size?
         self.ln2  = nn.LayerNorm(n_embd)
@@ -70,6 +128,7 @@ class Block(nn.Module):
         x = x + self.sa(self.ln1(x))                    # Q4: attention sublayer, pre-norm, with residual
         x = x + self.ffwd(self.ln2(x))                  # Q5: FFN sublayer, pre-norm, with residual
         return x                                        # shape?
+
 # %%
 class GPT(nn.Module):
     def __init__(self, vocab_size, n_embd, n_head, n_layer, block_size):
@@ -119,3 +178,30 @@ if __name__ == "__main__":
     idx = torch.randint(0, 65, (4, 8))
     logits, loss = model(idx, idx)
     print(logits.shape, loss)                         # [4, 8, 65], ≈ 4.2
+    print(BatchedMultiHeadAttention(32, 4, 8)(x).shape)   # [4, 8, 32]
+
+
+    torch.manual_seed(0)
+    per_head = MultiHeadAttention(32, 4, 8)
+    batched  = BatchedMultiHeadAttention(32, 4, 8)
+
+    with torch.no_grad():                         # copying weights isn't part of training
+        for name in ("query", "key", "value"):
+            stacked = torch.cat([getattr(h, name).weight for h in per_head.heads], dim=0)   # Q1: which dim?
+            getattr(batched, name).weight.copy_(stacked)
+        batched.proj.weight.copy_(per_head.proj.weight)
+        batched.proj.bias.copy_(per_head.proj.bias)
+
+    x = torch.randn(4, 8, 32)
+    print(torch.allclose(per_head(x), batched(x), atol=1e-6))   # expect True
+
+    fused = FusedMultiHeadAttention(32, 4, 8)
+    with torch.no_grad():
+        # the fused weight [3C, C] = query, key, value weights stacked along the rows (output features)
+        fused.qkv.weight.copy_(torch.cat([batched.query.weight,
+                                          batched.key.weight,
+                                          batched.value.weight], dim=0))
+        fused.proj.weight.copy_(batched.proj.weight)
+        fused.proj.bias.copy_(batched.proj.bias)
+    print(torch.allclose(batched(x), fused(x), atol=1e-6))   # expect True
+# %%
