@@ -18,7 +18,7 @@ Includes a PyTorch port of the same model, for comparing frontends.
 - [x] M4 — Multi-head attention
 - [x] M5 — Transformer block
 - [x] M6 — Full model
-- [ ] M7 — Reading the compiler's output
+- [x] M7 — Reading the compiler's output
 - [ ] M8 — Cost accounting
 - [ ] M9 — KV cache: prefill vs. decode
 - [ ] M10 — Into IREE (optional)
