@@ -45,19 +45,25 @@ def init_model_params(key, cfg):
 #     return x @ params["unembed"]                          # [S, V]
 
 
+def embed(params, tokens, positions):
+    params_embed, params_pos = params["embed"], params["pos"]
+    return params_embed[tokens] + params_pos[positions]
+
+
+def output_head(params, x):
+    x = layer_norm(x, params["ln_f"]["gamma"], params["ln_f"]["beta"])
+    return x @ params["unembed"]                                          # [n, V]
 
 def forward(ids, params, cfg):
     """Loop version. params["blocks"] is stacked ([L, ...] leaves); unrolled at trace time."""
     S = ids.shape[0]
-    x = params["embed"][ids] + params["pos"][:S]                          # [S, D]
+    x = embed(params, ids, jnp.arange(S))  # [S, D]
 
     for i in range(cfg["n_layers"]):
         block_params = jax.tree.map(lambda a: a[i], params["blocks"])     # layer i's slice of every leaf
         x = transformer_block(x, block_params, cfg["n_heads"], causal=True)
 
-    x = layer_norm(x, params["ln_f"]["gamma"], params["ln_f"]["beta"])
-    return x @ params["unembed"]                                          # [S, V]
-
+    return output_head(params, x)  # [S, V]
 
 def forward_scan(ids, params, cfg):
     """Scan version. params["blocks"] is already stacked, so scan uses it directly."""
