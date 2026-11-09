@@ -16,7 +16,7 @@ import numpy as np
 import pytest
 
 from tinytr.model import CONFIG, init_model_params, forward
-from tinytr.kv_cache import init_cache, prefill, decode_step
+from tinytr.kv_cache import init_cache, prefill, decode_step, generate
 
 S_MAX = CONFIG["max_len"]          # 16
 TOL = dict(rtol=1e-5, atol=1e-5)   # float32: reduction order differs between the two paths
@@ -161,3 +161,68 @@ def test_jitted_decode_traces_once():
         np.testing.assert_allclose(logits[0], ref, **TOL, err_msg=f"jit mismatch at pos={pos}")
 
     assert n_traces["n"] == 1, f"decode_step was traced {n_traces['n']} times"
+
+
+# ---------------------------------------------------------------------------
+# 7. generate: greedy, end to end
+# ---------------------------------------------------------------------------
+def naive_greedy(params, prompt, n):
+    """Reference path without a cache: rerun forward on the whole growing sequence.
+
+    Each step: forward on everything so far, argmax of the last row, append.
+    Quadratic work and a new shape every step, but obviously correct.
+    """
+    seq = prompt
+    out = []
+    for _ in range(n):
+        t = jnp.argmax(forward(seq, params, CONFIG)[-1])        # scalar id
+        out.append(int(t))
+        seq = jnp.concatenate([seq, jnp.array([t], dtype=seq.dtype)])
+    return np.array(out, dtype=np.int32)
+
+
+@pytest.mark.parametrize("P", [1, 5, 15])
+def test_generate_matches_naive_greedy(P):
+    """Greedy generate must return exactly the ids the naive loop picks.
+
+    max_new = 20 is more than fits, so generate stops at S_max: P + n_new = 16.
+    Ids are compared exactly (no tolerance): greedy is deterministic, so any
+    difference means a real bug, not float noise.
+    """
+    params, ids = setup()
+    prompt = ids[:P]
+    expected_n = min(20, S_MAX - P)                             # 15, 11, 1
+
+    got = np.asarray(generate(params, prompt, 20, CONFIG))
+    ref = naive_greedy(params, prompt, expected_n)
+
+    assert got.shape == (expected_n,)
+    np.testing.assert_array_equal(got, ref)
+
+
+def test_generate_respects_max_new():
+    """With room to spare, generate returns exactly max_new ids."""
+    params, ids = setup()
+    got = np.asarray(generate(params, ids[:5], 3, CONFIG))
+    np.testing.assert_array_equal(got, naive_greedy(params, ids[:5], 3))
+
+
+@pytest.mark.parametrize("P, max_new", [(5, 0), (16, 4)])
+def test_generate_nothing_to_do(P, max_new):
+    """max_new = 0, or a prompt that already fills all 16 slots: empty result."""
+    params, ids = setup()
+    got = generate(params, ids[:P], max_new, CONFIG)
+    assert got.shape == (0,)
+
+
+def test_generate_rejects_other_config():
+    """generate only supports CONFIG: any other cfg must raise, not run silently.
+    kv_cache._decode_jit is compiled once at import with cfg=CONFIG fixed
+    (functools.partial), so it ignores the cfg passed to generate. Without the
+    assert, a different cfg would size the cache and loop from its own values
+    while the decode step used CONFIG's, giving wrong ids with no error.
+    """
+    params, ids = setup()
+    other = dict(CONFIG, max_len=32)
+    with pytest.raises(AssertionError):
+        generate(params, ids[:5], 3, other)  

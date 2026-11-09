@@ -1,9 +1,12 @@
 import jax
+import functools
+
 import jax.numpy as jnp
+from torch import argmax
 
 from tinytr.ops import softmax, layer_norm
 from tinytr.block import ffn
-from tinytr.model import embed, output_head
+from tinytr.model import embed, output_head, CONFIG
 
 
 def init_cache(cfg):
@@ -80,3 +83,32 @@ def decode_step(params, token, cache, pos, cfg):
 
     logits = output_head(params, x)  # [1, V]
     return logits, cache
+
+
+_decode_jit = jax.jit(functools.partial(decode_step, cfg=CONFIG), donate_argnums=(2,))
+#                     positional args left: (params, tokens, cache, pos) → cache is index 2
+
+def generate(params, prompt, max_new, cfg): # → generated ids  [max_new] or fewer
+    assert cfg == CONFIG, "generate supports only CONFIG: _decode_jit is compiled with cfg=CONFIG fixed"
+
+    P = prompt.shape[0]
+    s_max = cfg["max_len"]
+
+    assert P <= s_max, f"prompt too long: {P} > {cfg['max_len']}"
+
+    n_new = min(max_new, s_max - P)        # P = 5 → at most 11 new tokens
+
+    if n_new <= 0: # nothing to generate: max_new = 0, or the prompt fills every slot
+        return jnp.zeros((0,), dtype=jnp.int32)
+
+    logits, cache = prefill(params, prompt, init_cache(cfg), cfg)  # fill the cache with the prompt
+
+    ids = [jnp.argmax(logits, axis=-1)]
+
+    for pos in range(P, P + n_new - 1):
+        # logits, cache = decode_step(params, ids[-1], cache, pos, cfg)
+        logits, cache = _decode_jit(params, ids[-1], cache, jnp.int32(pos))
+
+        ids.append(jnp.argmax(logits, axis=-1))
+
+    return jnp.concatenate(ids)
