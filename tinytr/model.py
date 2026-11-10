@@ -9,11 +9,11 @@ from tinytr.ops import layer_norm
 # all model sizes in one place
 CONFIG = {
     "vocab": 100,      # V: number of distinct tokens
-    "max_len": 16,     # S_max: context length (rows of the position table)
+    "max_len": 32,     # S_max: context length (rows of the position table)
     "d_model": 64,     # D: width of every token vector
     "n_heads": 4,      # H
     "d_ff": 256,       # F: FFN hidden width
-    "n_layers": 2,     # L: number of stacked blocks
+    "n_layers": 3,     # L: number of stacked blocks
 }
 
 

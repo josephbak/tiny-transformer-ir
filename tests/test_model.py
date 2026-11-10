@@ -20,8 +20,8 @@ def test_logits_shape():
 
 
 def test_param_count():
-    # embed 6400 + pos 1024 + unembed 6400 + ln_f 128 + 2 blocks × 49728
-    assert count_params(_params()) == 113_408
+    # embed 6400 + pos 2048 (32 × 64) + unembed 6400 + ln_f 128 + 3 blocks × 49728
+    assert count_params(_params()) == 164_160
 
 
 def test_model_causal():

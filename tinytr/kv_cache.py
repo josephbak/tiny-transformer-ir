@@ -96,7 +96,7 @@ def generate(params, prompt, max_new, cfg): # → generated ids  [max_new] or fe
 
     assert P <= s_max, f"prompt too long: {P} > {cfg['max_len']}"
 
-    n_new = min(max_new, s_max - P)        # P = 5 → at most 11 new tokens
+    n_new = min(max_new, s_max - P)        # P = 5 → at most 27 new tokens
 
     if n_new <= 0: # nothing to generate: max_new = 0, or the prompt fills every slot
         return jnp.zeros((0,), dtype=jnp.int32)

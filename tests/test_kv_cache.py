@@ -18,26 +18,26 @@ import pytest
 from tinytr.model import CONFIG, init_model_params, forward
 from tinytr.kv_cache import init_cache, prefill, decode_step, generate
 
-S_MAX = CONFIG["max_len"]          # 16
+S_MAX = CONFIG["max_len"]          # 32
 TOL = dict(rtol=1e-5, atol=1e-5)   # float32: reduction order differs between the two paths
 
 
 def setup():
-    """Fixed weights and a fixed 16-token sequence, so every test sees the same data."""
+    """Fixed weights and a fixed S_max-token sequence, so every test sees the same data."""
     params = init_model_params(jax.random.key(0), CONFIG)
-    ids = jax.random.randint(jax.random.key(1), (S_MAX,), 0, CONFIG["vocab"])   # [16] int ids
+    ids = jax.random.randint(jax.random.key(1), (S_MAX,), 0, CONFIG["vocab"])   # [S_max] int ids
     return params, ids
 
 
 # ---------------------------------------------------------------------------
 # 1. Prefill alone
 # ---------------------------------------------------------------------------
-@pytest.mark.parametrize("P", [1, 5, 16])
+@pytest.mark.parametrize("P", [1, 5, S_MAX])
 def test_prefill_matches_forward(P):
     """Prefill's single logits row must equal forward's last row on the same prompt.
 
     Checks: embed (positions 0..P-1), the layer loop, cached_attention with pos=0,
-    and output_head on x[-1:]. P=1 and P=16 cover the edges (one token, full cache).
+    and output_head on x[-1:]. P=1 and P=S_max cover the edges (one token, full cache).
     """
     params, ids = setup()
     logits, _ = prefill(params, ids[:P], init_cache(CONFIG), CONFIG)   # [1, V]
@@ -54,7 +54,7 @@ def test_one_decode_step_matches_forward():
     """Decode at pos 5 consumes token 5 and must match forward's row 5 on ids[:6].
 
     Checks: decode_step's embed (position [5]), the position-based mask
-    (q at pos 5 sees slots 0..5), and the slot-5 write in both layers.
+    (q at pos 5 sees slots 0..5), and the slot-5 write in every layer.
     """
     params, ids = setup()
     P = 5
@@ -69,7 +69,7 @@ def test_one_decode_step_matches_forward():
 # ---------------------------------------------------------------------------
 # 3. Prefill + decode all the way to S_max  (the important one)
 # ---------------------------------------------------------------------------
-@pytest.mark.parametrize("P", [1, 5, 15])
+@pytest.mark.parametrize("P", [1, 5, S_MAX - 1])
 def test_decode_to_s_max_matches_forward(P):
     """Decode every remaining position, keeping the returned cache each time.
 
@@ -93,7 +93,7 @@ def test_decode_to_s_max_matches_forward(P):
 # 4. Cache contents after prefill
 # ---------------------------------------------------------------------------
 def test_prefill_writes_only_prompt_slots():
-    """After prefill on 5 tokens: slots 0..4 filled, slots 5..15 still exactly zero.
+    """After prefill on 5 tokens: slots 0..4 filled, slots 5..S_max-1 still exactly zero.
 
     Checked for k and v, in every layer. Catches a write at the wrong pos,
     into the wrong layer, or a layer that was never written back.
@@ -155,7 +155,7 @@ def test_jitted_decode_traces_once():
     step_jit = jax.jit(step)
 
     _, cache = prefill(params, ids[:P], init_cache(CONFIG), CONFIG)
-    for pos in range(P, S_MAX):                    # 11 calls, pos = 5..15
+    for pos in range(P, S_MAX):                    # S_max - 5 calls, pos = 5..S_max-1
         logits, cache = step_jit(params, ids[pos:pos + 1], cache, jnp.int32(pos))
         ref = forward(ids[:pos + 1], params, CONFIG)[-1]
         np.testing.assert_allclose(logits[0], ref, **TOL, err_msg=f"jit mismatch at pos={pos}")
@@ -181,19 +181,20 @@ def naive_greedy(params, prompt, n):
     return np.array(out, dtype=np.int32)
 
 
-@pytest.mark.parametrize("P", [1, 5, 15])
+@pytest.mark.parametrize("P", [1, 5, S_MAX - 1])
 def test_generate_matches_naive_greedy(P):
     """Greedy generate must return exactly the ids the naive loop picks.
 
-    max_new = 20 is more than fits, so generate stops at S_max: P + n_new = 16.
+    max_new = S_max + 4 is more than ever fits, so generate stops at S_max: P + n_new = S_max.
     Ids are compared exactly (no tolerance): greedy is deterministic, so any
     difference means a real bug, not float noise.
     """
     params, ids = setup()
     prompt = ids[:P]
-    expected_n = min(20, S_MAX - P)                             # 15, 11, 1
+    max_new = S_MAX + 4
+    expected_n = min(max_new, S_MAX - P)                        # S_max-1, S_max-5, 1
 
-    got = np.asarray(generate(params, prompt, 20, CONFIG))
+    got = np.asarray(generate(params, prompt, max_new, CONFIG))
     ref = naive_greedy(params, prompt, expected_n)
 
     assert got.shape == (expected_n,)
@@ -207,9 +208,9 @@ def test_generate_respects_max_new():
     np.testing.assert_array_equal(got, naive_greedy(params, ids[:5], 3))
 
 
-@pytest.mark.parametrize("P, max_new", [(5, 0), (16, 4)])
+@pytest.mark.parametrize("P, max_new", [(5, 0), (S_MAX, 4)])
 def test_generate_nothing_to_do(P, max_new):
-    """max_new = 0, or a prompt that already fills all 16 slots: empty result."""
+    """max_new = 0, or a prompt that already fills all S_max slots: empty result."""
     params, ids = setup()
     got = generate(params, ids[:P], max_new, CONFIG)
     assert got.shape == (0,)
@@ -217,12 +218,13 @@ def test_generate_nothing_to_do(P, max_new):
 
 def test_generate_rejects_other_config():
     """generate only supports CONFIG: any other cfg must raise, not run silently.
+
     kv_cache._decode_jit is compiled once at import with cfg=CONFIG fixed
     (functools.partial), so it ignores the cfg passed to generate. Without the
     assert, a different cfg would size the cache and loop from its own values
     while the decode step used CONFIG's, giving wrong ids with no error.
     """
     params, ids = setup()
-    other = dict(CONFIG, max_len=32)
+    other = dict(CONFIG, max_len=2 * S_MAX)                      # any value != CONFIG
     with pytest.raises(AssertionError):
-        generate(params, ids[:5], 3, other)  
+        generate(params, ids[:5], 3, other)
