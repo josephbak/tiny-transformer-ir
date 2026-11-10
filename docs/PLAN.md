@@ -18,7 +18,7 @@ A decoder-only Transformer written from scratch in `jax.numpy`, followed through
 ```
 tiny-transformer-ir/
 ├── README.md
-├── model/      # your code: attention, block, model, kv cache
+├── tinytr/     # your code: ops, attention, block, model, kv cache
 ├── tests/      # pytest: shape checks, reference checks, causality
 ├── ir/         # dumped jaxpr / StableHLO / HLO text
 └── notes/      # m0.md, m1.md, … one per milestone
@@ -35,9 +35,12 @@ tiny-transformer-ir/
 | `H` | number of heads | 4 |
 | `Dk` | per-head width = D / H | 16 |
 | `F` | feed-forward width | 256 |
-| `L` | number of layers | 2 |
+| `L` | number of layers | 3 |
+| `S_max` | maximum sequence length (`max_len`), KV-cache slots | 32 |
 
 Small enough that every tensor can be printed and every FLOP counted by hand.
+
+After M9, `L` went from 2 to 3 and `S_max` from 16 to 32, so every size is distinct: a KV-cache shape like `[3, 32, 4, 16]` names its own axes, and a swapped axis fails with a shape error instead of running silently. M1–M9 notes were written with the old values.
 
 ---
 

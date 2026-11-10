@@ -2,7 +2,6 @@ import jax
 import functools
 
 import jax.numpy as jnp
-from torch import argmax
 
 from tinytr.ops import softmax, layer_norm
 from tinytr.block import ffn
@@ -12,9 +11,9 @@ from tinytr.model import embed, output_head, CONFIG
 def init_cache(cfg):
     """Empty KV cache for every layer: {"k": [L, S_max, H, d_k], "v": [L, S_max, H, d_k]}."""
     L, S_max, H = cfg["n_layers"], cfg["max_len"], cfg["n_heads"]
-    d_k = cfg["d_model"] // H                      # Q1: derived from which two config values?
-    shape = (L, S_max, H, d_k)
-    return {"k": jnp.zeros(shape), "v": jnp.zeros(shape)}    # Q2: what fills an empty cache? zeros?
+    d_k = cfg["d_model"] // H
+    shape = (L, S_max, H, d_k)                     # (3, 32, 4, 16)
+    return {"k": jnp.zeros(shape), "v": jnp.zeros(shape)}    # zeros: masked slots must not hold NaN
 
 
 def cached_attention(x_new, wq, wk, wv, wo, k_cache, v_cache, pos, n_heads):
@@ -94,7 +93,7 @@ def generate(params, prompt, max_new, cfg): # → generated ids  [max_new] or fe
     P = prompt.shape[0]
     s_max = cfg["max_len"]
 
-    assert P <= s_max, f"prompt too long: {P} > {cfg['max_len']}"
+    assert P <= s_max, f"prompt too long: {P} > {s_max}"
 
     n_new = min(max_new, s_max - P)        # P = 5 → at most 27 new tokens
 
@@ -106,7 +105,6 @@ def generate(params, prompt, max_new, cfg): # → generated ids  [max_new] or fe
     ids = [jnp.argmax(logits, axis=-1)]
 
     for pos in range(P, P + n_new - 1):
-        # logits, cache = decode_step(params, ids[-1], cache, pos, cfg)
         logits, cache = _decode_jit(params, ids[-1], cache, jnp.int32(pos))
 
         ids.append(jnp.argmax(logits, axis=-1))
