@@ -47,7 +47,7 @@ def init_model_params(key, cfg):
 
 def embed(params, tokens, positions):
     params_embed, params_pos = params["embed"], params["pos"]
-    return params_embed[tokens] + params_pos[positions]
+    return params_embed[tokens] + params_pos[positions] # [T_new, D]
 
 
 def output_head(params, x):

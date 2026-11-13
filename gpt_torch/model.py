@@ -204,4 +204,3 @@ if __name__ == "__main__":
         fused.proj.weight.copy_(batched.proj.weight)
         fused.proj.bias.copy_(batched.proj.bias)
     print(torch.allclose(batched(x), fused(x), atol=1e-6))   # expect True
-# %%

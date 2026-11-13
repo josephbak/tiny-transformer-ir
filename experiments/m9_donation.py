@@ -12,6 +12,9 @@ compiled = lowered.compile()                                      # XLA compile;
 
 stablehlo = lowered.as_text()
 hlo = compiled.as_text()
-print("StableHLO asks for donation:", "tf.aliasing_output" in stablehlo or "jax.buffer_donor" in stablehlo)
-print("XLA granted it:             ", "input_output_alias" in hlo)
-print(hlo.splitlines()[0][:600])   # the HloModule header line, where input_output_alias appears
+# print("StableHLO asks for donation:", "tf.aliasing_output" in stablehlo or "jax.buffer_donor" in stablehlo)
+# print("XLA granted it:             ", "input_output_alias" in hlo)
+# print(hlo.splitlines()[0][:600])   # the HloModule header line, where input_output_alias appears
+
+
+print("\n".join(l for l in hlo.splitlines() if "dynamic-update-slice" in l))
