@@ -10,6 +10,7 @@ wheels/
 .venv
 ir/xla/
 notes/
+quizzes/
 .vscode/
 
 gpt_torch/input.txt
