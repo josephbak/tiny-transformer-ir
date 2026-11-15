@@ -16,58 +16,106 @@ def init_cache(cfg):
     return {"k": jnp.zeros(shape), "v": jnp.zeros(shape)}    # zeros: masked slots must not hold NaN
 
 
-def cached_attention(x_new, wq, wk, wv, wo, k_cache, v_cache, pos, n_heads):
-    """x_new: [T_new, D] new tokens starting at position pos. k_cache/v_cache: [S_max, H, d_k] (one layer).
-    Returns: out [T_new, D], updated k_cache, updated v_cache."""
+# def cached_attention(x_new, wq, wk, wv, wo, k_cache, v_cache, pos, n_heads):
+#     """x_new: [T_new, D] new tokens starting at position pos. k_cache/v_cache: [S_max, H, d_k] (one layer).
+#     Returns: out [T_new, D], updated k_cache, updated v_cache."""
+#     T_new, D = x_new.shape
+#     S_max = k_cache.shape[0]
+#     d_k = D // n_heads
+
+#     # 1. project the new tokens, split into heads
+#     q = (x_new @ wq).reshape(T_new, n_heads, d_k)     # [T_new, H, d_k]
+#     k = (x_new @ wk).reshape(T_new, n_heads, d_k)     # same for k
+#     v = (x_new @ wv).reshape(T_new, n_heads, d_k)     # same for v
+
+#     # 2. write the new rows into the cache, starting at row `pos`
+#     k_cache = jax.lax.dynamic_update_slice(k_cache, k, (pos, 0, 0))
+#     v_cache = jax.lax.dynamic_update_slice(v_cache, v, (pos, 0, 0))
+
+#     # 3. scores: every new query against every cached key, per head
+#     scores = jnp.einsum("thd,shd->hts", q, k_cache) / jnp.sqrt(d_k)   # [H, T_new, S_max]
+
+#     # 4. mask: query t (at position pos + t) may see key s only if s <= pos + t
+#     q_pos = pos + jnp.arange(T_new)                   # [T_new]
+#     k_pos = jnp.arange(S_max)                         # [S_max]
+#     mask = k_pos[None, :] <= q_pos[:, None]          # [1, S_max] vs [T_new, 1] → [T_new, S_max]
+#     scores = jnp.where(mask, scores, -jnp.inf)        # broadcasts over H
+
+#     # 5. weights, mix values, merge heads, output projection
+#     weights = softmax(scores, axis=-1)
+#     out = jnp.einsum("hts,shd->thd", weights, v_cache)   # [T_new, H, d_k]
+#     return out.reshape(T_new, D) @ wo, k_cache, v_cache
+
+# def cached_block(x_new, params, k_cache, v_cache, pos, n_heads):
+#     ln1, attn, ln2 = params["ln1"], params["attn"], params["ln2"]
+
+#     # sublayer 1: attention, with a residual
+#     a = layer_norm(x_new, ln1["gamma"], ln1["beta"])
+#     attn_out, k_cache, v_cache = cached_attention(a, attn["wq"], attn["wk"], attn["wv"], attn["wo"],
+#                                             k_cache, v_cache, pos, n_heads)
+#     h = x_new + attn_out
+
+#     # sublayer 2: FFN, with a residual
+#     f = layer_norm(h, ln2["gamma"], ln2["beta"])
+#     return h + ffn(f, params["ffn"]), k_cache, v_cache
+
+
+def cached_attention(x_new, wq, wk, wv, wo, k_all, v_all, i, pos, n_heads):
+    """x_new: [T_new, D] new rows of layer i, starting at position pos.
+    k_all/v_all: [L, S_max, H, d_k], the whole cache. Returns out [T_new, D], k_all, v_all."""
     T_new, D = x_new.shape
-    S_max = k_cache.shape[0]
+    S_max = k_all.shape[1]
     d_k = D // n_heads
 
     # 1. project the new tokens, split into heads
-    q = (x_new @ wq).reshape(T_new, n_heads, d_k)     # [T_new, H, d_k]
-    k = (x_new @ wk).reshape(T_new, n_heads, d_k)     # same for k
-    v = (x_new @ wv).reshape(T_new, n_heads, d_k)     # same for v
+    q = (x_new @ wq).reshape(T_new, n_heads, d_k)        # [T_new, H, d_k]
+    k = (x_new @ wk).reshape(1, T_new, n_heads, d_k)     # leading 1 = one layer
+    v = (x_new @ wv).reshape(1, T_new, n_heads, d_k)
 
-    # 2. write the new rows into the cache, starting at row `pos`
-    k_cache = jax.lax.dynamic_update_slice(k_cache, k, (pos, 0, 0))
-    v_cache = jax.lax.dynamic_update_slice(v_cache, v, (pos, 0, 0))
+    # 2. write the new rows straight into the whole cache: layer i, slots pos..pos+T_new-1
+    k_all = jax.lax.dynamic_update_slice(k_all, k, (i, pos, 0, 0))
+    v_all = jax.lax.dynamic_update_slice(v_all, v, (i, pos, 0, 0))
+    k_cache, v_cache = k_all[i], v_all[i]                 # [S_max, H, d_k], read only
 
     # 3. scores: every new query against every cached key, per head
     scores = jnp.einsum("thd,shd->hts", q, k_cache) / jnp.sqrt(d_k)   # [H, T_new, S_max]
 
     # 4. mask: query t (at position pos + t) may see key s only if s <= pos + t
-    q_pos = pos + jnp.arange(T_new)                   # [T_new]
-    k_pos = jnp.arange(S_max)                         # [S_max]
-    mask = k_pos[None, :] <= q_pos[:, None]          # [1, S_max] vs [T_new, 1] → [T_new, S_max]
-    scores = jnp.where(mask, scores, -jnp.inf)        # broadcasts over H
+    q_pos = pos + jnp.arange(T_new)
+    k_pos = jnp.arange(S_max)
+    mask = k_pos[None, :] <= q_pos[:, None]
+    scores = jnp.where(mask, scores, -jnp.inf)
 
     # 5. weights, mix values, merge heads, output projection
     weights = softmax(scores, axis=-1)
-    out = jnp.einsum("hts,shd->thd", weights, v_cache)   # [T_new, H, d_k]
-    return out.reshape(T_new, D) @ wo, k_cache, v_cache
+    out = jnp.einsum("hts,shd->thd", weights, v_cache)
+    return out.reshape(T_new, D) @ wo, k_all, v_all
 
-def cached_block(x_new, params, k_cache, v_cache, pos, n_heads):
+
+def cached_block(x_new, params, k_all, v_all, i, pos, n_heads):
     ln1, attn, ln2 = params["ln1"], params["attn"], params["ln2"]
-
-    # sublayer 1: attention, with a residual
     a = layer_norm(x_new, ln1["gamma"], ln1["beta"])
-    attn_out, k_cache, v_cache = cached_attention(a, attn["wq"], attn["wk"], attn["wv"], attn["wo"],
-                                            k_cache, v_cache, pos, n_heads)
+    attn_out, k_all, v_all = cached_attention(a, attn["wq"], attn["wk"], attn["wv"], attn["wo"],
+                                              k_all, v_all, i, pos, n_heads)
     h = x_new + attn_out
-
-    # sublayer 2: FFN, with a residual
     f = layer_norm(h, ln2["gamma"], ln2["beta"])
-    return h + ffn(f, params["ffn"]), k_cache, v_cache
+    return h + ffn(f, params["ffn"]), k_all, v_all
 
 def prefill(params, tokens, cache, cfg):
     pos = 0 # 0 for starting position
 
     x = embed(params, tokens, jnp.arange(tokens.shape[0]))  # [P, D]
 
+    # for i in range(cfg["n_layers"]):
+    #     block_i = jax.tree.map(lambda a: a[i], params["blocks"])     # layer i's slice of every leaf
+    #     x, k_i, v_i = cached_block(x, block_i, cache["k"][i], cache["v"][i], pos, cfg["n_heads"])
+    #     cache = {"k": cache["k"].at[i].set(k_i), "v": cache["v"].at[i].set(v_i)}
+
+    k_all, v_all = cache["k"], cache["v"]
     for i in range(cfg["n_layers"]):
         block_i = jax.tree.map(lambda a: a[i], params["blocks"])     # layer i's slice of every leaf
-        x, k_i, v_i = cached_block(x, block_i, cache["k"][i], cache["v"][i], pos, cfg["n_heads"])
-        cache = {"k": cache["k"].at[i].set(k_i), "v": cache["v"].at[i].set(v_i)}
+        x, k_all, v_all = cached_block(x, block_i, k_all, v_all, i, pos, cfg["n_heads"])
+    cache = {"k": k_all, "v": v_all}
 
     logits = output_head(params, x[-1:])  # [n, V], n = 1 for the last token
     return logits, cache
@@ -75,10 +123,16 @@ def prefill(params, tokens, cache, cfg):
 def decode_step(params, token, cache, pos, cfg):
     x = embed(params, token, pos + jnp.arange(1))   # positions = [pos], shape [1]
 
+    # for i in range(cfg["n_layers"]):
+    #     block_i = jax.tree.map(lambda a: a[i], params["blocks"])     # layer i's slice of every leaf
+    #     x, k_i, v_i = cached_block(x, block_i, cache["k"][i], cache["v"][i], pos, cfg["n_heads"])
+    #     cache = {"k": cache["k"].at[i].set(k_i), "v": cache["v"].at[i].set(v_i)}
+
+    k_all, v_all = cache["k"], cache["v"]
     for i in range(cfg["n_layers"]):
         block_i = jax.tree.map(lambda a: a[i], params["blocks"])     # layer i's slice of every leaf
-        x, k_i, v_i = cached_block(x, block_i, cache["k"][i], cache["v"][i], pos, cfg["n_heads"])
-        cache = {"k": cache["k"].at[i].set(k_i), "v": cache["v"].at[i].set(v_i)}
+        x, k_all, v_all = cached_block(x, block_i, k_all, v_all, i, pos, cfg["n_heads"])
+    cache = {"k": k_all, "v": v_all}
 
     logits = output_head(params, x)  # [1, V]
     return logits, cache

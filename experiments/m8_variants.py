@@ -5,12 +5,57 @@ import time
 
 
 from tinytr.model import CONFIG, init_model_params, embed, output_head
-from tinytr.kv_cache import init_cache, prefill, decode_step, cached_block
+from tinytr.kv_cache import init_cache, prefill, decode_step
 from tinytr.ops import softmax, layer_norm
 from tinytr.block import ffn
-from m8_cost import xla_cost, entry_lines, hlo_breakdown, INSTR      # script dir is on sys.path
+from experiments.m8_cost import xla_cost, entry_lines, hlo_breakdown, INSTR
 
 HAND_DECODE_BYTES = 712_340
+
+def _m9_cached_attention(x_new, wq, wk, wv, wo, k_cache, v_cache, pos, n_heads):
+    """x_new: [T_new, D] new tokens starting at position pos. k_cache/v_cache: [S_max, H, d_k] (one layer).
+    Returns: out [T_new, D], updated k_cache, updated v_cache."""
+    T_new, D = x_new.shape
+    S_max = k_cache.shape[0]
+    d_k = D // n_heads
+
+    # 1. project the new tokens, split into heads
+    q = (x_new @ wq).reshape(T_new, n_heads, d_k)     # [T_new, H, d_k]
+    k = (x_new @ wk).reshape(T_new, n_heads, d_k)     # same for k
+    v = (x_new @ wv).reshape(T_new, n_heads, d_k)     # same for v
+
+    # 2. write the new rows into the cache, starting at row `pos`
+    k_cache = jax.lax.dynamic_update_slice(k_cache, k, (pos, 0, 0))
+    v_cache = jax.lax.dynamic_update_slice(v_cache, v, (pos, 0, 0))
+
+    # 3. scores: every new query against every cached key, per head
+    scores = jnp.einsum("thd,shd->hts", q, k_cache) / jnp.sqrt(d_k)   # [H, T_new, S_max]
+
+    # 4. mask: query t (at position pos + t) may see key s only if s <= pos + t
+    q_pos = pos + jnp.arange(T_new)                   # [T_new]
+    k_pos = jnp.arange(S_max)                         # [S_max]
+    mask = k_pos[None, :] <= q_pos[:, None]          # [1, S_max] vs [T_new, 1] → [T_new, S_max]
+    scores = jnp.where(mask, scores, -jnp.inf)        # broadcasts over H
+
+    # 5. weights, mix values, merge heads, output projection
+    weights = softmax(scores, axis=-1)
+    out = jnp.einsum("hts,shd->thd", weights, v_cache)   # [T_new, H, d_k]
+    return out.reshape(T_new, D) @ wo, k_cache, v_cache
+
+
+def _m9_cached_block(x_new, params, k_cache, v_cache, pos, n_heads):
+    ln1, attn, ln2 = params["ln1"], params["attn"], params["ln2"]
+
+    # sublayer 1: attention, with a residual
+    a = layer_norm(x_new, ln1["gamma"], ln1["beta"])
+    attn_out, k_cache, v_cache = _m9_cached_attention(a, attn["wq"], attn["wk"], attn["wv"], attn["wo"],
+                                            k_cache, v_cache, pos, n_heads)
+    h = x_new + attn_out
+
+    # sublayer 2: FFN, with a residual
+    f = layer_norm(h, ln2["gamma"], ln2["beta"])
+    return h + ffn(f, params["ffn"]), k_cache, v_cache
+
 
 
 def attn_into_stacked(x_new, attn, k_all, v_all, i, pos, n_heads):
@@ -49,7 +94,7 @@ def make_decode(stacked_params, direct_cache, cfg=CONFIG):
             if direct_cache:
                 x, k_all, v_all = block_into_stacked(x, p, k_all, v_all, i, pos, H)
             else:
-                x, k_i, v_i = cached_block(x, p, k_all[i], v_all[i], pos, H)
+                x, k_i, v_i = _m9_cached_block(x, p, k_all[i], v_all[i], pos, H)
                 k_all, v_all = k_all.at[i].set(k_i), v_all.at[i].set(v_i)
         return output_head(top, x), {"k": k_all, "v": v_all}
 

@@ -19,7 +19,7 @@ Includes a PyTorch port of the same model, for comparing frontends.
 - [x] M5 — Transformer block
 - [x] M6 — Full model
 - [x] M7 — Reading the compiler's output
-- [ ] M8 — Cost accounting
+- [x] M8 — Cost accounting: prefill vs decode, XLA `cost_analysis` check, copy variants, M4 timing (done after M9)
 - [x] M9 — KV cache: prefill/decode + equivalence tests + generate
 - [ ] M10 — Into IREE (optional)
 - [x] PyTorch port of the model (`gpt_torch/`)

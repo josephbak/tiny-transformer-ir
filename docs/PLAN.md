@@ -145,6 +145,8 @@ After M9, `L` went from 2 to 3 and `S_max` from 16 to 32, so every size is disti
 
 This milestone is the bridge into the scaling book (Chapters 1 and 4).
 
+**Done** (after M9): hand cost model vs XLA `cost_analysis`, decode copy variants A–D, timing on the M4, roofline, and a 7B-class projection. Code: `experiments/m8_cost.py`, `experiments/m8_variants.py`.
+
 ## M9 — KV cache: prefill vs. decode
 
 **Build:** a `prefill` function that processes the prompt and fills a key/value cache, and a `decode_step` that processes one new token using the cache.
