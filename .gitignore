@@ -14,3 +14,7 @@ quizzes/
 .vscode/
 
 gpt_torch/input.txt
+
+# M10 build outputs (rebuilt by the scripts)
+*.vmfb
+ir/**/*.npz

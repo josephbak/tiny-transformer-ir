@@ -75,6 +75,8 @@ def cached_attention(x_new, wq, wk, wv, wo, k_all, v_all, i, pos, n_heads):
     # 2. write the new rows straight into the whole cache: layer i, slots pos..pos+T_new-1
     k_all = jax.lax.dynamic_update_slice(k_all, k, (i, pos, 0, 0))
     v_all = jax.lax.dynamic_update_slice(v_all, v, (i, pos, 0, 0))
+    # k_all = jax.lax.dynamic_update_slice(k_all, k, (i, pos, 0, 0), allow_negative_indices=False)
+    # v_all = jax.lax.dynamic_update_slice(v_all, v, (i, pos, 0, 0), allow_negative_indices=False)
     k_cache, v_cache = k_all[i], v_all[i]                 # [S_max, H, d_k], read only
 
     # 3. scores: every new query against every cached key, per head
