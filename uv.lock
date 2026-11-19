@@ -322,6 +322,38 @@ wheels = [
 ]
 
 [[package]]
+name = "iree-base-compiler"
+version = "3.14.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "sympy" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/91/64226399b374f0d37dd497a1b35bbcdb364ba96f42dfd78524a4d5d549cd/iree_base_compiler-3.14.0-cp312-abi3-macosx_13_0_universal2.whl", hash = "sha256:26ff03072de5150bb2ef027af4d2d7e379ee438b78a374a6971404551c5c5248", size = 68208856, upload-time = "2026-11-16T10:15:53.284Z" },
+    { url = "https://files.pythonhosted.org/packages/34/3c/972935a2c28be8b35312d579d7ebfc7864a4468c043d4943330bfdaa27d5/iree_base_compiler-3.14.0-cp312-abi3-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c423147631b93919abca5cb4a8b5d709970bc8c1ff07e770ecbdc39c2b5d4adb", size = 85003974, upload-time = "2026-11-16T10:16:06.18Z" },
+    { url = "https://files.pythonhosted.org/packages/1c/6d/75d5b65e18c3108bfe4812234de603dd55a961a081f4a22b4178628ac7aa/iree_base_compiler-3.14.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:df19f8598fd90bdbdd5b5bc2aebb96a9b9059cbf2fb740c874eff4baea7c0955", size = 83741250, upload-time = "2026-11-16T10:16:23.023Z" },
+    { url = "https://files.pythonhosted.org/packages/4c/b2/da4e15b464db58822b01af54e7cc46a9b6bf747a53f81faa33aa024f4486/iree_base_compiler-3.14.0-cp312-abi3-win_amd64.whl", hash = "sha256:4223f338819e37ae451d9bfae1e15cd9a8ebe6f3ccb861ff43fe70454343d8fb", size = 62763841, upload-time = "2026-11-16T10:16:37.245Z" },
+    { url = "https://files.pythonhosted.org/packages/a5/e4/6a0445c7bd8fbdf8cfc69847ff8fd3d3bda3cb8f26a578c611bef0bbc5e4/iree_base_compiler-3.14.0-cp313-cp313t-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:ac1d24fd0af8eb08bfcbf778aad0d752da2843c308f04ffbeb422669c2308166", size = 83781156, upload-time = "2026-11-16T10:16:51.281Z" },
+]
+
+[[package]]
+name = "iree-base-runtime"
+version = "3.14.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "ml-dtypes" },
+    { name = "numpy" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/30/0f/9d765e6bb01326ef4e3d86ce4bf660724eced803ca9568528169c66507e5/iree_base_runtime-3.14.0-cp312-abi3-macosx_13_0_universal2.whl", hash = "sha256:92e5c97714693eb5f1a8b7f14e49d6eabe4d0000b7045b9d29bddfe00c197a08", size = 8576439, upload-time = "2026-11-16T10:17:25.72Z" },
+    { url = "https://files.pythonhosted.org/packages/55/cb/0adf1ff0c6acf2426e1628669f0447280b1159a4d8014f1caf6d8b97a9f0/iree_base_runtime-3.14.0-cp312-abi3-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:2c4e85d895218880feeebe7d4a12bc6c8165b874c0d33de0bddd64e317da0f40", size = 16214555, upload-time = "2026-11-16T10:17:31.278Z" },
+    { url = "https://files.pythonhosted.org/packages/fe/c6/19bdeb7d037d20ac4a12a40ba23fd5df9c1916c9fe88cf90573383850196/iree_base_runtime-3.14.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:cfbddc3a53346517327cd0d629842fbfb393f64b4b8743f03a59ec3e95012a52", size = 15852186, upload-time = "2026-11-16T10:17:36.792Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/6e/36d08e6d12dab5b26f9a95b79cfe9fd4a38e3c5fe10352dd1b5dfcbdfa20/iree_base_runtime-3.14.0-cp312-abi3-win_amd64.whl", hash = "sha256:7db751ffef27a455f209409cfff93f58c3421f1a31f983dda77ca82d88f146d7", size = 12897163, upload-time = "2026-11-16T10:17:42.483Z" },
+    { url = "https://files.pythonhosted.org/packages/62/99/3ac0b824796aed12732281412015a6849f38f2dd6002d2330a2e29388326/iree_base_runtime-3.14.0-cp313-cp313t-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:73515a5cc22fe1075014c18b6256f244b921ab63dbde8f518b639a86dee99da8", size = 15866326, upload-time = "2026-11-16T10:17:48.109Z" },
+]
+
+[[package]]
 name = "jax"
 version = "0.12.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1172,12 +1204,24 @@ dependencies = [
     { name = "torch" },
 ]
 
+[package.dev-dependencies]
+iree = [
+    { name = "iree-base-compiler" },
+    { name = "iree-base-runtime" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "ipykernel", specifier = ">=7.4.0" },
     { name = "jax", specifier = ">=0.12.0.1" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "torch", specifier = ">=2.15.0" },
+]
+
+[package.metadata.requires-dev]
+iree = [
+    { name = "iree-base-compiler", specifier = "==3.14.0" },
+    { name = "iree-base-runtime", specifier = "==3.14.0" },
 ]
 
 [[package]]
