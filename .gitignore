@@ -18,3 +18,6 @@ gpt_torch/input.txt
 # M10 build outputs (rebuilt by the scripts)
 *.vmfb
 ir/**/*.npz
+
+# M10 benchmark inputs (unpacked from decode_step_ref.npz)
+ir/m10/inputs/
