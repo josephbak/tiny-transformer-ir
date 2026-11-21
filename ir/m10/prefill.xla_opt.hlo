@@ -1,0 +1,1653 @@
+HloModule jit_prefill, is_scheduled=true, entry_computation_layout={(f32[3,64,64]{2,1,0}, f32[3,64,64]{2,1,0}, f32[3,64,64]{2,1,0}, f32[3,64,64]{2,1,0}, f32[3,256]{1,0}, /*index=5*/f32[3,64]{1,0}, f32[3,64,256]{2,1,0}, f32[3,256,64]{2,1,0}, f32[3,64]{1,0}, f32[3,64]{1,0}, /*index=10*/f32[3,64]{1,0}, f32[3,64]{1,0}, f32[100,64]{1,0}, f32[64]{0}, f32[64]{0}, /*index=15*/f32[32,64]{1,0}, f32[64,100]{1,0}, s32[5]{0}, f32[3,32,4,16]{3,2,1,0}, f32[3,32,4,16]{3,2,1,0})->(f32[1,100]{1,0}, f32[3,32,4,16]{3,2,1,0}, f32[3,32,4,16]{3,2,1,0})}, allow_spmd_sharding_propagation_to_parameters={true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true}, allow_spmd_sharding_propagation_to_output={true,true,true}
+
+FileNames
+1 "<frozen runpy>"
+2 "/Users/josephbak/dev/tiny-transformer-ir/experiments/m10_export_prefill.py"
+3 "/Users/josephbak/dev/tiny-transformer-ir/tinytr/kv_cache.py"
+4 "/Users/josephbak/dev/tiny-transformer-ir/tinytr/ops.py"
+5 "/Users/josephbak/dev/tiny-transformer-ir/tinytr/model.py"
+6 "/Users/josephbak/dev/tiny-transformer-ir/tinytr/block.py"
+
+FunctionNames
+1 "_run_module_as_main"
+2 "_run_code"
+3 "<module>"
+4 "main"
+5 "prefill"
+6 "cached_block"
+7 "layer_norm"
+8 "cached_attention"
+9 "softmax"
+10 "output_head"
+11 "embed"
+12 "prefill.<locals>.<lambda>"
+13 "ffn"
+14 "linear"
+
+FileLocations
+1 {file_name_id=1 function_name_id=1 line=198 end_line=199 column=11 end_column=42}
+2 {file_name_id=1 function_name_id=2 line=88 end_line=88 column=4 end_column=27}
+3 {file_name_id=2 function_name_id=3 line=75 end_line=75 column=4 end_column=10}
+4 {file_name_id=2 function_name_id=4 line=52 end_line=52 column=24 end_column=43}
+5 {file_name_id=3 function_name_id=5 line=119 end_line=119 column=26 end_column=88}
+6 {file_name_id=3 function_name_id=6 line=99 end_line=99 column=8 end_column=52}
+7 {file_name_id=4 function_name_id=7 line=26 end_line=26 column=11 end_column=46}
+8 {file_name_id=4 function_name_id=7 line=28 end_line=28 column=15 end_column=64}
+9 {file_name_id=3 function_name_id=6 line=100 end_line=101 column=29 end_column=76}
+10 {file_name_id=3 function_name_id=8 line=92 end_line=92 column=14 end_column=38}
+11 {file_name_id=4 function_name_id=9 line=11 end_line=11 column=12 end_column=48}
+12 {file_name_id=4 function_name_id=9 line=15 end_line=15 column=14 end_column=60}
+13 {file_name_id=3 function_name_id=6 line=103 end_line=103 column=8 end_column=48}
+14 {file_name_id=3 function_name_id=5 line=122 end_line=122 column=13 end_column=40}
+15 {file_name_id=5 function_name_id=10 line=54 end_line=54 column=8 end_column=70}
+16 {file_name_id=3 function_name_id=5 line=109 end_line=109 column=30 end_column=57}
+17 {file_name_id=3 function_name_id=5 line=109 end_line=109 column=8 end_column=58}
+18 {file_name_id=5 function_name_id=11 line=50 end_line=50 column=11 end_column=31}
+19 {file_name_id=5 function_name_id=11 line=50 end_line=50 column=34 end_column=55}
+20 {file_name_id=3 function_name_id=5 line=118 end_line=118 column=18 end_column=64}
+21 {file_name_id=3 function_name_id=12 line=118 end_line=118 column=41 end_column=45}
+22 {file_name_id=4 function_name_id=7 line=28 end_line=28 column=25 end_column=33}
+23 {file_name_id=4 function_name_id=7 line=28 end_line=28 column=24 end_column=39}
+24 {file_name_id=4 function_name_id=7 line=29 end_line=29 column=20 end_column=28}
+25 {file_name_id=4 function_name_id=7 line=29 end_line=29 column=41 end_column=55}
+26 {file_name_id=4 function_name_id=7 line=29 end_line=29 column=32 end_column=56}
+27 {file_name_id=4 function_name_id=7 line=29 end_line=29 column=19 end_column=56}
+28 {file_name_id=4 function_name_id=7 line=30 end_line=30 column=11 end_column=31}
+29 {file_name_id=3 function_name_id=8 line=71 end_line=71 column=9 end_column=19}
+30 {file_name_id=3 function_name_id=8 line=71 end_line=71 column=8 end_column=49}
+31 {file_name_id=3 function_name_id=8 line=72 end_line=72 column=9 end_column=19}
+32 {file_name_id=3 function_name_id=8 line=72 end_line=72 column=8 end_column=52}
+33 {file_name_id=3 function_name_id=8 line=73 end_line=73 column=9 end_column=19}
+34 {file_name_id=3 function_name_id=8 line=73 end_line=73 column=8 end_column=52}
+35 {file_name_id=3 function_name_id=8 line=76 end_line=76 column=12 end_column=66}
+36 {file_name_id=3 function_name_id=8 line=77 end_line=77 column=12 end_column=66}
+37 {file_name_id=3 function_name_id=8 line=80 end_line=80 column=23 end_column=31}
+38 {file_name_id=3 function_name_id=8 line=80 end_line=80 column=33 end_column=41}
+39 {file_name_id=3 function_name_id=8 line=83 end_line=83 column=13 end_column=51}
+40 {file_name_id=3 function_name_id=8 line=86 end_line=86 column=18 end_column=35}
+41 {file_name_id=3 function_name_id=8 line=87 end_line=87 column=12 end_column=29}
+42 {file_name_id=3 function_name_id=8 line=88 end_line=88 column=11 end_column=25}
+43 {file_name_id=3 function_name_id=8 line=88 end_line=88 column=29 end_column=43}
+44 {file_name_id=3 function_name_id=8 line=89 end_line=89 column=13 end_column=46}
+45 {file_name_id=4 function_name_id=9 line=13 end_line=13 column=26 end_column=35}
+46 {file_name_id=4 function_name_id=9 line=13 end_line=13 column=18 end_column=36}
+47 {file_name_id=4 function_name_id=9 line=17 end_line=17 column=11 end_column=32}
+48 {file_name_id=3 function_name_id=8 line=93 end_line=93 column=10 end_column=54}
+49 {file_name_id=3 function_name_id=8 line=94 end_line=94 column=11 end_column=32}
+50 {file_name_id=3 function_name_id=6 line=102 end_line=102 column=8 end_column=24}
+51 {file_name_id=3 function_name_id=6 line=104 end_line=104 column=15 end_column=36}
+52 {file_name_id=6 function_name_id=13 line=21 end_line=21 column=9 end_column=26}
+53 {file_name_id=4 function_name_id=14 line=5 end_line=5 column=11 end_column=16}
+54 {file_name_id=6 function_name_id=13 line=24 end_line=24 column=9 end_column=27}
+55 {file_name_id=6 function_name_id=13 line=29 end_line=29 column=8 end_column=26}
+56 {file_name_id=3 function_name_id=6 line=104 end_line=104 column=11 end_column=36}
+57 {file_name_id=3 function_name_id=5 line=122 end_line=122 column=33 end_column=39}
+58 {file_name_id=5 function_name_id=10 line=55 end_line=55 column=11 end_column=32}
+
+StackFrames
+1 {file_location_id=1 parent_frame_id=1}
+2 {file_location_id=2 parent_frame_id=2}
+3 {file_location_id=3 parent_frame_id=3}
+4 {file_location_id=4 parent_frame_id=4}
+5 {file_location_id=5 parent_frame_id=5}
+6 {file_location_id=6 parent_frame_id=6}
+7 {file_location_id=7 parent_frame_id=7}
+8 {file_location_id=8 parent_frame_id=7}
+9 {file_location_id=9 parent_frame_id=6}
+10 {file_location_id=10 parent_frame_id=10}
+11 {file_location_id=11 parent_frame_id=11}
+12 {file_location_id=12 parent_frame_id=11}
+13 {file_location_id=13 parent_frame_id=6}
+14 {file_location_id=7 parent_frame_id=14}
+15 {file_location_id=8 parent_frame_id=14}
+16 {file_location_id=14 parent_frame_id=5}
+17 {file_location_id=15 parent_frame_id=17}
+18 {file_location_id=7 parent_frame_id=18}
+19 {file_location_id=8 parent_frame_id=18}
+20 {file_location_id=16 parent_frame_id=5}
+21 {file_location_id=17 parent_frame_id=5}
+22 {file_location_id=18 parent_frame_id=22}
+23 {file_location_id=19 parent_frame_id=22}
+24 {file_location_id=20 parent_frame_id=5}
+25 {file_location_id=21 parent_frame_id=25}
+26 {file_location_id=22 parent_frame_id=7}
+27 {file_location_id=23 parent_frame_id=7}
+28 {file_location_id=24 parent_frame_id=7}
+29 {file_location_id=25 parent_frame_id=7}
+30 {file_location_id=26 parent_frame_id=7}
+31 {file_location_id=27 parent_frame_id=7}
+32 {file_location_id=28 parent_frame_id=7}
+33 {file_location_id=29 parent_frame_id=10}
+34 {file_location_id=30 parent_frame_id=10}
+35 {file_location_id=31 parent_frame_id=10}
+36 {file_location_id=32 parent_frame_id=10}
+37 {file_location_id=33 parent_frame_id=10}
+38 {file_location_id=34 parent_frame_id=10}
+39 {file_location_id=35 parent_frame_id=10}
+40 {file_location_id=36 parent_frame_id=10}
+41 {file_location_id=37 parent_frame_id=10}
+42 {file_location_id=38 parent_frame_id=10}
+43 {file_location_id=39 parent_frame_id=10}
+44 {file_location_id=40 parent_frame_id=10}
+45 {file_location_id=41 parent_frame_id=10}
+46 {file_location_id=42 parent_frame_id=10}
+47 {file_location_id=43 parent_frame_id=10}
+48 {file_location_id=44 parent_frame_id=10}
+49 {file_location_id=45 parent_frame_id=11}
+50 {file_location_id=46 parent_frame_id=11}
+51 {file_location_id=47 parent_frame_id=11}
+52 {file_location_id=48 parent_frame_id=10}
+53 {file_location_id=49 parent_frame_id=10}
+54 {file_location_id=50 parent_frame_id=6}
+55 {file_location_id=22 parent_frame_id=14}
+56 {file_location_id=23 parent_frame_id=14}
+57 {file_location_id=24 parent_frame_id=14}
+58 {file_location_id=25 parent_frame_id=14}
+59 {file_location_id=26 parent_frame_id=14}
+60 {file_location_id=27 parent_frame_id=14}
+61 {file_location_id=28 parent_frame_id=14}
+62 {file_location_id=51 parent_frame_id=6}
+63 {file_location_id=52 parent_frame_id=63}
+64 {file_location_id=53 parent_frame_id=64}
+65 {file_location_id=54 parent_frame_id=63}
+66 {file_location_id=55 parent_frame_id=63}
+67 {file_location_id=53 parent_frame_id=67}
+68 {file_location_id=56 parent_frame_id=6}
+69 {file_location_id=57 parent_frame_id=5}
+70 {file_location_id=22 parent_frame_id=18}
+71 {file_location_id=23 parent_frame_id=18}
+72 {file_location_id=24 parent_frame_id=18}
+73 {file_location_id=25 parent_frame_id=18}
+74 {file_location_id=26 parent_frame_id=18}
+75 {file_location_id=27 parent_frame_id=18}
+76 {file_location_id=28 parent_frame_id=18}
+77 {file_location_id=58 parent_frame_id=17}
+
+
+%fused_computation (param_0: f32[5,256], param_1: f32[256,64]) -> f32[5,64] {
+  %param_0 = f32[5,256]{1,0} parameter(0)
+  %param_1 = f32[256,64]{1,0} parameter(1)
+  ROOT %dot_general.0 = f32[5,64]{1,0} dot(%param_0, %param_1), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=67}
+}
+
+%fused_computation.1 (param_0.1: f32[5,64], param_1.1: f32[64,256]) -> f32[5,256] {
+  %param_0.1 = f32[5,64]{1,0} parameter(0)
+  %param_1.1 = f32[64,256]{1,0} parameter(1)
+  ROOT %dot_general.1 = f32[5,256]{1,0} dot(%param_0.1, %param_1.1), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=64}
+}
+
+%fused_computation.2 (param_0.2: f32[5,64], param_1.2: f32[64,64]) -> f32[5,64] {
+  %param_0.2 = f32[5,64]{1,0} parameter(0)
+  %param_1.2 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.2 = f32[5,64]{1,0} dot(%param_0.2, %param_1.2), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=53}
+}
+
+%fused_computation.3 (param_0.3: f32[4,16,32], param_1.3: f32[4,5,32]) -> f32[4,16,5] {
+  %param_0.3 = f32[4,16,32]{2,1,0} parameter(0)
+  %param_1.3 = f32[4,5,32]{2,1,0} parameter(1)
+  ROOT %dot.11 = f32[4,16,5]{2,1,0} dot(%param_0.3, %param_1.3), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={2}, metadata={op_name="jit(prefill)/hts,shd->thd/dot_general" stack_frame_id=52}
+}
+
+%fused_computation.4 (param_0.4: f32[4,5,16], param_1.4: f32[4,16,32]) -> f32[4,5,32] {
+  %param_0.4 = f32[4,5,16]{2,1,0} parameter(0)
+  %param_1.4 = f32[4,16,32]{2,1,0} parameter(1)
+  ROOT %dot.12 = f32[4,5,32]{2,1,0} dot(%param_0.4, %param_1.4), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}, metadata={op_name="jit(prefill)/thd,shd->hts/dot_general" stack_frame_id=43}
+}
+
+%fused_computation.5 (param_0.5: f32[5,64], param_1.5: f32[64,64]) -> f32[5,64] {
+  %param_0.5 = f32[5,64]{1,0} parameter(0)
+  %param_1.5 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.3 = f32[5,64]{1,0} dot(%param_0.5, %param_1.5), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}
+}
+
+%fused_computation.6 (param_0.6: f32[5,64], param_1.6: f32[64,64]) -> f32[5,64] {
+  %param_0.6 = f32[5,64]{1,0} parameter(0)
+  %param_1.6 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.4 = f32[5,64]{1,0} dot(%param_0.6, %param_1.6), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}
+}
+
+%fused_computation.7 (param_0.7: f32[5,64], param_1.7: f32[64,64]) -> f32[5,64] {
+  %param_0.7 = f32[5,64]{1,0} parameter(0)
+  %param_1.7 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.5 = f32[5,64]{1,0} dot(%param_0.7, %param_1.7), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}
+}
+
+%fused_computation.8 (param_0.8: f32[5,256], param_1.8: f32[256,64]) -> f32[5,64] {
+  %param_0.8 = f32[5,256]{1,0} parameter(0)
+  %param_1.8 = f32[256,64]{1,0} parameter(1)
+  ROOT %dot_general.6 = f32[5,64]{1,0} dot(%param_0.8, %param_1.8), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=67}
+}
+
+%fused_computation.9 (param_0.9: f32[5,64], param_1.9: f32[64,256]) -> f32[5,256] {
+  %param_0.9 = f32[5,64]{1,0} parameter(0)
+  %param_1.9 = f32[64,256]{1,0} parameter(1)
+  ROOT %dot_general.7 = f32[5,256]{1,0} dot(%param_0.9, %param_1.9), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=64}
+}
+
+%fused_computation.10 (param_0.10: f32[5,64], param_1.10: f32[64,64]) -> f32[5,64] {
+  %param_0.10 = f32[5,64]{1,0} parameter(0)
+  %param_1.10 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.8 = f32[5,64]{1,0} dot(%param_0.10, %param_1.10), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=53}
+}
+
+%fused_computation.11 (param_0.11: f32[4,16,32], param_1.11: f32[4,5,32]) -> f32[4,16,5] {
+  %param_0.11 = f32[4,16,32]{2,1,0} parameter(0)
+  %param_1.11 = f32[4,5,32]{2,1,0} parameter(1)
+  ROOT %dot.13 = f32[4,16,5]{2,1,0} dot(%param_0.11, %param_1.11), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={2}, metadata={op_name="jit(prefill)/hts,shd->thd/dot_general" stack_frame_id=52}
+}
+
+%fused_computation.12 (param_0.12: f32[4,5,16], param_1.12: f32[4,16,32]) -> f32[4,5,32] {
+  %param_0.12 = f32[4,5,16]{2,1,0} parameter(0)
+  %param_1.12 = f32[4,16,32]{2,1,0} parameter(1)
+  ROOT %dot.14 = f32[4,5,32]{2,1,0} dot(%param_0.12, %param_1.12), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}, metadata={op_name="jit(prefill)/thd,shd->hts/dot_general" stack_frame_id=43}
+}
+
+%fused_computation.13 (param_0.13: f32[5,64], param_1.13: f32[64,64]) -> f32[5,64] {
+  %param_0.13 = f32[5,64]{1,0} parameter(0)
+  %param_1.13 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.9 = f32[5,64]{1,0} dot(%param_0.13, %param_1.13), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}
+}
+
+%fused_computation.14 (param_0.14: f32[5,64], param_1.14: f32[64,64]) -> f32[5,64] {
+  %param_0.14 = f32[5,64]{1,0} parameter(0)
+  %param_1.14 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.10 = f32[5,64]{1,0} dot(%param_0.14, %param_1.14), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}
+}
+
+%fused_computation.15 (param_0.15: f32[5,64], param_1.15: f32[64,64]) -> f32[5,64] {
+  %param_0.15 = f32[5,64]{1,0} parameter(0)
+  %param_1.15 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.11 = f32[5,64]{1,0} dot(%param_0.15, %param_1.15), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}
+}
+
+%fused_computation.16 (param_0.16: f32[5,256], param_1.16: f32[256,64]) -> f32[5,64] {
+  %param_0.16 = f32[5,256]{1,0} parameter(0)
+  %param_1.16 = f32[256,64]{1,0} parameter(1)
+  ROOT %dot_general.12 = f32[5,64]{1,0} dot(%param_0.16, %param_1.16), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=67}
+}
+
+%fused_computation.17 (param_0.17: f32[5,64], param_1.17: f32[64,256]) -> f32[5,256] {
+  %param_0.17 = f32[5,64]{1,0} parameter(0)
+  %param_1.17 = f32[64,256]{1,0} parameter(1)
+  ROOT %dot_general.13 = f32[5,256]{1,0} dot(%param_0.17, %param_1.17), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=64}
+}
+
+%fused_computation.18 (param_0.18: f32[5,64], param_1.18: f32[64,64]) -> f32[5,64] {
+  %param_0.18 = f32[5,64]{1,0} parameter(0)
+  %param_1.18 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.14 = f32[5,64]{1,0} dot(%param_0.18, %param_1.18), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=53}
+}
+
+%fused_computation.19 (param_0.19: f32[4,16,32], param_1.19: f32[4,5,32]) -> f32[4,16,5] {
+  %param_0.19 = f32[4,16,32]{2,1,0} parameter(0)
+  %param_1.19 = f32[4,5,32]{2,1,0} parameter(1)
+  ROOT %dot.15 = f32[4,16,5]{2,1,0} dot(%param_0.19, %param_1.19), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={2}, metadata={op_name="jit(prefill)/hts,shd->thd/dot_general" stack_frame_id=52}
+}
+
+%fused_computation.20 (param_0.20: f32[4,5,16], param_1.20: f32[4,16,32]) -> f32[4,5,32] {
+  %param_0.20 = f32[4,5,16]{2,1,0} parameter(0)
+  %param_1.20 = f32[4,16,32]{2,1,0} parameter(1)
+  ROOT %dot.16 = f32[4,5,32]{2,1,0} dot(%param_0.20, %param_1.20), lhs_batch_dims={0}, lhs_contracting_dims={2}, rhs_batch_dims={0}, rhs_contracting_dims={1}, metadata={op_name="jit(prefill)/thd,shd->hts/dot_general" stack_frame_id=43}
+}
+
+%fused_computation.21 (param_0.21: f32[5,64], param_1.21: f32[64,64]) -> f32[5,64] {
+  %param_0.21 = f32[5,64]{1,0} parameter(0)
+  %param_1.21 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.15 = f32[5,64]{1,0} dot(%param_0.21, %param_1.21), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}
+}
+
+%fused_computation.22 (param_0.22: f32[5,64], param_1.22: f32[64,64]) -> f32[5,64] {
+  %param_0.22 = f32[5,64]{1,0} parameter(0)
+  %param_1.22 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.16 = f32[5,64]{1,0} dot(%param_0.22, %param_1.22), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}
+}
+
+%fused_computation.23 (param_0.23: f32[5,64], param_1.23: f32[64,64]) -> f32[5,64] {
+  %param_0.23 = f32[5,64]{1,0} parameter(0)
+  %param_1.23 = f32[64,64]{1,0} parameter(1)
+  ROOT %dot_general.17 = f32[5,64]{1,0} dot(%param_0.23, %param_1.23), lhs_contracting_dims={1}, rhs_contracting_dims={0}, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}
+}
+
+%fused_computation.24 (param_0.25: f32[1,100]) -> f32[1,100] {
+  %param_0.25 = f32[1,100]{1,0} parameter(0)
+  %bitcast.65 = f32[100]{0} bitcast(%param_0.25), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=77}
+  ROOT %bitcast.64 = f32[1,100]{1,0} bitcast(%bitcast.65), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=77}
+}
+
+%fused_computation.25 (param_0.29: f32[64], param_1.27: f32[1], param_2.3: f32[1], param_3.5: f32[5,64], param_4.6: f32[5,64], param_5.3: f32[3,64], param_6.4: f32[64]) -> f32[64,1] {
+  %param_6.4 = f32[64]{0} parameter(6)
+  %bitcast.72 = f32[1,64]{1,0} bitcast(%param_6.4), metadata={op_name="params[\'ln_f\'][\'gamma\']"}
+  %param_3.5 = f32[5,64]{1,0} parameter(3)
+  %param_4.6 = f32[5,64]{1,0} parameter(4)
+  %param_5.3 = f32[3,64]{1,0} parameter(5)
+  %slice.1 = f32[1,64]{1,0} slice(%param_5.3), slice={[2:3], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.71 = f32[64]{0} bitcast(%slice.1), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.11 = f32[5,64]{1,0} broadcast(%bitcast.71), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.10 = f32[5,64]{1,0} add(%param_4.6, %add.11), metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.9 = f32[5,64]{1,0} add(%param_3.5, %add.10), metadata={op_name="jit(prefill)/add" stack_frame_id=68}
+  %slice.0 = f32[1,64]{1,0} slice(%add.9), slice={[4:5], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=69}
+  %param_2.3 = f32[1]{0} parameter(2)
+  %constant.46 = f32[1]{0} constant({0.015625})
+  %multiply.49 = f32[1]{0} multiply(%param_2.3, %constant.46), metadata={op_name="jit(prefill)/div" stack_frame_id=18}
+  %bitcast.70 = f32[] bitcast(%multiply.49), metadata={op_name="jit(prefill)/div" stack_frame_id=18}
+  %sub.1 = f32[1,64]{1,0} broadcast(%bitcast.70), dimensions={}, metadata={op_name="jit(prefill)/sub" stack_frame_id=72}
+  %sub.0 = f32[1,64]{1,0} subtract(%slice.0, %sub.1), metadata={op_name="jit(prefill)/sub" stack_frame_id=72}
+  %param_1.27 = f32[1]{0} parameter(1)
+  %bitcast.69 = f32[] bitcast(%param_1.27), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=74}
+  %broadcast.109 = f32[1,64]{1,0} broadcast(%bitcast.69), dimensions={}, metadata={op_name="jit(prefill)/div" stack_frame_id=75}
+  %multiply.48 = f32[1,64]{1,0} multiply(%sub.0, %broadcast.109), metadata={op_name="jit(prefill)/div" stack_frame_id=75}
+  %mul.0 = f32[1,64]{1,0} multiply(%bitcast.72, %multiply.48), metadata={op_name="jit(prefill)/mul" stack_frame_id=76}
+  %param_0.29 = f32[64]{0} parameter(0)
+  %bitcast.68 = f32[1,64]{1,0} bitcast(%param_0.29), metadata={op_name="params[\'ln_f\'][\'beta\']"}
+  %add.8 = f32[1,64]{1,0} add(%mul.0, %bitcast.68), metadata={op_name="jit(prefill)/add" stack_frame_id=76}
+  %bitcast.67 = f32[64]{0} bitcast(%add.8), metadata={op_name="jit(prefill)/add" stack_frame_id=76}
+  ROOT %bitcast.66 = f32[64,1]{1,0} bitcast(%bitcast.67), metadata={op_name="jit(prefill)/add" stack_frame_id=76}
+}
+
+%region_19.21.clone (reduce_sum.69: f32[], reduce_sum.70: f32[]) -> f32[] {
+  %reduce_sum.69 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.70 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.71 = f32[] add(%reduce_sum.69, %reduce_sum.70), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=19}
+}
+
+%fused_computation.26 (param_0.34: f32[1,2]) -> f32[1] {
+  %param_0.34 = f32[1,2]{1,0} parameter(0)
+  %constant.49 = f32[] constant(0)
+  %reduce_sum.72 = f32[1]{0} reduce(%param_0.34, %constant.49), dimensions={1}, to_apply=%region_19.21.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=19}
+  %constant.48 = f32[1]{0} constant({0.015625})
+  %multiply.50 = f32[1]{0} multiply(%reduce_sum.72, %constant.48), metadata={op_name="jit(prefill)/div" stack_frame_id=19}
+  %constant.47 = f32[1]{0} constant({1e-05})
+  %add.12 = f32[1]{0} add(%multiply.50, %constant.47), metadata={op_name="jit(prefill)/add" stack_frame_id=73}
+  ROOT %rsqrt.14 = f32[1]{0} rsqrt(%add.12), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=74}
+}
+
+%fused_computation.27 (param_0.37: f32[1], param_1.37: f32[5,64], param_2.7: f32[5,64], param_3.9: f32[3,64]) -> f32[1,64] {
+  %param_1.37 = f32[5,64]{1,0} parameter(1)
+  %param_2.7 = f32[5,64]{1,0} parameter(2)
+  %param_3.9 = f32[3,64]{1,0} parameter(3)
+  %slice.3 = f32[1,64]{1,0} slice(%param_3.9), slice={[2:3], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.74 = f32[64]{0} bitcast(%slice.3), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.15 = f32[5,64]{1,0} broadcast(%bitcast.74), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.14 = f32[5,64]{1,0} add(%param_2.7, %add.15), metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.13 = f32[5,64]{1,0} add(%param_1.37, %add.14), metadata={op_name="jit(prefill)/add" stack_frame_id=68}
+  %slice.2 = f32[1,64]{1,0} slice(%add.13), slice={[4:5], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=69}
+  %param_0.37 = f32[1]{0} parameter(0)
+  %constant.50 = f32[1]{0} constant({0.015625})
+  %multiply.51 = f32[1]{0} multiply(%param_0.37, %constant.50), metadata={op_name="jit(prefill)/div" stack_frame_id=18}
+  %bitcast.73 = f32[] bitcast(%multiply.51), metadata={op_name="jit(prefill)/div" stack_frame_id=18}
+  %sub.3 = f32[1,64]{1,0} broadcast(%bitcast.73), dimensions={}, metadata={op_name="jit(prefill)/sub" stack_frame_id=72}
+  %sub.2 = f32[1,64]{1,0} subtract(%slice.2, %sub.3), metadata={op_name="jit(prefill)/sub" stack_frame_id=72}
+  ROOT %integer_pow.0 = f32[1,64]{1,0} multiply(%sub.2, %sub.2), metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=71}
+}
+
+%fused_computation.28 (param_0.39: f32[5,64], param_1.39: f32[5,64], param_2.11: f32[3,64]) -> f32[1,64] {
+  %param_0.39 = f32[5,64]{1,0} parameter(0)
+  %param_1.39 = f32[5,64]{1,0} parameter(1)
+  %param_2.11 = f32[3,64]{1,0} parameter(2)
+  %slice.5 = f32[1,64]{1,0} slice(%param_2.11), slice={[2:3], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.75 = f32[64]{0} bitcast(%slice.5), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.18 = f32[5,64]{1,0} broadcast(%bitcast.75), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.17 = f32[5,64]{1,0} add(%param_1.39, %add.18), metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.16 = f32[5,64]{1,0} add(%param_0.39, %add.17), metadata={op_name="jit(prefill)/add" stack_frame_id=68}
+  ROOT %slice.4 = f32[1,64]{1,0} slice(%add.16), slice={[4:5], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=69}
+}
+
+%fused_computation.29 (param_0.41: f32[3,256,64]) -> f32[256,64] {
+  %param_0.41 = f32[3,256,64]{2,1,0} parameter(0)
+  %slice.6 = f32[1,256,64]{2,1,0} slice(%param_0.41), slice={[2:3], [0:256], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.76 = f32[256,64]{1,0} bitcast(%slice.6), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.30 (param_0.44: f32[5,256], param_1.42: f32[3,256]) -> f32[5,256] {
+  %param_0.44 = f32[5,256]{1,0} parameter(0)
+  %param_1.42 = f32[3,256]{1,0} parameter(1)
+  %slice.7 = f32[1,256]{1,0} slice(%param_1.42), slice={[2:3], [0:256]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.77 = f32[256]{0} bitcast(%slice.7), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.20 = f32[5,256]{1,0} broadcast(%bitcast.77), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=64}
+  %add.19 = f32[5,256]{1,0} add(%param_0.44, %add.20), metadata={op_name="jit(prefill)/add" stack_frame_id=64}
+  %constant.51 = f32[] constant(0)
+  %broadcast.110 = f32[5,256]{1,0} broadcast(%constant.51), dimensions={}
+  ROOT %max.0 = f32[5,256]{1,0} maximum(%add.19, %broadcast.110), metadata={op_name="jit(prefill)/max" stack_frame_id=65}
+}
+
+%fused_computation.31 (param_0.46: f32[3,64,256]) -> f32[64,256] {
+  %param_0.46 = f32[3,64,256]{2,1,0} parameter(0)
+  %slice.8 = f32[1,64,256]{2,1,0} slice(%param_0.46), slice={[2:3], [0:64], [0:256]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.78 = f32[64,256]{1,0} bitcast(%slice.8), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.32 (param_0.48: f32[3,64], param_1.48: f32[5], param_2.20: f32[5,64], param_3.13: f32[5], param_4.11: f32[3,64]) -> f32[5,64] {
+  %param_4.11 = f32[3,64]{1,0} parameter(4)
+  %slice.10 = f32[1,64]{1,0} slice(%param_4.11), slice={[2:3], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.80 = f32[64]{0} bitcast(%slice.10), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %mul.2 = f32[5,64]{1,0} broadcast(%bitcast.80), dimensions={1}, metadata={op_name="jit(prefill)/mul" stack_frame_id=61}
+  %param_2.20 = f32[5,64]{1,0} parameter(2)
+  %param_3.13 = f32[5]{0} parameter(3)
+  %constant.52 = f32[] constant(0.015625)
+  %broadcast.112 = f32[5]{0} broadcast(%constant.52), dimensions={}
+  %multiply.53 = f32[5]{0} multiply(%param_3.13, %broadcast.112), metadata={op_name="jit(prefill)/div" stack_frame_id=14}
+  %sub.5 = f32[5,64]{1,0} broadcast(%multiply.53), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %sub.4 = f32[5,64]{1,0} subtract(%param_2.20, %sub.5), metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %param_1.48 = f32[5]{0} parameter(1)
+  %broadcast.111 = f32[5,64]{1,0} broadcast(%param_1.48), dimensions={0}, metadata={op_name="jit(prefill)/div" stack_frame_id=60}
+  %multiply.52 = f32[5,64]{1,0} multiply(%sub.4, %broadcast.111), metadata={op_name="jit(prefill)/div" stack_frame_id=60}
+  %mul.1 = f32[5,64]{1,0} multiply(%mul.2, %multiply.52), metadata={op_name="jit(prefill)/mul" stack_frame_id=61}
+  %param_0.48 = f32[3,64]{1,0} parameter(0)
+  %slice.9 = f32[1,64]{1,0} slice(%param_0.48), slice={[2:3], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.79 = f32[64]{0} bitcast(%slice.9), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.22 = f32[5,64]{1,0} broadcast(%bitcast.79), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+  ROOT %add.21 = f32[5,64]{1,0} add(%mul.1, %add.22), metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+}
+
+%region_17.19.clone (reduce_sum.57: f32[], reduce_sum.58: f32[]) -> f32[] {
+  %reduce_sum.57 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.58 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.62 = f32[] add(%reduce_sum.57, %reduce_sum.58), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+}
+
+%fused_computation.33 (param_0.53: f32[5,2]) -> f32[5] {
+  %param_0.53 = f32[5,2]{1,0} parameter(0)
+  %constant.55 = f32[] constant(0)
+  %reduce_sum.76 = f32[5]{0} reduce(%param_0.53, %constant.55), dimensions={1}, to_apply=%region_17.19.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+  %constant.54 = f32[] constant(0.015625)
+  %broadcast.114 = f32[5]{0} broadcast(%constant.54), dimensions={}
+  %multiply.54 = f32[5]{0} multiply(%reduce_sum.76, %broadcast.114), metadata={op_name="jit(prefill)/div" stack_frame_id=15}
+  %constant.53 = f32[] constant(1e-05)
+  %broadcast.113 = f32[5]{0} broadcast(%constant.53), dimensions={}
+  %add.23 = f32[5]{0} add(%multiply.54, %broadcast.113), metadata={op_name="jit(prefill)/add" stack_frame_id=58}
+  ROOT %rsqrt.15 = f32[5]{0} rsqrt(%add.23), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=59}
+}
+
+%fused_computation.34 (param_0.55: f32[5,64], param_1.56: f32[5]) -> f32[5,64] {
+  %param_0.55 = f32[5,64]{1,0} parameter(0)
+  %param_1.56 = f32[5]{0} parameter(1)
+  %constant.56 = f32[] constant(0.015625)
+  %broadcast.115 = f32[5]{0} broadcast(%constant.56), dimensions={}
+  %multiply.55 = f32[5]{0} multiply(%param_1.56, %broadcast.115), metadata={op_name="jit(prefill)/div" stack_frame_id=14}
+  %sub.7 = f32[5,64]{1,0} broadcast(%multiply.55), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %sub.6 = f32[5,64]{1,0} subtract(%param_0.55, %sub.7), metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  ROOT %integer_pow.1 = f32[5,64]{1,0} multiply(%sub.6, %sub.6), metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=56}
+}
+
+%fused_computation.35 (param_0.57: f32[3,64,64]) -> f32[64,64] {
+  %param_0.57 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.11 = f32[1,64,64]{2,1,0} slice(%param_0.57), slice={[2:3], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.81 = f32[64,64]{1,0} bitcast(%slice.11), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.36 (param_0.60: f32[4,16,5]) -> f32[5,64] {
+  %param_0.60 = f32[4,16,5]{2,1,0} parameter(0)
+  %transpose.15 = f32[5,4,16]{0,2,1} transpose(%param_0.60), dimensions={2,0,1}, metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  %copy.12 = f32[5,4,16]{2,1,0} copy(%transpose.15), metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  ROOT %bitcast.82 = f32[5,64]{1,0} bitcast(%copy.12), metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+}
+
+%fused_computation.37 (param_0.61: f32[4,5,32], param_1.58: f32[4,5]) -> f32[4,5,32] {
+  %param_0.61 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.58 = f32[4,5]{1,0} parameter(1)
+  %broadcast.116 = f32[4,5,32]{2,1,0} broadcast(%param_1.58), dimensions={0,1}, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  ROOT %multiply.56 = f32[4,5,32]{2,1,0} multiply(%param_0.61, %broadcast.116), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+}
+
+%region_15.17 (reduce_sum.87: f32[], reduce_sum.88: f32[]) -> f32[] {
+  %reduce_sum.87 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.88 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.89 = f32[] add(%reduce_sum.87, %reduce_sum.88), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=12}
+}
+
+%fused_computation.38 (param_0.63: f32[4,5,32]) -> f32[4,5] {
+  %constant.57 = f32[] constant(1), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %broadcast.117 = f32[4,5]{1,0} broadcast(%constant.57), dimensions={}, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %param_0.63 = f32[4,5,32]{2,1,0} parameter(0)
+  %constant.58 = f32[] constant(0)
+  %reduce_sum.77 = f32[4,5]{1,0} reduce(%param_0.63, %constant.58), dimensions={2}, to_apply=%region_15.17, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=12}
+  ROOT %divide.17 = f32[4,5]{1,0} divide(%broadcast.117, %reduce_sum.77), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+}
+
+%fused_computation.39 (param_0.65: f32[4,5,32], param_1.63: f32[4,5]) -> f32[4,5,32] {
+  %param_0.65 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.63 = f32[4,5]{1,0} parameter(1)
+  %sub.9 = f32[4,5,32]{2,1,0} broadcast(%param_1.63), dimensions={0,1}, metadata={op_name="jit(prefill)/sub" stack_frame_id=49}
+  %sub.8 = f32[4,5,32]{2,1,0} subtract(%param_0.65, %sub.9), metadata={op_name="jit(prefill)/sub" stack_frame_id=49}
+  ROOT %exp.0 = f32[4,5,32]{2,1,0} exponential(%sub.8), metadata={op_name="jit(prefill)/exp" stack_frame_id=50}
+}
+
+%fused_computation.40 (param_0.67: f32[4,5,32]) -> f32[4,5,32] {
+  %iota.27 = s32[5,32]{1,0} iota(), iota_dimension=1, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %iota.26 = s32[5,32]{1,0} iota(), iota_dimension=0, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %le.0 = pred[5,32]{1,0} compare(%iota.27, %iota.26), direction=LE, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %broadcast_in_dim.13 = pred[4,5,32]{2,1,0} broadcast(%le.0), dimensions={1,2}, metadata={op_name="jit(prefill)/jit(_where)/broadcast_in_dim" stack_frame_id=48}
+  %param_0.67 = f32[4,5,32]{2,1,0} parameter(0)
+  %constant.60 = f32[] constant(0.25)
+  %broadcast.118 = f32[4,5,32]{2,1,0} broadcast(%constant.60), dimensions={}
+  %multiply.57 = f32[4,5,32]{2,1,0} multiply(%param_0.67, %broadcast.118), metadata={op_name="jit(prefill)/div" stack_frame_id=43}
+  %constant.59 = f32[] constant(-inf)
+  %broadcast_in_dim.12 = f32[4,5,32]{2,1,0} broadcast(%constant.59), dimensions={}, metadata={op_name="jit(prefill)/jit(_where)/broadcast_in_dim" stack_frame_id=48}
+  ROOT %select_n.8 = f32[4,5,32]{2,1,0} select(%broadcast_in_dim.13, %multiply.57, %broadcast_in_dim.12), metadata={op_name="jit(prefill)/jit(_where)/select_n" stack_frame_id=48}
+}
+
+%fused_computation.41 (param_0.71: f32[3,32,4,16]) -> f32[4,16,32] {
+  %param_0.71 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %slice.12 = f32[1,32,4,16]{3,2,1,0} slice(%param_0.71), slice={[2:3], [0:32], [0:4], [0:16]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=41}
+  %bitcast.83 = f32[32,4,16]{2,1,0} bitcast(%slice.12), metadata={op_name="jit(prefill)/slice" stack_frame_id=41}
+  %transpose.16 = f32[4,16,32]{1,0,2} transpose(%bitcast.83), dimensions={1,2,0}, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+  ROOT %copy.13 = f32[4,16,32]{2,1,0} copy(%transpose.16), metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+}
+
+%fused_computation.42 (param_0.72: f32[3,32,4,16], param_1.72: f32[5,64]) -> f32[3,32,4,16] {
+  %param_0.72 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %param_1.72 = f32[5,64]{1,0} parameter(1)
+  %bitcast.84 = f32[1,5,4,16]{3,2,1,0} bitcast(%param_1.72), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}
+  %constant.61 = s32[] constant(2)
+  %constant.62 = s32[] constant(0)
+  ROOT %dynamic_update_slice.0 = f32[3,32,4,16]{3,2,1,0} dynamic-update-slice(%param_0.72, %bitcast.84, %constant.61, %constant.62, %constant.62, /*index=5*/%constant.62), metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=39}
+}
+
+%fused_computation.43 (param_0.74: f32[3,64,64]) -> f32[64,64] {
+  %param_0.74 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.13 = f32[1,64,64]{2,1,0} slice(%param_0.74), slice={[2:3], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.85 = f32[64,64]{1,0} bitcast(%slice.13), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.44 (param_0.77: f32[5,64]) -> f32[4,5,16] {
+  %param_0.77 = f32[5,64]{1,0} parameter(0)
+  %bitcast.86 = f32[5,4,16]{2,1,0} bitcast(%param_0.77), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}
+  %transpose.17 = f32[4,5,16]{2,0,1} transpose(%bitcast.86), dimensions={1,0,2}, metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+  ROOT %copy.14 = f32[4,5,16]{2,1,0} copy(%transpose.17), metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+}
+
+%fused_computation.45 (param_0.79: f32[3,64,64]) -> f32[64,64] {
+  %param_0.79 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.14 = f32[1,64,64]{2,1,0} slice(%param_0.79), slice={[2:3], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.87 = f32[64,64]{1,0} bitcast(%slice.14), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.46 (param_0.83: f32[3,32,4,16]) -> f32[4,16,32] {
+  %param_0.83 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %slice.15 = f32[1,32,4,16]{3,2,1,0} slice(%param_0.83), slice={[2:3], [0:32], [0:4], [0:16]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=42}
+  %bitcast.88 = f32[32,4,16]{2,1,0} bitcast(%slice.15), metadata={op_name="jit(prefill)/slice" stack_frame_id=42}
+  %transpose.18 = f32[4,16,32]{1,0,2} transpose(%bitcast.88), dimensions={1,2,0}, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+  ROOT %copy.15 = f32[4,16,32]{2,1,0} copy(%transpose.18), metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+}
+
+%fused_computation.47 (param_0.84: f32[3,32,4,16], param_1.76: f32[5,64]) -> f32[3,32,4,16] {
+  %param_0.84 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %param_1.76 = f32[5,64]{1,0} parameter(1)
+  %bitcast.89 = f32[1,5,4,16]{3,2,1,0} bitcast(%param_1.76), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}
+  %constant.63 = s32[] constant(2)
+  %constant.64 = s32[] constant(0)
+  ROOT %dynamic_update_slice.1 = f32[3,32,4,16]{3,2,1,0} dynamic-update-slice(%param_0.84, %bitcast.89, %constant.63, %constant.64, %constant.64, /*index=5*/%constant.64), metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=40}
+}
+
+%fused_computation.48 (param_0.86: f32[3,64,64]) -> f32[64,64] {
+  %param_0.86 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.16 = f32[1,64,64]{2,1,0} slice(%param_0.86), slice={[2:3], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.90 = f32[64,64]{1,0} bitcast(%slice.16), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.49 (param_0.88: f32[3,64], param_1.82: f32[5], param_2.43: f32[5,64], param_3.25: f32[5], param_4.16: f32[3,64]) -> f32[5,64] {
+  %param_4.16 = f32[3,64]{1,0} parameter(4)
+  %slice.18 = f32[1,64]{1,0} slice(%param_4.16), slice={[2:3], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.92 = f32[64]{0} bitcast(%slice.18), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %mul.4 = f32[5,64]{1,0} broadcast(%bitcast.92), dimensions={1}, metadata={op_name="jit(prefill)/mul" stack_frame_id=32}
+  %param_2.43 = f32[5,64]{1,0} parameter(2)
+  %param_3.25 = f32[5]{0} parameter(3)
+  %constant.65 = f32[] constant(0.015625)
+  %broadcast.120 = f32[5]{0} broadcast(%constant.65), dimensions={}
+  %multiply.59 = f32[5]{0} multiply(%param_3.25, %broadcast.120), metadata={op_name="jit(prefill)/div" stack_frame_id=7}
+  %sub.11 = f32[5,64]{1,0} broadcast(%multiply.59), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %sub.10 = f32[5,64]{1,0} subtract(%param_2.43, %sub.11), metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %param_1.82 = f32[5]{0} parameter(1)
+  %broadcast.119 = f32[5,64]{1,0} broadcast(%param_1.82), dimensions={0}, metadata={op_name="jit(prefill)/div" stack_frame_id=31}
+  %multiply.58 = f32[5,64]{1,0} multiply(%sub.10, %broadcast.119), metadata={op_name="jit(prefill)/div" stack_frame_id=31}
+  %mul.3 = f32[5,64]{1,0} multiply(%mul.4, %multiply.58), metadata={op_name="jit(prefill)/mul" stack_frame_id=32}
+  %param_0.88 = f32[3,64]{1,0} parameter(0)
+  %slice.17 = f32[1,64]{1,0} slice(%param_0.88), slice={[2:3], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.91 = f32[64]{0} bitcast(%slice.17), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.25 = f32[5,64]{1,0} broadcast(%bitcast.91), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+  ROOT %add.24 = f32[5,64]{1,0} add(%mul.3, %add.25), metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+}
+
+%region_13.15.clone (reduce_sum.48: f32[], reduce_sum.49: f32[]) -> f32[] {
+  %reduce_sum.48 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.49 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.50 = f32[] add(%reduce_sum.48, %reduce_sum.49), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+}
+
+%fused_computation.50 (param_0.93: f32[5,2]) -> f32[5] {
+  %param_0.93 = f32[5,2]{1,0} parameter(0)
+  %constant.68 = f32[] constant(0)
+  %reduce_sum.78 = f32[5]{0} reduce(%param_0.93, %constant.68), dimensions={1}, to_apply=%region_13.15.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+  %constant.67 = f32[] constant(0.015625)
+  %broadcast.122 = f32[5]{0} broadcast(%constant.67), dimensions={}
+  %multiply.60 = f32[5]{0} multiply(%reduce_sum.78, %broadcast.122), metadata={op_name="jit(prefill)/div" stack_frame_id=8}
+  %constant.66 = f32[] constant(1e-05)
+  %broadcast.121 = f32[5]{0} broadcast(%constant.66), dimensions={}
+  %add.26 = f32[5]{0} add(%multiply.60, %broadcast.121), metadata={op_name="jit(prefill)/add" stack_frame_id=29}
+  ROOT %rsqrt.16 = f32[5]{0} rsqrt(%add.26), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=30}
+}
+
+%fused_computation.51 (param_0.95: f32[5,64], param_1.90: f32[5]) -> f32[5,64] {
+  %param_0.95 = f32[5,64]{1,0} parameter(0)
+  %param_1.90 = f32[5]{0} parameter(1)
+  %constant.69 = f32[] constant(0.015625)
+  %broadcast.123 = f32[5]{0} broadcast(%constant.69), dimensions={}
+  %multiply.61 = f32[5]{0} multiply(%param_1.90, %broadcast.123), metadata={op_name="jit(prefill)/div" stack_frame_id=7}
+  %sub.13 = f32[5,64]{1,0} broadcast(%multiply.61), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %sub.12 = f32[5,64]{1,0} subtract(%param_0.95, %sub.13), metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  ROOT %integer_pow.2 = f32[5,64]{1,0} multiply(%sub.12, %sub.12), metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=27}
+}
+
+%fused_computation.52 (param_0.96: f32[5,64], param_1.92: f32[5,64], param_2.53: f32[3,64]) -> f32[5,64] {
+  %param_0.96 = f32[5,64]{1,0} parameter(0)
+  %param_1.92 = f32[5,64]{1,0} parameter(1)
+  %param_2.53 = f32[3,64]{1,0} parameter(2)
+  %slice.19 = f32[1,64]{1,0} slice(%param_2.53), slice={[1:2], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.93 = f32[64]{0} bitcast(%slice.19), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.29 = f32[5,64]{1,0} broadcast(%bitcast.93), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.28 = f32[5,64]{1,0} add(%param_1.92, %add.29), metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  ROOT %add.27 = f32[5,64]{1,0} add(%param_0.96, %add.28), metadata={op_name="jit(prefill)/add" stack_frame_id=68}
+}
+
+%fused_computation.53 (param_0.98: f32[3,256,64]) -> f32[256,64] {
+  %param_0.98 = f32[3,256,64]{2,1,0} parameter(0)
+  %slice.20 = f32[1,256,64]{2,1,0} slice(%param_0.98), slice={[1:2], [0:256], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.94 = f32[256,64]{1,0} bitcast(%slice.20), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.54 (param_0.101: f32[5,256], param_1.95: f32[3,256]) -> f32[5,256] {
+  %param_0.101 = f32[5,256]{1,0} parameter(0)
+  %param_1.95 = f32[3,256]{1,0} parameter(1)
+  %slice.21 = f32[1,256]{1,0} slice(%param_1.95), slice={[1:2], [0:256]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.95 = f32[256]{0} bitcast(%slice.21), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.31 = f32[5,256]{1,0} broadcast(%bitcast.95), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=64}
+  %add.30 = f32[5,256]{1,0} add(%param_0.101, %add.31), metadata={op_name="jit(prefill)/add" stack_frame_id=64}
+  %constant.70 = f32[] constant(0)
+  %broadcast.124 = f32[5,256]{1,0} broadcast(%constant.70), dimensions={}
+  ROOT %max.1 = f32[5,256]{1,0} maximum(%add.30, %broadcast.124), metadata={op_name="jit(prefill)/max" stack_frame_id=65}
+}
+
+%fused_computation.55 (param_0.103: f32[3,64,256]) -> f32[64,256] {
+  %param_0.103 = f32[3,64,256]{2,1,0} parameter(0)
+  %slice.22 = f32[1,64,256]{2,1,0} slice(%param_0.103), slice={[1:2], [0:64], [0:256]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.96 = f32[64,256]{1,0} bitcast(%slice.22), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.56 (param_0.105: f32[3,64], param_1.101: f32[5], param_2.62: f32[5,64], param_3.31: f32[5], param_4.21: f32[3,64]) -> f32[5,64] {
+  %param_4.21 = f32[3,64]{1,0} parameter(4)
+  %slice.24 = f32[1,64]{1,0} slice(%param_4.21), slice={[1:2], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.98 = f32[64]{0} bitcast(%slice.24), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %mul.6 = f32[5,64]{1,0} broadcast(%bitcast.98), dimensions={1}, metadata={op_name="jit(prefill)/mul" stack_frame_id=61}
+  %param_2.62 = f32[5,64]{1,0} parameter(2)
+  %param_3.31 = f32[5]{0} parameter(3)
+  %constant.71 = f32[] constant(0.015625)
+  %broadcast.126 = f32[5]{0} broadcast(%constant.71), dimensions={}
+  %multiply.63 = f32[5]{0} multiply(%param_3.31, %broadcast.126), metadata={op_name="jit(prefill)/div" stack_frame_id=14}
+  %sub.15 = f32[5,64]{1,0} broadcast(%multiply.63), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %sub.14 = f32[5,64]{1,0} subtract(%param_2.62, %sub.15), metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %param_1.101 = f32[5]{0} parameter(1)
+  %broadcast.125 = f32[5,64]{1,0} broadcast(%param_1.101), dimensions={0}, metadata={op_name="jit(prefill)/div" stack_frame_id=60}
+  %multiply.62 = f32[5,64]{1,0} multiply(%sub.14, %broadcast.125), metadata={op_name="jit(prefill)/div" stack_frame_id=60}
+  %mul.5 = f32[5,64]{1,0} multiply(%mul.6, %multiply.62), metadata={op_name="jit(prefill)/mul" stack_frame_id=61}
+  %param_0.105 = f32[3,64]{1,0} parameter(0)
+  %slice.23 = f32[1,64]{1,0} slice(%param_0.105), slice={[1:2], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.97 = f32[64]{0} bitcast(%slice.23), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.33 = f32[5,64]{1,0} broadcast(%bitcast.97), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+  ROOT %add.32 = f32[5,64]{1,0} add(%mul.5, %add.33), metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+}
+
+%region_11.13.clone (reduce_sum.36: f32[], reduce_sum.37: f32[]) -> f32[] {
+  %reduce_sum.36 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.37 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.41 = f32[] add(%reduce_sum.36, %reduce_sum.37), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+}
+
+%fused_computation.57 (param_0.110: f32[5,2]) -> f32[5] {
+  %param_0.110 = f32[5,2]{1,0} parameter(0)
+  %constant.74 = f32[] constant(0)
+  %reduce_sum.79 = f32[5]{0} reduce(%param_0.110, %constant.74), dimensions={1}, to_apply=%region_11.13.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+  %constant.73 = f32[] constant(0.015625)
+  %broadcast.128 = f32[5]{0} broadcast(%constant.73), dimensions={}
+  %multiply.64 = f32[5]{0} multiply(%reduce_sum.79, %broadcast.128), metadata={op_name="jit(prefill)/div" stack_frame_id=15}
+  %constant.72 = f32[] constant(1e-05)
+  %broadcast.127 = f32[5]{0} broadcast(%constant.72), dimensions={}
+  %add.34 = f32[5]{0} add(%multiply.64, %broadcast.127), metadata={op_name="jit(prefill)/add" stack_frame_id=58}
+  ROOT %rsqrt.17 = f32[5]{0} rsqrt(%add.34), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=59}
+}
+
+%fused_computation.58 (param_0.112: f32[5,64], param_1.109: f32[5]) -> f32[5,64] {
+  %param_0.112 = f32[5,64]{1,0} parameter(0)
+  %param_1.109 = f32[5]{0} parameter(1)
+  %constant.75 = f32[] constant(0.015625)
+  %broadcast.129 = f32[5]{0} broadcast(%constant.75), dimensions={}
+  %multiply.65 = f32[5]{0} multiply(%param_1.109, %broadcast.129), metadata={op_name="jit(prefill)/div" stack_frame_id=14}
+  %sub.17 = f32[5,64]{1,0} broadcast(%multiply.65), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %sub.16 = f32[5,64]{1,0} subtract(%param_0.112, %sub.17), metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  ROOT %integer_pow.3 = f32[5,64]{1,0} multiply(%sub.16, %sub.16), metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=56}
+}
+
+%fused_computation.59 (param_0.114: f32[3,64,64]) -> f32[64,64] {
+  %param_0.114 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.25 = f32[1,64,64]{2,1,0} slice(%param_0.114), slice={[1:2], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.99 = f32[64,64]{1,0} bitcast(%slice.25), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.60 (param_0.117: f32[4,16,5]) -> f32[5,64] {
+  %param_0.117 = f32[4,16,5]{2,1,0} parameter(0)
+  %transpose.19 = f32[5,4,16]{0,2,1} transpose(%param_0.117), dimensions={2,0,1}, metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  %copy.16 = f32[5,4,16]{2,1,0} copy(%transpose.19), metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  ROOT %bitcast.100 = f32[5,64]{1,0} bitcast(%copy.16), metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+}
+
+%fused_computation.61 (param_0.118: f32[4,5,32], param_1.111: f32[4,5]) -> f32[4,5,32] {
+  %param_0.118 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.111 = f32[4,5]{1,0} parameter(1)
+  %broadcast.130 = f32[4,5,32]{2,1,0} broadcast(%param_1.111), dimensions={0,1}, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  ROOT %multiply.66 = f32[4,5,32]{2,1,0} multiply(%param_0.118, %broadcast.130), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+}
+
+%region_9.11 (reduce_sum.52: f32[], reduce_sum.53: f32[]) -> f32[] {
+  %reduce_sum.52 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.53 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.54 = f32[] add(%reduce_sum.52, %reduce_sum.53), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=12}
+}
+
+%fused_computation.62 (param_0.120: f32[4,5,32]) -> f32[4,5] {
+  %constant.76 = f32[] constant(1), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %broadcast.131 = f32[4,5]{1,0} broadcast(%constant.76), dimensions={}, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %param_0.120 = f32[4,5,32]{2,1,0} parameter(0)
+  %constant.77 = f32[] constant(0)
+  %reduce_sum.83 = f32[4,5]{1,0} reduce(%param_0.120, %constant.77), dimensions={2}, to_apply=%region_9.11, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=12}
+  ROOT %divide.18 = f32[4,5]{1,0} divide(%broadcast.131, %reduce_sum.83), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+}
+
+%fused_computation.63 (param_0.122: f32[4,5,32], param_1.116: f32[4,5]) -> f32[4,5,32] {
+  %param_0.122 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.116 = f32[4,5]{1,0} parameter(1)
+  %sub.19 = f32[4,5,32]{2,1,0} broadcast(%param_1.116), dimensions={0,1}, metadata={op_name="jit(prefill)/sub" stack_frame_id=49}
+  %sub.18 = f32[4,5,32]{2,1,0} subtract(%param_0.122, %sub.19), metadata={op_name="jit(prefill)/sub" stack_frame_id=49}
+  ROOT %exp.1 = f32[4,5,32]{2,1,0} exponential(%sub.18), metadata={op_name="jit(prefill)/exp" stack_frame_id=50}
+}
+
+%fused_computation.64 (param_0.124: f32[4,5,32]) -> f32[4,5,32] {
+  %iota.29 = s32[5,32]{1,0} iota(), iota_dimension=1, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %iota.28 = s32[5,32]{1,0} iota(), iota_dimension=0, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %le.1 = pred[5,32]{1,0} compare(%iota.29, %iota.28), direction=LE, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %broadcast_in_dim.15 = pred[4,5,32]{2,1,0} broadcast(%le.1), dimensions={1,2}, metadata={op_name="jit(prefill)/jit(_where)/broadcast_in_dim" stack_frame_id=48}
+  %param_0.124 = f32[4,5,32]{2,1,0} parameter(0)
+  %constant.79 = f32[] constant(0.25)
+  %broadcast.132 = f32[4,5,32]{2,1,0} broadcast(%constant.79), dimensions={}
+  %multiply.67 = f32[4,5,32]{2,1,0} multiply(%param_0.124, %broadcast.132), metadata={op_name="jit(prefill)/div" stack_frame_id=43}
+  %constant.78 = f32[] constant(-inf)
+  %broadcast_in_dim.14 = f32[4,5,32]{2,1,0} broadcast(%constant.78), dimensions={}, metadata={op_name="jit(prefill)/jit(_where)/broadcast_in_dim" stack_frame_id=48}
+  ROOT %select_n.9 = f32[4,5,32]{2,1,0} select(%broadcast_in_dim.15, %multiply.67, %broadcast_in_dim.14), metadata={op_name="jit(prefill)/jit(_where)/select_n" stack_frame_id=48}
+}
+
+%fused_computation.65 (param_0.128: f32[3,32,4,16]) -> f32[4,16,32] {
+  %param_0.128 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %slice.26 = f32[1,32,4,16]{3,2,1,0} slice(%param_0.128), slice={[1:2], [0:32], [0:4], [0:16]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=41}
+  %bitcast.101 = f32[32,4,16]{2,1,0} bitcast(%slice.26), metadata={op_name="jit(prefill)/slice" stack_frame_id=41}
+  %transpose.20 = f32[4,16,32]{1,0,2} transpose(%bitcast.101), dimensions={1,2,0}, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+  ROOT %copy.17 = f32[4,16,32]{2,1,0} copy(%transpose.20), metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+}
+
+%fused_computation.66 (param_0.129: f32[3,32,4,16], param_1.125: f32[5,64]) -> f32[3,32,4,16] {
+  %param_0.129 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %param_1.125 = f32[5,64]{1,0} parameter(1)
+  %bitcast.102 = f32[1,5,4,16]{3,2,1,0} bitcast(%param_1.125), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}
+  %constant.80 = s32[] constant(1)
+  %constant.81 = s32[] constant(0)
+  ROOT %dynamic_update_slice.2 = f32[3,32,4,16]{3,2,1,0} dynamic-update-slice(%param_0.129, %bitcast.102, %constant.80, %constant.81, %constant.81, /*index=5*/%constant.81), metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=39}
+}
+
+%fused_computation.67 (param_0.131: f32[3,64,64]) -> f32[64,64] {
+  %param_0.131 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.27 = f32[1,64,64]{2,1,0} slice(%param_0.131), slice={[1:2], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.103 = f32[64,64]{1,0} bitcast(%slice.27), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.68 (param_0.134: f32[5,64]) -> f32[4,5,16] {
+  %param_0.134 = f32[5,64]{1,0} parameter(0)
+  %bitcast.104 = f32[5,4,16]{2,1,0} bitcast(%param_0.134), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}
+  %transpose.21 = f32[4,5,16]{2,0,1} transpose(%bitcast.104), dimensions={1,0,2}, metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+  ROOT %copy.18 = f32[4,5,16]{2,1,0} copy(%transpose.21), metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+}
+
+%fused_computation.69 (param_0.136: f32[3,64,64]) -> f32[64,64] {
+  %param_0.136 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.28 = f32[1,64,64]{2,1,0} slice(%param_0.136), slice={[1:2], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.105 = f32[64,64]{1,0} bitcast(%slice.28), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.70 (param_0.140: f32[3,32,4,16]) -> f32[4,16,32] {
+  %param_0.140 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %slice.29 = f32[1,32,4,16]{3,2,1,0} slice(%param_0.140), slice={[1:2], [0:32], [0:4], [0:16]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=42}
+  %bitcast.106 = f32[32,4,16]{2,1,0} bitcast(%slice.29), metadata={op_name="jit(prefill)/slice" stack_frame_id=42}
+  %transpose.22 = f32[4,16,32]{1,0,2} transpose(%bitcast.106), dimensions={1,2,0}, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+  ROOT %copy.19 = f32[4,16,32]{2,1,0} copy(%transpose.22), metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+}
+
+%fused_computation.71 (param_0.141: f32[3,32,4,16], param_1.129: f32[5,64]) -> f32[3,32,4,16] {
+  %param_0.141 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %param_1.129 = f32[5,64]{1,0} parameter(1)
+  %bitcast.107 = f32[1,5,4,16]{3,2,1,0} bitcast(%param_1.129), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}
+  %constant.82 = s32[] constant(1)
+  %constant.83 = s32[] constant(0)
+  ROOT %dynamic_update_slice.3 = f32[3,32,4,16]{3,2,1,0} dynamic-update-slice(%param_0.141, %bitcast.107, %constant.82, %constant.83, %constant.83, /*index=5*/%constant.83), metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=40}
+}
+
+%fused_computation.72 (param_0.143: f32[3,64,64]) -> f32[64,64] {
+  %param_0.143 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.30 = f32[1,64,64]{2,1,0} slice(%param_0.143), slice={[1:2], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.108 = f32[64,64]{1,0} bitcast(%slice.30), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.73 (param_0.145: f32[3,64], param_1.135: f32[5], param_2.85: f32[5,64], param_3.43: f32[5], param_4.26: f32[3,64]) -> f32[5,64] {
+  %param_4.26 = f32[3,64]{1,0} parameter(4)
+  %slice.32 = f32[1,64]{1,0} slice(%param_4.26), slice={[1:2], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.110 = f32[64]{0} bitcast(%slice.32), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %mul.8 = f32[5,64]{1,0} broadcast(%bitcast.110), dimensions={1}, metadata={op_name="jit(prefill)/mul" stack_frame_id=32}
+  %param_2.85 = f32[5,64]{1,0} parameter(2)
+  %param_3.43 = f32[5]{0} parameter(3)
+  %constant.84 = f32[] constant(0.015625)
+  %broadcast.134 = f32[5]{0} broadcast(%constant.84), dimensions={}
+  %multiply.69 = f32[5]{0} multiply(%param_3.43, %broadcast.134), metadata={op_name="jit(prefill)/div" stack_frame_id=7}
+  %sub.21 = f32[5,64]{1,0} broadcast(%multiply.69), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %sub.20 = f32[5,64]{1,0} subtract(%param_2.85, %sub.21), metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %param_1.135 = f32[5]{0} parameter(1)
+  %broadcast.133 = f32[5,64]{1,0} broadcast(%param_1.135), dimensions={0}, metadata={op_name="jit(prefill)/div" stack_frame_id=31}
+  %multiply.68 = f32[5,64]{1,0} multiply(%sub.20, %broadcast.133), metadata={op_name="jit(prefill)/div" stack_frame_id=31}
+  %mul.7 = f32[5,64]{1,0} multiply(%mul.8, %multiply.68), metadata={op_name="jit(prefill)/mul" stack_frame_id=32}
+  %param_0.145 = f32[3,64]{1,0} parameter(0)
+  %slice.31 = f32[1,64]{1,0} slice(%param_0.145), slice={[1:2], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.109 = f32[64]{0} bitcast(%slice.31), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.36 = f32[5,64]{1,0} broadcast(%bitcast.109), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+  ROOT %add.35 = f32[5,64]{1,0} add(%mul.7, %add.36), metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+}
+
+%region_7.9.clone (reduce_sum.27: f32[], reduce_sum.28: f32[]) -> f32[] {
+  %reduce_sum.27 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.28 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.29 = f32[] add(%reduce_sum.27, %reduce_sum.28), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+}
+
+%fused_computation.74 (param_0.150: f32[5,2]) -> f32[5] {
+  %param_0.150 = f32[5,2]{1,0} parameter(0)
+  %constant.87 = f32[] constant(0)
+  %reduce_sum.84 = f32[5]{0} reduce(%param_0.150, %constant.87), dimensions={1}, to_apply=%region_7.9.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+  %constant.86 = f32[] constant(0.015625)
+  %broadcast.136 = f32[5]{0} broadcast(%constant.86), dimensions={}
+  %multiply.70 = f32[5]{0} multiply(%reduce_sum.84, %broadcast.136), metadata={op_name="jit(prefill)/div" stack_frame_id=8}
+  %constant.85 = f32[] constant(1e-05)
+  %broadcast.135 = f32[5]{0} broadcast(%constant.85), dimensions={}
+  %add.37 = f32[5]{0} add(%multiply.70, %broadcast.135), metadata={op_name="jit(prefill)/add" stack_frame_id=29}
+  ROOT %rsqrt.18 = f32[5]{0} rsqrt(%add.37), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=30}
+}
+
+%fused_computation.75 (param_0.152: f32[5,64], param_1.143: f32[5]) -> f32[5,64] {
+  %param_0.152 = f32[5,64]{1,0} parameter(0)
+  %param_1.143 = f32[5]{0} parameter(1)
+  %constant.88 = f32[] constant(0.015625)
+  %broadcast.137 = f32[5]{0} broadcast(%constant.88), dimensions={}
+  %multiply.71 = f32[5]{0} multiply(%param_1.143, %broadcast.137), metadata={op_name="jit(prefill)/div" stack_frame_id=7}
+  %sub.23 = f32[5,64]{1,0} broadcast(%multiply.71), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %sub.22 = f32[5,64]{1,0} subtract(%param_0.152, %sub.23), metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  ROOT %integer_pow.4 = f32[5,64]{1,0} multiply(%sub.22, %sub.22), metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=27}
+}
+
+%fused_computation.76 (param_0.153: f32[5,64], param_1.145: f32[5,64], param_2.95: f32[3,64]) -> f32[5,64] {
+  %param_0.153 = f32[5,64]{1,0} parameter(0)
+  %param_1.145 = f32[5,64]{1,0} parameter(1)
+  %param_2.95 = f32[3,64]{1,0} parameter(2)
+  %slice.33 = f32[1,64]{1,0} slice(%param_2.95), slice={[0:1], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.111 = f32[64]{0} bitcast(%slice.33), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.40 = f32[5,64]{1,0} broadcast(%bitcast.111), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  %add.39 = f32[5,64]{1,0} add(%param_1.145, %add.40), metadata={op_name="jit(prefill)/add" stack_frame_id=67}
+  ROOT %add.38 = f32[5,64]{1,0} add(%param_0.153, %add.39), metadata={op_name="jit(prefill)/add" stack_frame_id=68}
+}
+
+%fused_computation.77 (param_0.155: f32[3,256,64]) -> f32[256,64] {
+  %param_0.155 = f32[3,256,64]{2,1,0} parameter(0)
+  %slice.34 = f32[1,256,64]{2,1,0} slice(%param_0.155), slice={[0:1], [0:256], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.112 = f32[256,64]{1,0} bitcast(%slice.34), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.78 (param_0.158: f32[5,256], param_1.149: f32[3,256]) -> f32[5,256] {
+  %param_0.158 = f32[5,256]{1,0} parameter(0)
+  %param_1.149 = f32[3,256]{1,0} parameter(1)
+  %slice.35 = f32[1,256]{1,0} slice(%param_1.149), slice={[0:1], [0:256]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.113 = f32[256]{0} bitcast(%slice.35), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.42 = f32[5,256]{1,0} broadcast(%bitcast.113), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=64}
+  %add.41 = f32[5,256]{1,0} add(%param_0.158, %add.42), metadata={op_name="jit(prefill)/add" stack_frame_id=64}
+  %constant.89 = f32[] constant(0)
+  %broadcast.138 = f32[5,256]{1,0} broadcast(%constant.89), dimensions={}
+  ROOT %max.2 = f32[5,256]{1,0} maximum(%add.41, %broadcast.138), metadata={op_name="jit(prefill)/max" stack_frame_id=65}
+}
+
+%fused_computation.79 (param_0.160: f32[3,64,256]) -> f32[64,256] {
+  %param_0.160 = f32[3,64,256]{2,1,0} parameter(0)
+  %slice.36 = f32[1,64,256]{2,1,0} slice(%param_0.160), slice={[0:1], [0:64], [0:256]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.114 = f32[64,256]{1,0} bitcast(%slice.36), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.80 (param_0.162: f32[3,64], param_1.155: f32[5], param_2.103: f32[5,64], param_3.49: f32[5], param_4.31: f32[3,64]) -> f32[5,64] {
+  %param_4.31 = f32[3,64]{1,0} parameter(4)
+  %slice.38 = f32[1,64]{1,0} slice(%param_4.31), slice={[0:1], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.116 = f32[64]{0} bitcast(%slice.38), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %mul.10 = f32[5,64]{1,0} broadcast(%bitcast.116), dimensions={1}, metadata={op_name="jit(prefill)/mul" stack_frame_id=61}
+  %param_2.103 = f32[5,64]{1,0} parameter(2)
+  %param_3.49 = f32[5]{0} parameter(3)
+  %constant.90 = f32[] constant(0.015625)
+  %broadcast.140 = f32[5]{0} broadcast(%constant.90), dimensions={}
+  %multiply.73 = f32[5]{0} multiply(%param_3.49, %broadcast.140), metadata={op_name="jit(prefill)/div" stack_frame_id=14}
+  %sub.25 = f32[5,64]{1,0} broadcast(%multiply.73), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %sub.24 = f32[5,64]{1,0} subtract(%param_2.103, %sub.25), metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %param_1.155 = f32[5]{0} parameter(1)
+  %broadcast.139 = f32[5,64]{1,0} broadcast(%param_1.155), dimensions={0}, metadata={op_name="jit(prefill)/div" stack_frame_id=60}
+  %multiply.72 = f32[5,64]{1,0} multiply(%sub.24, %broadcast.139), metadata={op_name="jit(prefill)/div" stack_frame_id=60}
+  %mul.9 = f32[5,64]{1,0} multiply(%mul.10, %multiply.72), metadata={op_name="jit(prefill)/mul" stack_frame_id=61}
+  %param_0.162 = f32[3,64]{1,0} parameter(0)
+  %slice.37 = f32[1,64]{1,0} slice(%param_0.162), slice={[0:1], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.115 = f32[64]{0} bitcast(%slice.37), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.44 = f32[5,64]{1,0} broadcast(%bitcast.115), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+  ROOT %add.43 = f32[5,64]{1,0} add(%mul.9, %add.44), metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+}
+
+%region_5.7.clone (reduce_sum.15: f32[], reduce_sum.16: f32[]) -> f32[] {
+  %reduce_sum.15 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.16 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.20 = f32[] add(%reduce_sum.15, %reduce_sum.16), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+}
+
+%fused_computation.81 (param_0.167: f32[5,2]) -> f32[5] {
+  %param_0.167 = f32[5,2]{1,0} parameter(0)
+  %constant.93 = f32[] constant(0)
+  %reduce_sum.85 = f32[5]{0} reduce(%param_0.167, %constant.93), dimensions={1}, to_apply=%region_5.7.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+  %constant.92 = f32[] constant(0.015625)
+  %broadcast.142 = f32[5]{0} broadcast(%constant.92), dimensions={}
+  %multiply.74 = f32[5]{0} multiply(%reduce_sum.85, %broadcast.142), metadata={op_name="jit(prefill)/div" stack_frame_id=15}
+  %constant.91 = f32[] constant(1e-05)
+  %broadcast.141 = f32[5]{0} broadcast(%constant.91), dimensions={}
+  %add.45 = f32[5]{0} add(%multiply.74, %broadcast.141), metadata={op_name="jit(prefill)/add" stack_frame_id=58}
+  ROOT %rsqrt.19 = f32[5]{0} rsqrt(%add.45), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=59}
+}
+
+%fused_computation.82 (param_0.169: f32[5,64], param_1.163: f32[5]) -> f32[5,64] {
+  %param_0.169 = f32[5,64]{1,0} parameter(0)
+  %param_1.163 = f32[5]{0} parameter(1)
+  %constant.94 = f32[] constant(0.015625)
+  %broadcast.143 = f32[5]{0} broadcast(%constant.94), dimensions={}
+  %multiply.75 = f32[5]{0} multiply(%param_1.163, %broadcast.143), metadata={op_name="jit(prefill)/div" stack_frame_id=14}
+  %sub.27 = f32[5,64]{1,0} broadcast(%multiply.75), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  %sub.26 = f32[5,64]{1,0} subtract(%param_0.169, %sub.27), metadata={op_name="jit(prefill)/sub" stack_frame_id=57}
+  ROOT %integer_pow.5 = f32[5,64]{1,0} multiply(%sub.26, %sub.26), metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=56}
+}
+
+%fused_computation.83 (param_0.171: f32[5,64], param_1.166: f32[5,1,64], param_2.110: f32[5,1,64]) -> f32[5,64] {
+  %param_1.166 = f32[5,1,64]{2,1,0} parameter(1)
+  %param_2.110 = f32[5,1,64]{2,1,0} parameter(2)
+  %add.47 = f32[5,1,64]{2,1,0} add(%param_1.166, %param_2.110), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %bitcast.117 = f32[5,64]{1,0} bitcast(%add.47), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %param_0.171 = f32[5,64]{1,0} parameter(0)
+  ROOT %add.46 = f32[5,64]{1,0} add(%bitcast.117, %param_0.171), metadata={op_name="jit(prefill)/add" stack_frame_id=54}
+}
+
+%fused_computation.84 (param_0.173: f32[3,64,64]) -> f32[64,64] {
+  %param_0.173 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.39 = f32[1,64,64]{2,1,0} slice(%param_0.173), slice={[0:1], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.118 = f32[64,64]{1,0} bitcast(%slice.39), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.85 (param_0.176: f32[4,16,5]) -> f32[5,64] {
+  %param_0.176 = f32[4,16,5]{2,1,0} parameter(0)
+  %transpose.23 = f32[5,4,16]{0,2,1} transpose(%param_0.176), dimensions={2,0,1}, metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  %copy.20 = f32[5,4,16]{2,1,0} copy(%transpose.23), metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  ROOT %bitcast.119 = f32[5,64]{1,0} bitcast(%copy.20), metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+}
+
+%fused_computation.86 (param_0.177: f32[4,5,32], param_1.168: f32[4,5]) -> f32[4,5,32] {
+  %param_0.177 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.168 = f32[4,5]{1,0} parameter(1)
+  %broadcast.144 = f32[4,5,32]{2,1,0} broadcast(%param_1.168), dimensions={0,1}, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  ROOT %multiply.76 = f32[4,5,32]{2,1,0} multiply(%param_0.177, %broadcast.144), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+}
+
+%region_3.5 (reduce_sum.17: f32[], reduce_sum.18: f32[]) -> f32[] {
+  %reduce_sum.17 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.18 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.19 = f32[] add(%reduce_sum.17, %reduce_sum.18), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=12}
+}
+
+%fused_computation.87 (param_0.179: f32[4,5,32]) -> f32[4,5] {
+  %constant.95 = f32[] constant(1), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %broadcast.145 = f32[4,5]{1,0} broadcast(%constant.95), dimensions={}, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %param_0.179 = f32[4,5,32]{2,1,0} parameter(0)
+  %constant.96 = f32[] constant(0)
+  %reduce_sum.86 = f32[4,5]{1,0} reduce(%param_0.179, %constant.96), dimensions={2}, to_apply=%region_3.5, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=12}
+  ROOT %divide.19 = f32[4,5]{1,0} divide(%broadcast.145, %reduce_sum.86), metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+}
+
+%fused_computation.88 (param_0.181: f32[4,5,32], param_1.173: f32[4,5]) -> f32[4,5,32] {
+  %param_0.181 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.173 = f32[4,5]{1,0} parameter(1)
+  %sub.29 = f32[4,5,32]{2,1,0} broadcast(%param_1.173), dimensions={0,1}, metadata={op_name="jit(prefill)/sub" stack_frame_id=49}
+  %sub.28 = f32[4,5,32]{2,1,0} subtract(%param_0.181, %sub.29), metadata={op_name="jit(prefill)/sub" stack_frame_id=49}
+  ROOT %exp.2 = f32[4,5,32]{2,1,0} exponential(%sub.28), metadata={op_name="jit(prefill)/exp" stack_frame_id=50}
+}
+
+%fused_computation.89 (param_0.183: f32[4,5,32]) -> f32[4,5,32] {
+  %iota.31 = s32[5,32]{1,0} iota(), iota_dimension=1, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %iota.30 = s32[5,32]{1,0} iota(), iota_dimension=0, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %le.2 = pred[5,32]{1,0} compare(%iota.31, %iota.30), direction=LE, metadata={op_name="jit(prefill)/le" stack_frame_id=46}
+  %broadcast_in_dim.17 = pred[4,5,32]{2,1,0} broadcast(%le.2), dimensions={1,2}, metadata={op_name="jit(prefill)/jit(_where)/broadcast_in_dim" stack_frame_id=48}
+  %param_0.183 = f32[4,5,32]{2,1,0} parameter(0)
+  %constant.98 = f32[] constant(0.25)
+  %broadcast.146 = f32[4,5,32]{2,1,0} broadcast(%constant.98), dimensions={}
+  %multiply.77 = f32[4,5,32]{2,1,0} multiply(%param_0.183, %broadcast.146), metadata={op_name="jit(prefill)/div" stack_frame_id=43}
+  %constant.97 = f32[] constant(-inf)
+  %broadcast_in_dim.16 = f32[4,5,32]{2,1,0} broadcast(%constant.97), dimensions={}, metadata={op_name="jit(prefill)/jit(_where)/broadcast_in_dim" stack_frame_id=48}
+  ROOT %select_n.10 = f32[4,5,32]{2,1,0} select(%broadcast_in_dim.17, %multiply.77, %broadcast_in_dim.16), metadata={op_name="jit(prefill)/jit(_where)/select_n" stack_frame_id=48}
+}
+
+%fused_computation.90 (param_0.187: f32[3,32,4,16]) -> f32[4,16,32] {
+  %param_0.187 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %slice.40 = f32[1,32,4,16]{3,2,1,0} slice(%param_0.187), slice={[0:1], [0:32], [0:4], [0:16]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=41}
+  %bitcast.120 = f32[32,4,16]{2,1,0} bitcast(%slice.40), metadata={op_name="jit(prefill)/slice" stack_frame_id=41}
+  %transpose.24 = f32[4,16,32]{1,0,2} transpose(%bitcast.120), dimensions={1,2,0}, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+  ROOT %copy.21 = f32[4,16,32]{2,1,0} copy(%transpose.24), metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+}
+
+%fused_computation.91 (param_0.188: f32[3,32,4,16], param_1.180: f32[5,64]) -> f32[3,32,4,16] {
+  %param_0.188 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %param_1.180 = f32[5,64]{1,0} parameter(1)
+  %bitcast.121 = f32[1,5,4,16]{3,2,1,0} bitcast(%param_1.180), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}
+  %constant.99 = s32[] constant(0)
+  ROOT %dynamic_update_slice.4 = f32[3,32,4,16]{3,2,1,0} dynamic-update-slice(%param_0.188, %bitcast.121, %constant.99, %constant.99, %constant.99, /*index=5*/%constant.99), metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=39}
+}
+
+%fused_computation.92 (param_0.190: f32[3,64,64]) -> f32[64,64] {
+  %param_0.190 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.41 = f32[1,64,64]{2,1,0} slice(%param_0.190), slice={[0:1], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.122 = f32[64,64]{1,0} bitcast(%slice.41), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.93 (param_0.193: f32[5,64]) -> f32[4,5,16] {
+  %param_0.193 = f32[5,64]{1,0} parameter(0)
+  %bitcast.123 = f32[5,4,16]{2,1,0} bitcast(%param_0.193), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}
+  %transpose.25 = f32[4,5,16]{2,0,1} transpose(%bitcast.123), dimensions={1,0,2}, metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+  ROOT %copy.22 = f32[4,5,16]{2,1,0} copy(%transpose.25), metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+}
+
+%fused_computation.94 (param_0.195: f32[3,64,64]) -> f32[64,64] {
+  %param_0.195 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.42 = f32[1,64,64]{2,1,0} slice(%param_0.195), slice={[0:1], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.124 = f32[64,64]{1,0} bitcast(%slice.42), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.95 (param_0.199: f32[3,32,4,16]) -> f32[4,16,32] {
+  %param_0.199 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %slice.86 = f32[1,32,4,16]{3,2,1,0} slice(%param_0.199), slice={[0:1], [0:32], [0:4], [0:16]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=42}
+  %bitcast.125 = f32[32,4,16]{2,1,0} bitcast(%slice.86), metadata={op_name="jit(prefill)/slice" stack_frame_id=42}
+  %transpose.26 = f32[4,16,32]{1,0,2} transpose(%bitcast.125), dimensions={1,2,0}, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+  ROOT %copy.23 = f32[4,16,32]{2,1,0} copy(%transpose.26), metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+}
+
+%fused_computation.96 (param_0.200: f32[3,32,4,16], param_1.183: f32[5,64]) -> f32[3,32,4,16] {
+  %param_0.200 = f32[3,32,4,16]{3,2,1,0} parameter(0)
+  %param_1.183 = f32[5,64]{1,0} parameter(1)
+  %bitcast.126 = f32[1,5,4,16]{3,2,1,0} bitcast(%param_1.183), metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}
+  %constant.100 = s32[] constant(0)
+  ROOT %dynamic_update_slice.5 = f32[3,32,4,16]{3,2,1,0} dynamic-update-slice(%param_0.200, %bitcast.126, %constant.100, %constant.100, %constant.100, /*index=5*/%constant.100), metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=40}
+}
+
+%fused_computation.97 (param_0.202: f32[3,64,64]) -> f32[64,64] {
+  %param_0.202 = f32[3,64,64]{2,1,0} parameter(0)
+  %slice.87 = f32[1,64,64]{2,1,0} slice(%param_0.202), slice={[0:1], [0:64], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  ROOT %bitcast.127 = f32[64,64]{1,0} bitcast(%slice.87), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+}
+
+%fused_computation.98 (param_0.204: f32[3,64], param_1.189: f32[5], param_2.126: f32[5], param_3.56: f32[3,64], param_4.39: f32[5,1,64], param_5.31: f32[5,1,64]) -> f32[5,64] {
+  %param_3.56 = f32[3,64]{1,0} parameter(3)
+  %slice.89 = f32[1,64]{1,0} slice(%param_3.56), slice={[0:1], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.129 = f32[64]{0} bitcast(%slice.89), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %mul.12 = f32[5,64]{1,0} broadcast(%bitcast.129), dimensions={1}, metadata={op_name="jit(prefill)/mul" stack_frame_id=32}
+  %param_4.39 = f32[5,1,64]{2,1,0} parameter(4)
+  %param_5.31 = f32[5,1,64]{2,1,0} parameter(5)
+  %add.50 = f32[5,1,64]{2,1,0} add(%param_4.39, %param_5.31), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %bitcast.130 = f32[5,64]{1,0} bitcast(%add.50), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %param_2.126 = f32[5]{0} parameter(2)
+  %constant.101 = f32[] constant(0.015625)
+  %broadcast.148 = f32[5]{0} broadcast(%constant.101), dimensions={}
+  %multiply.79 = f32[5]{0} multiply(%param_2.126, %broadcast.148), metadata={op_name="jit(prefill)/div" stack_frame_id=7}
+  %sub.31 = f32[5,64]{1,0} broadcast(%multiply.79), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %sub.30 = f32[5,64]{1,0} subtract(%bitcast.130, %sub.31), metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %param_1.189 = f32[5]{0} parameter(1)
+  %broadcast.147 = f32[5,64]{1,0} broadcast(%param_1.189), dimensions={0}, metadata={op_name="jit(prefill)/div" stack_frame_id=31}
+  %multiply.78 = f32[5,64]{1,0} multiply(%sub.30, %broadcast.147), metadata={op_name="jit(prefill)/div" stack_frame_id=31}
+  %mul.11 = f32[5,64]{1,0} multiply(%mul.12, %multiply.78), metadata={op_name="jit(prefill)/mul" stack_frame_id=32}
+  %param_0.204 = f32[3,64]{1,0} parameter(0)
+  %slice.88 = f32[1,64]{1,0} slice(%param_0.204), slice={[0:1], [0:64]}, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %bitcast.128 = f32[64]{0} bitcast(%slice.88), metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %add.49 = f32[5,64]{1,0} broadcast(%bitcast.128), dimensions={1}, metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+  ROOT %add.48 = f32[5,64]{1,0} add(%mul.11, %add.49), metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+}
+
+%region_1.2.clone (reduce_sum.6: f32[], reduce_sum.7: f32[]) -> f32[] {
+  %reduce_sum.6 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.7 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.8 = f32[] add(%reduce_sum.6, %reduce_sum.7), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+}
+
+%fused_computation.99 (param_0.209: f32[5,2]) -> f32[5] {
+  %param_0.209 = f32[5,2]{1,0} parameter(0)
+  %constant.104 = f32[] constant(0)
+  %reduce_sum.90 = f32[5]{0} reduce(%param_0.209, %constant.104), dimensions={1}, to_apply=%region_1.2.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+  %constant.103 = f32[] constant(0.015625)
+  %broadcast.150 = f32[5]{0} broadcast(%constant.103), dimensions={}
+  %multiply.80 = f32[5]{0} multiply(%reduce_sum.90, %broadcast.150), metadata={op_name="jit(prefill)/div" stack_frame_id=8}
+  %constant.102 = f32[] constant(1e-05)
+  %broadcast.149 = f32[5]{0} broadcast(%constant.102), dimensions={}
+  %add.51 = f32[5]{0} add(%multiply.80, %broadcast.149), metadata={op_name="jit(prefill)/add" stack_frame_id=29}
+  ROOT %rsqrt.20 = f32[5]{0} rsqrt(%add.51), metadata={op_name="jit(prefill)/sqrt" stack_frame_id=30}
+}
+
+%fused_computation.100 (param_0.212: f32[5], param_1.199: f32[5,1,64], param_2.131: f32[5,1,64]) -> f32[5,64] {
+  %param_1.199 = f32[5,1,64]{2,1,0} parameter(1)
+  %param_2.131 = f32[5,1,64]{2,1,0} parameter(2)
+  %add.52 = f32[5,1,64]{2,1,0} add(%param_1.199, %param_2.131), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %bitcast.131 = f32[5,64]{1,0} bitcast(%add.52), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %param_0.212 = f32[5]{0} parameter(0)
+  %constant.105 = f32[] constant(0.015625)
+  %broadcast.151 = f32[5]{0} broadcast(%constant.105), dimensions={}
+  %multiply.81 = f32[5]{0} multiply(%param_0.212, %broadcast.151), metadata={op_name="jit(prefill)/div" stack_frame_id=7}
+  %sub.33 = f32[5,64]{1,0} broadcast(%multiply.81), dimensions={0}, metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  %sub.32 = f32[5,64]{1,0} subtract(%bitcast.131, %sub.33), metadata={op_name="jit(prefill)/sub" stack_frame_id=28}
+  ROOT %integer_pow.6 = f32[5,64]{1,0} multiply(%sub.32, %sub.32), metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=27}
+}
+
+%fused_computation.101 (param_0.214: f32[5,1,64], param_1.200: f32[5,1,64]) -> f32[5,64] {
+  %param_0.214 = f32[5,1,64]{2,1,0} parameter(0)
+  %param_1.200 = f32[5,1,64]{2,1,0} parameter(1)
+  %add.53 = f32[5,1,64]{2,1,0} add(%param_0.214, %param_1.200), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  ROOT %bitcast.132 = f32[5,64]{1,0} bitcast(%add.53), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+}
+
+%fused_computation.102 (param_0.215: f32[32,64]) -> f32[5,1,64] {
+  %param_0.215 = f32[32,64]{1,0} parameter(0)
+  %iota.32 = s32[5,1]{1,0} iota(), iota_dimension=0, metadata={op_name="jit(prefill)/iota" stack_frame_id=20}
+  ROOT %gather.4 = f32[5,1,64]{2,1,0} gather(%param_0.215, %iota.32), offset_dims={1,2}, collapsed_slice_dims={}, start_index_map={0}, index_vector_dim=1, slice_sizes={1,64}, metadata={op_name="jit(prefill)/gather" stack_frame_id=23}
+}
+
+%fused_computation.103 (param_0.216: f32[100,64], param_1.205: s32[5]) -> f32[5,1,64] {
+  %param_0.216 = f32[100,64]{1,0} parameter(0)
+  %param_1.205 = s32[5]{0} parameter(1)
+  %constant.107 = s32[] constant(0)
+  %broadcast.153 = s32[5]{0} broadcast(%constant.107), dimensions={}
+  %lt.0 = pred[5]{0} compare(%param_1.205, %broadcast.153), direction=LT, metadata={op_name="jit(prefill)/lt" stack_frame_id=22}
+  %constant.106 = s32[] constant(100)
+  %broadcast.152 = s32[5]{0} broadcast(%constant.106), dimensions={}
+  %add.54 = s32[5]{0} add(%param_1.205, %broadcast.152), metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %select_n.11 = s32[5]{0} select(%lt.0, %add.54, %param_1.205), metadata={op_name="jit(prefill)/select_n" stack_frame_id=22}
+  %bitcast.133 = s32[5,1]{1,0} bitcast(%select_n.11), metadata={op_name="jit(prefill)/select_n" stack_frame_id=22}
+  ROOT %gather.5 = f32[5,1,64]{2,1,0} gather(%param_0.216, %bitcast.133), offset_dims={1,2}, collapsed_slice_dims={}, start_index_map={0}, index_vector_dim=1, slice_sizes={1,64}, metadata={op_name="jit(prefill)/gather" stack_frame_id=22}
+}
+
+%region_0.1 (reduce_sum.3: f32[], reduce_sum.4: f32[]) -> f32[] {
+  %reduce_sum.3 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.4 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.5 = f32[] add(%reduce_sum.3, %reduce_sum.4), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%wrapped_reduce-window_computation (param_0.217: f32[5,64], param_1.206: f32[]) -> f32[5,2] {
+  %param_0.217 = f32[5,64]{1,0} parameter(0)
+  %param_1.206 = f32[] parameter(1)
+  ROOT %reduce-window.14 = f32[5,2]{1,0} reduce-window(%param_0.217, %param_1.206), window={size=1x32 stride=1x32}, to_apply=%region_0.1
+}
+
+%region_0.1.clone (reduce_sum.0: f32[], reduce_sum.1: f32[]) -> f32[] {
+  %reduce_sum.0 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.1 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.2 = f32[] add(%reduce_sum.0, %reduce_sum.1), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%wrapped_reduce_computation (param_0.218: f32[5,2], param_1.207: f32[]) -> f32[5] {
+  %param_0.218 = f32[5,2]{1,0} parameter(0)
+  %param_1.207 = f32[] parameter(1)
+  ROOT %reduce_sum.91 = f32[5]{0} reduce(%param_0.218, %param_1.207), dimensions={1}, to_apply=%region_0.1.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%region_1.2 (reduce_sum.10: f32[], reduce_sum.11: f32[]) -> f32[] {
+  %reduce_sum.10 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.11 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.12 = f32[] add(%reduce_sum.10, %reduce_sum.11), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+}
+
+%wrapped_reduce-window_computation.1 (param_0.219: f32[5,64], param_1.208: f32[]) -> f32[5,2] {
+  %param_0.219 = f32[5,64]{1,0} parameter(0)
+  %param_1.208 = f32[] parameter(1)
+  ROOT %reduce-window.15 = f32[5,2]{1,0} reduce-window(%param_0.219, %param_1.208), window={size=1x32 stride=1x32}, to_apply=%region_1.2
+}
+
+%region_2.4 (reduce_max.3: f32[], reduce_max.4: f32[]) -> f32[] {
+  %reduce_max.3 = f32[] parameter(0), metadata={op_name="reduce_max"}
+  %reduce_max.4 = f32[] parameter(1), metadata={op_name="reduce_max"}
+  ROOT %reduce_max.5 = f32[] maximum(%reduce_max.3, %reduce_max.4), metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+}
+
+%wrapped_reduce_computation.1 (param_0.220: f32[4,5,32], param_1.209: f32[]) -> f32[4,5] {
+  %param_0.220 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.209 = f32[] parameter(1)
+  ROOT %reduce_max.0 = f32[4,5]{1,0} reduce(%param_0.220, %param_1.209), dimensions={2}, to_apply=%region_2.4, metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+}
+
+%region_4.6 (reduce_sum.24: f32[], reduce_sum.25: f32[]) -> f32[] {
+  %reduce_sum.24 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.25 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.26 = f32[] add(%reduce_sum.24, %reduce_sum.25), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce-window_computation.2 (param_0.221: f32[5,64], param_1.210: f32[]) -> f32[5,2] {
+  %param_0.221 = f32[5,64]{1,0} parameter(0)
+  %param_1.210 = f32[] parameter(1)
+  ROOT %reduce-window.16 = f32[5,2]{1,0} reduce-window(%param_0.221, %param_1.210), window={size=1x32 stride=1x32}, to_apply=%region_4.6
+}
+
+%region_4.6.clone (reduce_sum.9: f32[], reduce_sum.13: f32[]) -> f32[] {
+  %reduce_sum.9 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.13 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.14 = f32[] add(%reduce_sum.9, %reduce_sum.13), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce_computation.2 (param_0.222: f32[5,2], param_1.211: f32[]) -> f32[5] {
+  %param_0.222 = f32[5,2]{1,0} parameter(0)
+  %param_1.211 = f32[] parameter(1)
+  ROOT %reduce_sum.92 = f32[5]{0} reduce(%param_0.222, %param_1.211), dimensions={1}, to_apply=%region_4.6.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%region_5.7 (reduce_sum.31: f32[], reduce_sum.32: f32[]) -> f32[] {
+  %reduce_sum.31 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.32 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.33 = f32[] add(%reduce_sum.31, %reduce_sum.32), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+}
+
+%wrapped_reduce-window_computation.3 (param_0.223: f32[5,64], param_1.212: f32[]) -> f32[5,2] {
+  %param_0.223 = f32[5,64]{1,0} parameter(0)
+  %param_1.212 = f32[] parameter(1)
+  ROOT %reduce-window.17 = f32[5,2]{1,0} reduce-window(%param_0.223, %param_1.212), window={size=1x32 stride=1x32}, to_apply=%region_5.7
+}
+
+%region_6.8 (reduce_sum.38: f32[], reduce_sum.39: f32[]) -> f32[] {
+  %reduce_sum.38 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.39 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.40 = f32[] add(%reduce_sum.38, %reduce_sum.39), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%wrapped_reduce-window_computation.4 (param_0.224: f32[5,64], param_1.213: f32[]) -> f32[5,2] {
+  %param_0.224 = f32[5,64]{1,0} parameter(0)
+  %param_1.213 = f32[] parameter(1)
+  ROOT %reduce-window.18 = f32[5,2]{1,0} reduce-window(%param_0.224, %param_1.213), window={size=1x32 stride=1x32}, to_apply=%region_6.8
+}
+
+%region_6.8.clone (reduce_sum.21: f32[], reduce_sum.22: f32[]) -> f32[] {
+  %reduce_sum.21 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.22 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.23 = f32[] add(%reduce_sum.21, %reduce_sum.22), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%wrapped_reduce_computation.3 (param_0.225: f32[5,2], param_1.214: f32[]) -> f32[5] {
+  %param_0.225 = f32[5,2]{1,0} parameter(0)
+  %param_1.214 = f32[] parameter(1)
+  ROOT %reduce_sum.93 = f32[5]{0} reduce(%param_0.225, %param_1.214), dimensions={1}, to_apply=%region_6.8.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%region_7.9 (reduce_sum.45: f32[], reduce_sum.46: f32[]) -> f32[] {
+  %reduce_sum.45 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.46 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.47 = f32[] add(%reduce_sum.45, %reduce_sum.46), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+}
+
+%wrapped_reduce-window_computation.5 (param_0.226: f32[5,64], param_1.215: f32[]) -> f32[5,2] {
+  %param_0.226 = f32[5,64]{1,0} parameter(0)
+  %param_1.215 = f32[] parameter(1)
+  ROOT %reduce-window.19 = f32[5,2]{1,0} reduce-window(%param_0.226, %param_1.215), window={size=1x32 stride=1x32}, to_apply=%region_7.9
+}
+
+%region_8.10 (reduce_max.10: f32[], reduce_max.11: f32[]) -> f32[] {
+  %reduce_max.10 = f32[] parameter(0), metadata={op_name="reduce_max"}
+  %reduce_max.11 = f32[] parameter(1), metadata={op_name="reduce_max"}
+  ROOT %reduce_max.12 = f32[] maximum(%reduce_max.10, %reduce_max.11), metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+}
+
+%wrapped_reduce_computation.4 (param_0.227: f32[4,5,32], param_1.216: f32[]) -> f32[4,5] {
+  %param_0.227 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.216 = f32[] parameter(1)
+  ROOT %reduce_max.1 = f32[4,5]{1,0} reduce(%param_0.227, %param_1.216), dimensions={2}, to_apply=%region_8.10, metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+}
+
+%wrapped_add_computation (param_0.228: f32[5,64], param_1.217: f32[5,64]) -> f32[5,64] {
+  %param_0.228 = f32[5,64]{1,0} parameter(0)
+  %param_1.217 = f32[5,64]{1,0} parameter(1)
+  ROOT %add.55 = f32[5,64]{1,0} add(%param_0.228, %param_1.217), metadata={op_name="jit(prefill)/add" stack_frame_id=54}
+}
+
+%region_10.12 (reduce_sum.59: f32[], reduce_sum.60: f32[]) -> f32[] {
+  %reduce_sum.59 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.60 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.61 = f32[] add(%reduce_sum.59, %reduce_sum.60), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce-window_computation.6 (param_0.229: f32[5,64], param_1.218: f32[]) -> f32[5,2] {
+  %param_0.229 = f32[5,64]{1,0} parameter(0)
+  %param_1.218 = f32[] parameter(1)
+  ROOT %reduce-window.20 = f32[5,2]{1,0} reduce-window(%param_0.229, %param_1.218), window={size=1x32 stride=1x32}, to_apply=%region_10.12
+}
+
+%region_10.12.clone (reduce_sum.30: f32[], reduce_sum.34: f32[]) -> f32[] {
+  %reduce_sum.30 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.34 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.35 = f32[] add(%reduce_sum.30, %reduce_sum.34), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce_computation.5 (param_0.230: f32[5,2], param_1.219: f32[]) -> f32[5] {
+  %param_0.230 = f32[5,2]{1,0} parameter(0)
+  %param_1.219 = f32[] parameter(1)
+  ROOT %reduce_sum.97 = f32[5]{0} reduce(%param_0.230, %param_1.219), dimensions={1}, to_apply=%region_10.12.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%region_11.13 (reduce_sum.66: f32[], reduce_sum.67: f32[]) -> f32[] {
+  %reduce_sum.66 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.67 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.68 = f32[] add(%reduce_sum.66, %reduce_sum.67), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+}
+
+%wrapped_reduce-window_computation.7 (param_0.231: f32[5,64], param_1.220: f32[]) -> f32[5,2] {
+  %param_0.231 = f32[5,64]{1,0} parameter(0)
+  %param_1.220 = f32[] parameter(1)
+  ROOT %reduce-window.21 = f32[5,2]{1,0} reduce-window(%param_0.231, %param_1.220), window={size=1x32 stride=1x32}, to_apply=%region_11.13
+}
+
+%region_12.14 (reduce_sum.73: f32[], reduce_sum.74: f32[]) -> f32[] {
+  %reduce_sum.73 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.74 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.75 = f32[] add(%reduce_sum.73, %reduce_sum.74), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%wrapped_reduce-window_computation.8 (param_0.232: f32[5,64], param_1.221: f32[]) -> f32[5,2] {
+  %param_0.232 = f32[5,64]{1,0} parameter(0)
+  %param_1.221 = f32[] parameter(1)
+  ROOT %reduce-window.22 = f32[5,2]{1,0} reduce-window(%param_0.232, %param_1.221), window={size=1x32 stride=1x32}, to_apply=%region_12.14
+}
+
+%region_12.14.clone (reduce_sum.42: f32[], reduce_sum.43: f32[]) -> f32[] {
+  %reduce_sum.42 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.43 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.44 = f32[] add(%reduce_sum.42, %reduce_sum.43), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%wrapped_reduce_computation.6 (param_0.233: f32[5,2], param_1.222: f32[]) -> f32[5] {
+  %param_0.233 = f32[5,2]{1,0} parameter(0)
+  %param_1.222 = f32[] parameter(1)
+  ROOT %reduce_sum.98 = f32[5]{0} reduce(%param_0.233, %param_1.222), dimensions={1}, to_apply=%region_12.14.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+}
+
+%region_13.15 (reduce_sum.80: f32[], reduce_sum.81: f32[]) -> f32[] {
+  %reduce_sum.80 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.81 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.82 = f32[] add(%reduce_sum.80, %reduce_sum.81), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=8}
+}
+
+%wrapped_reduce-window_computation.9 (param_0.234: f32[5,64], param_1.223: f32[]) -> f32[5,2] {
+  %param_0.234 = f32[5,64]{1,0} parameter(0)
+  %param_1.223 = f32[] parameter(1)
+  ROOT %reduce-window.23 = f32[5,2]{1,0} reduce-window(%param_0.234, %param_1.223), window={size=1x32 stride=1x32}, to_apply=%region_13.15
+}
+
+%region_14.16 (reduce_max.17: f32[], reduce_max.18: f32[]) -> f32[] {
+  %reduce_max.17 = f32[] parameter(0), metadata={op_name="reduce_max"}
+  %reduce_max.18 = f32[] parameter(1), metadata={op_name="reduce_max"}
+  ROOT %reduce_max.19 = f32[] maximum(%reduce_max.17, %reduce_max.18), metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+}
+
+%wrapped_reduce_computation.7 (param_0.235: f32[4,5,32], param_1.224: f32[]) -> f32[4,5] {
+  %param_0.235 = f32[4,5,32]{2,1,0} parameter(0)
+  %param_1.224 = f32[] parameter(1)
+  ROOT %reduce_max.2 = f32[4,5]{1,0} reduce(%param_0.235, %param_1.224), dimensions={2}, to_apply=%region_14.16, metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+}
+
+%wrapped_add_computation.1 (param_0.236: f32[5,64], param_1.225: f32[5,64]) -> f32[5,64] {
+  %param_0.236 = f32[5,64]{1,0} parameter(0)
+  %param_1.225 = f32[5,64]{1,0} parameter(1)
+  ROOT %add.56 = f32[5,64]{1,0} add(%param_0.236, %param_1.225), metadata={op_name="jit(prefill)/add" stack_frame_id=54}
+}
+
+%region_16.18 (reduce_sum.94: f32[], reduce_sum.95: f32[]) -> f32[] {
+  %reduce_sum.94 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.95 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.96 = f32[] add(%reduce_sum.94, %reduce_sum.95), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce-window_computation.10 (param_0.237: f32[5,64], param_1.226: f32[]) -> f32[5,2] {
+  %param_0.237 = f32[5,64]{1,0} parameter(0)
+  %param_1.226 = f32[] parameter(1)
+  ROOT %reduce-window.24 = f32[5,2]{1,0} reduce-window(%param_0.237, %param_1.226), window={size=1x32 stride=1x32}, to_apply=%region_16.18
+}
+
+%region_16.18.clone (reduce_sum.51: f32[], reduce_sum.55: f32[]) -> f32[] {
+  %reduce_sum.51 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.55 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.56 = f32[] add(%reduce_sum.51, %reduce_sum.55), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%wrapped_reduce_computation.8 (param_0.238: f32[5,2], param_1.227: f32[]) -> f32[5] {
+  %param_0.238 = f32[5,2]{1,0} parameter(0)
+  %param_1.227 = f32[] parameter(1)
+  ROOT %reduce_sum.99 = f32[5]{0} reduce(%param_0.238, %param_1.227), dimensions={1}, to_apply=%region_16.18.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+}
+
+%region_17.19 (reduce_sum.101: f32[], reduce_sum.102: f32[]) -> f32[] {
+  %reduce_sum.101 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.102 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.103 = f32[] add(%reduce_sum.101, %reduce_sum.102), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=15}
+}
+
+%wrapped_reduce-window_computation.11 (param_0.239: f32[5,64], param_1.228: f32[]) -> f32[5,2] {
+  %param_0.239 = f32[5,64]{1,0} parameter(0)
+  %param_1.228 = f32[] parameter(1)
+  ROOT %reduce-window.25 = f32[5,2]{1,0} reduce-window(%param_0.239, %param_1.228), window={size=1x32 stride=1x32}, to_apply=%region_17.19
+}
+
+%region_18.20 (reduce_sum.108: f32[], reduce_sum.109: f32[]) -> f32[] {
+  %reduce_sum.108 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.109 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.110 = f32[] add(%reduce_sum.108, %reduce_sum.109), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=18}
+}
+
+%wrapped_reduce-window_computation.12 (param_0.240: f32[1,64], param_1.229: f32[]) -> f32[1,2] {
+  %param_0.240 = f32[1,64]{1,0} parameter(0)
+  %param_1.229 = f32[] parameter(1)
+  ROOT %reduce-window.26 = f32[1,2]{1,0} reduce-window(%param_0.240, %param_1.229), window={size=1x32 stride=1x32}, to_apply=%region_18.20
+}
+
+%region_18.20.clone (reduce_sum.63: f32[], reduce_sum.64: f32[]) -> f32[] {
+  %reduce_sum.63 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.64 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.65 = f32[] add(%reduce_sum.63, %reduce_sum.64), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=18}
+}
+
+%wrapped_reduce_computation.9 (param_0.241: f32[1,2], param_1.230: f32[]) -> f32[1] {
+  %param_0.241 = f32[1,2]{1,0} parameter(0)
+  %param_1.230 = f32[] parameter(1)
+  ROOT %reduce_sum.100 = f32[1]{0} reduce(%param_0.241, %param_1.230), dimensions={1}, to_apply=%region_18.20.clone, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=18}
+}
+
+%region_19.21 (reduce_sum.115: f32[], reduce_sum.116: f32[]) -> f32[] {
+  %reduce_sum.115 = f32[] parameter(0), metadata={op_name="reduce_sum"}
+  %reduce_sum.116 = f32[] parameter(1), metadata={op_name="reduce_sum"}
+  ROOT %reduce_sum.117 = f32[] add(%reduce_sum.115, %reduce_sum.116), metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=19}
+}
+
+%wrapped_reduce-window_computation.13 (param_0.242: f32[1,64], param_1.231: f32[]) -> f32[1,2] {
+  %param_0.242 = f32[1,64]{1,0} parameter(0)
+  %param_1.231 = f32[] parameter(1)
+  ROOT %reduce-window.27 = f32[1,2]{1,0} reduce-window(%param_0.242, %param_1.231), window={size=1x32 stride=1x32}, to_apply=%region_19.21
+}
+
+ENTRY %main.22 (params__blocks____attn____wk__.1: f32[3,64,64], params__blocks____attn____wo__.1: f32[3,64,64], params__blocks____attn____wq__.1: f32[3,64,64], params__blocks____attn____wv__.1: f32[3,64,64], params__blocks____ffn____b1__.1: f32[3,256], params__blocks____ffn____b2__.1: f32[3,64], params__blocks____ffn____w1__.1: f32[3,64,256], params__blocks____ffn____w2__.1: f32[3,256,64], params__blocks____ln1____beta__.1: f32[3,64], params__blocks____ln1____gamma__.1: f32[3,64], params__blocks____ln2____beta__.1: f32[3,64], params__blocks____ln2____gamma__.1: f32[3,64], params__embed__.1: f32[100,64], params__ln_f____beta__.1: f32[64], params__ln_f____gamma__.1: f32[64], params__pos__.1: f32[32,64], params__unembed__.1: f32[64,100], tokens.1: s32[5], cache__k__.1: f32[3,32,4,16], cache__v__.1: f32[3,32,4,16]) -> (f32[1,100], f32[3,32,4,16], f32[3,32,4,16]) {
+  %params__blocks____attn____wk__.1 = f32[3,64,64]{2,1,0} parameter(0), metadata={op_name="params[\'blocks\'][\'attn\'][\'wk\']"}
+  %params__blocks____attn____wo__.1 = f32[3,64,64]{2,1,0} parameter(1), metadata={op_name="params[\'blocks\'][\'attn\'][\'wo\']"}
+  %params__blocks____attn____wq__.1 = f32[3,64,64]{2,1,0} parameter(2), metadata={op_name="params[\'blocks\'][\'attn\'][\'wq\']"}
+  %params__blocks____attn____wv__.1 = f32[3,64,64]{2,1,0} parameter(3), metadata={op_name="params[\'blocks\'][\'attn\'][\'wv\']"}
+  %params__blocks____ffn____b1__.1 = f32[3,256]{1,0} parameter(4), metadata={op_name="params[\'blocks\'][\'ffn\'][\'b1\']"}
+  %params__blocks____ffn____b2__.1 = f32[3,64]{1,0} parameter(5), metadata={op_name="params[\'blocks\'][\'ffn\'][\'b2\']"}
+  %params__blocks____ffn____w1__.1 = f32[3,64,256]{2,1,0} parameter(6), metadata={op_name="params[\'blocks\'][\'ffn\'][\'w1\']"}
+  %params__blocks____ffn____w2__.1 = f32[3,256,64]{2,1,0} parameter(7), metadata={op_name="params[\'blocks\'][\'ffn\'][\'w2\']"}
+  %params__blocks____ln1____beta__.1 = f32[3,64]{1,0} parameter(8), metadata={op_name="params[\'blocks\'][\'ln1\'][\'beta\']"}
+  %params__blocks____ln1____gamma__.1 = f32[3,64]{1,0} parameter(9), metadata={op_name="params[\'blocks\'][\'ln1\'][\'gamma\']"}
+  %params__blocks____ln2____beta__.1 = f32[3,64]{1,0} parameter(10), metadata={op_name="params[\'blocks\'][\'ln2\'][\'beta\']"}
+  %params__blocks____ln2____gamma__.1 = f32[3,64]{1,0} parameter(11), metadata={op_name="params[\'blocks\'][\'ln2\'][\'gamma\']"}
+  %params__embed__.1 = f32[100,64]{1,0} parameter(12), metadata={op_name="params[\'embed\']"}
+  %params__ln_f____beta__.1 = f32[64]{0} parameter(13), metadata={op_name="params[\'ln_f\'][\'beta\']"}
+  %params__ln_f____gamma__.1 = f32[64]{0} parameter(14), metadata={op_name="params[\'ln_f\'][\'gamma\']"}
+  %params__pos__.1 = f32[32,64]{1,0} parameter(15), metadata={op_name="params[\'pos\']"}
+  %params__unembed__.1 = f32[64,100]{1,0} parameter(16), metadata={op_name="params[\'unembed\']"}
+  %tokens.1 = s32[5]{0} parameter(17), metadata={op_name="tokens"}
+  %cache__k__.1 = f32[3,32,4,16]{3,2,1,0} parameter(18), metadata={op_name="cache[\'k\']"}
+  %cache__v__.1 = f32[3,32,4,16]{3,2,1,0} parameter(19), metadata={op_name="cache[\'v\']"}
+  %constant.16 = f32[] constant(0)
+  %constant.25 = f32[] constant(-inf)
+  %slice_bitcast_fusion.15 = f32[64,64]{1,0} fusion(%params__blocks____attn____wk__.1), kind=kLoop, calls=%fused_computation.92, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.9 = f32[64,64]{1,0} fusion(%params__blocks____attn____wk__.1), kind=kLoop, calls=%fused_computation.67, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.3 = f32[64,64]{1,0} fusion(%params__blocks____attn____wk__.1), kind=kLoop, calls=%fused_computation.43, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.14 = f32[64,64]{1,0} fusion(%params__blocks____attn____wo__.1), kind=kLoop, calls=%fused_computation.84, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.8 = f32[64,64]{1,0} fusion(%params__blocks____attn____wo__.1), kind=kLoop, calls=%fused_computation.59, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.2 = f32[64,64]{1,0} fusion(%params__blocks____attn____wo__.1), kind=kLoop, calls=%fused_computation.35, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.16 = f32[64,64]{1,0} fusion(%params__blocks____attn____wq__.1), kind=kLoop, calls=%fused_computation.94, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.10 = f32[64,64]{1,0} fusion(%params__blocks____attn____wq__.1), kind=kLoop, calls=%fused_computation.69, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.4 = f32[64,64]{1,0} fusion(%params__blocks____attn____wq__.1), kind=kLoop, calls=%fused_computation.45, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.17 = f32[64,64]{1,0} fusion(%params__blocks____attn____wv__.1), kind=kLoop, calls=%fused_computation.97, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.11 = f32[64,64]{1,0} fusion(%params__blocks____attn____wv__.1), kind=kLoop, calls=%fused_computation.72, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.5 = f32[64,64]{1,0} fusion(%params__blocks____attn____wv__.1), kind=kLoop, calls=%fused_computation.48, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.13 = f32[64,256]{1,0} fusion(%params__blocks____ffn____w1__.1), kind=kLoop, calls=%fused_computation.79, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.7 = f32[64,256]{1,0} fusion(%params__blocks____ffn____w1__.1), kind=kLoop, calls=%fused_computation.55, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.1 = f32[64,256]{1,0} fusion(%params__blocks____ffn____w1__.1), kind=kLoop, calls=%fused_computation.31, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.12 = f32[256,64]{1,0} fusion(%params__blocks____ffn____w2__.1), kind=kLoop, calls=%fused_computation.77, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion.6 = f32[256,64]{1,0} fusion(%params__blocks____ffn____w2__.1), kind=kLoop, calls=%fused_computation.53, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %slice_bitcast_fusion = f32[256,64]{1,0} fusion(%params__blocks____ffn____w2__.1), kind=kLoop, calls=%fused_computation.29, metadata={op_name="jit(prefill)/slice" stack_frame_id=25}
+  %iota_gather_fusion = f32[5,1,64]{2,1,0} fusion(%params__pos__.1), kind=kLoop, calls=%fused_computation.102, metadata={op_name="jit(prefill)/gather" stack_frame_id=23}
+  %bitcast_gather_fusion = f32[5,1,64]{2,1,0} fusion(%params__embed__.1, %tokens.1), kind=kLoop, calls=%fused_computation.103, metadata={op_name="jit(prefill)/gather" stack_frame_id=22}
+  %copy.30 = f32[3,32,4,16]{3,2,1,0} copy(%cache__k__.1)
+  %copy.31 = f32[3,32,4,16]{3,2,1,0} copy(%cache__v__.1)
+  %add_bitcast_fusion = f32[5,64]{1,0} fusion(%bitcast_gather_fusion, %iota_gather_fusion), kind=kLoop, calls=%fused_computation.101, metadata={op_name="jit(prefill)/add" stack_frame_id=22}
+  %wrapped_reduce-window = f32[5,2]{1,0} fusion(%add_bitcast_fusion, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation
+  %wrapped_reduce = f32[5]{0} fusion(%wrapped_reduce-window, %constant.16), kind=kLoop, calls=%wrapped_reduce_computation, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+  %subtract_multiply_fusion.6 = f32[5,64]{1,0} fusion(%wrapped_reduce, %bitcast_gather_fusion, %iota_gather_fusion), kind=kLoop, calls=%fused_computation.100, metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=27}
+  %wrapped_reduce-window.1 = f32[5,2]{1,0} fusion(%subtract_multiply_fusion.6, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.1
+  %add_rsqrt_fusion.6 = f32[5]{0} fusion(%wrapped_reduce-window.1), kind=kLoop, calls=%fused_computation.99, metadata={op_name="jit(prefill)/sqrt" stack_frame_id=30}
+  %broadcast_add_fusion.5 = f32[5,64]{1,0} fusion(%params__blocks____ln1____beta__.1, %add_rsqrt_fusion.6, %wrapped_reduce, %params__blocks____ln1____gamma__.1, %bitcast_gather_fusion, /*index=5*/%iota_gather_fusion), kind=kLoop, calls=%fused_computation.98, metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+  %ynn_fusion.23 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.5, %slice_bitcast_fusion.17), kind=kCustom, calls=%fused_computation.23, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.22 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.5, %slice_bitcast_fusion.16), kind=kCustom, calls=%fused_computation.22, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.21 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.5, %slice_bitcast_fusion.15), kind=kCustom, calls=%fused_computation.21, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %bitcast_dynamic-update-slice_fusion.5 = f32[3,32,4,16]{3,2,1,0} fusion(%copy.31, %ynn_fusion.23), kind=kLoop, calls=%fused_computation.96, metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=40}
+  %transpose_copy_fusion.7 = f32[4,5,16]{2,1,0} fusion(%ynn_fusion.22), kind=kLoop, calls=%fused_computation.93, metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+  %bitcast_dynamic-update-slice_fusion.4 = f32[3,32,4,16]{3,2,1,0} fusion(%copy.30, %ynn_fusion.21), kind=kLoop, calls=%fused_computation.91, metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=39}
+  %transpose_copy_fusion.8 = f32[4,16,32]{2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.5), kind=kLoop, calls=%fused_computation.95, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+  %transpose_copy_fusion.6 = f32[4,16,32]{2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.4), kind=kLoop, calls=%fused_computation.90, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+  %ynn_fusion.20 = f32[4,5,32]{2,1,0} fusion(%transpose_copy_fusion.7, %transpose_copy_fusion.6), kind=kCustom, calls=%fused_computation.20, metadata={op_name="jit(prefill)/thd,shd->hts/dot_general" stack_frame_id=43}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %broadcast_select_fusion = f32[4,5,32]{2,1,0} fusion(%ynn_fusion.20), kind=kLoop, calls=%fused_computation.89, metadata={op_name="jit(prefill)/jit(_where)/select_n" stack_frame_id=48}
+  %wrapped_reduce.1 = f32[4,5]{1,0} fusion(%broadcast_select_fusion, %constant.25), kind=kLoop, calls=%wrapped_reduce_computation.1, metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+  %subtract_exponential_fusion.2 = f32[4,5,32]{2,1,0} fusion(%broadcast_select_fusion, %wrapped_reduce.1), kind=kLoop, calls=%fused_computation.88, metadata={op_name="jit(prefill)/exp" stack_frame_id=50}
+  %reduce_divide_fusion.2 = f32[4,5]{1,0} fusion(%subtract_exponential_fusion.2), kind=kLoop, calls=%fused_computation.87, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %broadcast_multiply_fusion.2 = f32[4,5,32]{2,1,0} fusion(%subtract_exponential_fusion.2, %reduce_divide_fusion.2), kind=kLoop, calls=%fused_computation.86, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %ynn_fusion.19 = f32[4,16,5]{2,1,0} fusion(%transpose_copy_fusion.8, %broadcast_multiply_fusion.2), kind=kCustom, calls=%fused_computation.19, metadata={op_name="jit(prefill)/hts,shd->thd/dot_general" stack_frame_id=52}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %copy_bitcast_fusion.2 = f32[5,64]{1,0} fusion(%ynn_fusion.19), kind=kLoop, calls=%fused_computation.85, metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  %ynn_fusion.18 = f32[5,64]{1,0} fusion(%copy_bitcast_fusion.2, %slice_bitcast_fusion.14), kind=kCustom, calls=%fused_computation.18, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=53}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %bitcast_add_fusion = f32[5,64]{1,0} fusion(%ynn_fusion.18, %bitcast_gather_fusion, %iota_gather_fusion), kind=kLoop, calls=%fused_computation.83, metadata={op_name="jit(prefill)/add" stack_frame_id=54}
+  %wrapped_reduce-window.2 = f32[5,2]{1,0} fusion(%bitcast_add_fusion, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.2
+  %wrapped_reduce.2 = f32[5]{0} fusion(%wrapped_reduce-window.2, %constant.16), kind=kLoop, calls=%wrapped_reduce_computation.2, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+  %subtract_multiply_fusion.5 = f32[5,64]{1,0} fusion(%bitcast_add_fusion, %wrapped_reduce.2), kind=kLoop, calls=%fused_computation.82, metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=56}
+  %wrapped_reduce-window.3 = f32[5,2]{1,0} fusion(%subtract_multiply_fusion.5, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.3
+  %add_rsqrt_fusion.5 = f32[5]{0} fusion(%wrapped_reduce-window.3), kind=kLoop, calls=%fused_computation.81, metadata={op_name="jit(prefill)/sqrt" stack_frame_id=59}
+  %broadcast_add_fusion.4 = f32[5,64]{1,0} fusion(%params__blocks____ln2____beta__.1, %add_rsqrt_fusion.5, %bitcast_add_fusion, %wrapped_reduce.2, %params__blocks____ln2____gamma__.1), kind=kLoop, calls=%fused_computation.80, metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+  %ynn_fusion.17 = f32[5,256]{1,0} fusion(%broadcast_add_fusion.4, %slice_bitcast_fusion.13), kind=kCustom, calls=%fused_computation.17, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=64}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %broadcast_maximum_fusion = f32[5,256]{1,0} fusion(%ynn_fusion.17, %params__blocks____ffn____b1__.1), kind=kLoop, calls=%fused_computation.78, metadata={op_name="jit(prefill)/max" stack_frame_id=65}
+  %ynn_fusion.16 = f32[5,64]{1,0} fusion(%broadcast_maximum_fusion, %slice_bitcast_fusion.12), kind=kCustom, calls=%fused_computation.16, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=67}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %add_add_fusion.1 = f32[5,64]{1,0} fusion(%bitcast_add_fusion, %ynn_fusion.16, %params__blocks____ffn____b2__.1), kind=kLoop, calls=%fused_computation.76, metadata={op_name="jit(prefill)/add" stack_frame_id=68}
+  %wrapped_reduce-window.4 = f32[5,2]{1,0} fusion(%add_add_fusion.1, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.4
+  %wrapped_reduce.3 = f32[5]{0} fusion(%wrapped_reduce-window.4, %constant.16), kind=kLoop, calls=%wrapped_reduce_computation.3, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+  %subtract_multiply_fusion.4 = f32[5,64]{1,0} fusion(%add_add_fusion.1, %wrapped_reduce.3), kind=kLoop, calls=%fused_computation.75, metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=27}
+  %wrapped_reduce-window.5 = f32[5,2]{1,0} fusion(%subtract_multiply_fusion.4, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.5
+  %add_rsqrt_fusion.4 = f32[5]{0} fusion(%wrapped_reduce-window.5), kind=kLoop, calls=%fused_computation.74, metadata={op_name="jit(prefill)/sqrt" stack_frame_id=30}
+  %broadcast_add_fusion.3 = f32[5,64]{1,0} fusion(%params__blocks____ln1____beta__.1, %add_rsqrt_fusion.4, %add_add_fusion.1, %wrapped_reduce.3, %params__blocks____ln1____gamma__.1), kind=kLoop, calls=%fused_computation.73, metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+  %ynn_fusion.15 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.3, %slice_bitcast_fusion.11), kind=kCustom, calls=%fused_computation.15, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.14 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.3, %slice_bitcast_fusion.10), kind=kCustom, calls=%fused_computation.14, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.13 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.3, %slice_bitcast_fusion.9), kind=kCustom, calls=%fused_computation.13, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %bitcast_dynamic-update-slice_fusion.3 = f32[3,32,4,16]{3,2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.5, %ynn_fusion.15), kind=kLoop, calls=%fused_computation.71, metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=40}
+  %transpose_copy_fusion.4 = f32[4,5,16]{2,1,0} fusion(%ynn_fusion.14), kind=kLoop, calls=%fused_computation.68, metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+  %bitcast_dynamic-update-slice_fusion.2 = f32[3,32,4,16]{3,2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.4, %ynn_fusion.13), kind=kLoop, calls=%fused_computation.66, metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=39}
+  %transpose_copy_fusion.5 = f32[4,16,32]{2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.3), kind=kLoop, calls=%fused_computation.70, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+  %transpose_copy_fusion.3 = f32[4,16,32]{2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.2), kind=kLoop, calls=%fused_computation.65, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+  %ynn_fusion.12 = f32[4,5,32]{2,1,0} fusion(%transpose_copy_fusion.4, %transpose_copy_fusion.3), kind=kCustom, calls=%fused_computation.12, metadata={op_name="jit(prefill)/thd,shd->hts/dot_general" stack_frame_id=43}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %multiply_select_fusion.1 = f32[4,5,32]{2,1,0} fusion(%ynn_fusion.12), kind=kLoop, calls=%fused_computation.64, metadata={op_name="jit(prefill)/jit(_where)/select_n" stack_frame_id=48}
+  %wrapped_reduce.4 = f32[4,5]{1,0} fusion(%multiply_select_fusion.1, %constant.25), kind=kLoop, calls=%wrapped_reduce_computation.4, metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+  %subtract_exponential_fusion.1 = f32[4,5,32]{2,1,0} fusion(%multiply_select_fusion.1, %wrapped_reduce.4), kind=kLoop, calls=%fused_computation.63, metadata={op_name="jit(prefill)/exp" stack_frame_id=50}
+  %reduce_divide_fusion.1 = f32[4,5]{1,0} fusion(%subtract_exponential_fusion.1), kind=kLoop, calls=%fused_computation.62, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %broadcast_multiply_fusion.1 = f32[4,5,32]{2,1,0} fusion(%subtract_exponential_fusion.1, %reduce_divide_fusion.1), kind=kLoop, calls=%fused_computation.61, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %ynn_fusion.11 = f32[4,16,5]{2,1,0} fusion(%transpose_copy_fusion.5, %broadcast_multiply_fusion.1), kind=kCustom, calls=%fused_computation.11, metadata={op_name="jit(prefill)/hts,shd->thd/dot_general" stack_frame_id=52}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %copy_bitcast_fusion.1 = f32[5,64]{1,0} fusion(%ynn_fusion.11), kind=kLoop, calls=%fused_computation.60, metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  %ynn_fusion.10 = f32[5,64]{1,0} fusion(%copy_bitcast_fusion.1, %slice_bitcast_fusion.8), kind=kCustom, calls=%fused_computation.10, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=53}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %wrapped_add = f32[5,64]{1,0} fusion(%add_add_fusion.1, %ynn_fusion.10), kind=kLoop, calls=%wrapped_add_computation, metadata={op_name="jit(prefill)/add" stack_frame_id=54}
+  %wrapped_reduce-window.6 = f32[5,2]{1,0} fusion(%wrapped_add, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.6
+  %wrapped_reduce.5 = f32[5]{0} fusion(%wrapped_reduce-window.6, %constant.16), kind=kLoop, calls=%wrapped_reduce_computation.5, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+  %subtract_multiply_fusion.3 = f32[5,64]{1,0} fusion(%wrapped_add, %wrapped_reduce.5), kind=kLoop, calls=%fused_computation.58, metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=56}
+  %wrapped_reduce-window.7 = f32[5,2]{1,0} fusion(%subtract_multiply_fusion.3, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.7
+  %add_rsqrt_fusion.3 = f32[5]{0} fusion(%wrapped_reduce-window.7), kind=kLoop, calls=%fused_computation.57, metadata={op_name="jit(prefill)/sqrt" stack_frame_id=59}
+  %broadcast_add_fusion.2 = f32[5,64]{1,0} fusion(%params__blocks____ln2____beta__.1, %add_rsqrt_fusion.3, %wrapped_add, %wrapped_reduce.5, %params__blocks____ln2____gamma__.1), kind=kLoop, calls=%fused_computation.56, metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+  %ynn_fusion.9 = f32[5,256]{1,0} fusion(%broadcast_add_fusion.2, %slice_bitcast_fusion.7), kind=kCustom, calls=%fused_computation.9, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=64}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %add_maximum_fusion.1 = f32[5,256]{1,0} fusion(%ynn_fusion.9, %params__blocks____ffn____b1__.1), kind=kLoop, calls=%fused_computation.54, metadata={op_name="jit(prefill)/max" stack_frame_id=65}
+  %ynn_fusion.8 = f32[5,64]{1,0} fusion(%add_maximum_fusion.1, %slice_bitcast_fusion.6), kind=kCustom, calls=%fused_computation.8, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=67}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %add_add_fusion = f32[5,64]{1,0} fusion(%wrapped_add, %ynn_fusion.8, %params__blocks____ffn____b2__.1), kind=kLoop, calls=%fused_computation.52, metadata={op_name="jit(prefill)/add" stack_frame_id=68}
+  %wrapped_reduce-window.8 = f32[5,2]{1,0} fusion(%add_add_fusion, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.8
+  %wrapped_reduce.6 = f32[5]{0} fusion(%wrapped_reduce-window.8, %constant.16), kind=kLoop, calls=%wrapped_reduce_computation.6, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=7}
+  %subtract_multiply_fusion.2 = f32[5,64]{1,0} fusion(%add_add_fusion, %wrapped_reduce.6), kind=kLoop, calls=%fused_computation.51, metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=27}
+  %wrapped_reduce-window.9 = f32[5,2]{1,0} fusion(%subtract_multiply_fusion.2, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.9
+  %add_rsqrt_fusion.2 = f32[5]{0} fusion(%wrapped_reduce-window.9), kind=kLoop, calls=%fused_computation.50, metadata={op_name="jit(prefill)/sqrt" stack_frame_id=30}
+  %broadcast_add_fusion.1 = f32[5,64]{1,0} fusion(%params__blocks____ln1____beta__.1, %add_rsqrt_fusion.2, %add_add_fusion, %wrapped_reduce.6, %params__blocks____ln1____gamma__.1), kind=kLoop, calls=%fused_computation.49, metadata={op_name="jit(prefill)/add" stack_frame_id=32}
+  %ynn_fusion.7 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.1, %slice_bitcast_fusion.5), kind=kCustom, calls=%fused_computation.7, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=37}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.6 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.1, %slice_bitcast_fusion.4), kind=kCustom, calls=%fused_computation.6, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=33}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %ynn_fusion.5 = f32[5,64]{1,0} fusion(%broadcast_add_fusion.1, %slice_bitcast_fusion.3), kind=kCustom, calls=%fused_computation.5, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=35}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %bitcast_dynamic-update-slice_fusion.1 = f32[3,32,4,16]{3,2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.3, %ynn_fusion.7), kind=kLoop, calls=%fused_computation.47, metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=40}
+  %transpose_copy_fusion.1 = f32[4,5,16]{2,1,0} fusion(%ynn_fusion.6), kind=kLoop, calls=%fused_computation.44, metadata={op_name="jit(prefill)/reshape" stack_frame_id=34}
+  %bitcast_dynamic-update-slice_fusion = f32[3,32,4,16]{3,2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.2, %ynn_fusion.5), kind=kLoop, calls=%fused_computation.42, metadata={op_name="jit(prefill)/dynamic_update_slice" stack_frame_id=39}
+  %transpose_copy_fusion.2 = f32[4,16,32]{2,1,0} fusion(%bitcast_dynamic-update-slice_fusion.1), kind=kLoop, calls=%fused_computation.46, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=42}
+  %transpose_copy_fusion = f32[4,16,32]{2,1,0} fusion(%bitcast_dynamic-update-slice_fusion), kind=kLoop, calls=%fused_computation.41, metadata={op_name="jit(prefill)/squeeze" stack_frame_id=41}
+  %ynn_fusion.4 = f32[4,5,32]{2,1,0} fusion(%transpose_copy_fusion.1, %transpose_copy_fusion), kind=kCustom, calls=%fused_computation.4, metadata={op_name="jit(prefill)/thd,shd->hts/dot_general" stack_frame_id=43}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %multiply_select_fusion = f32[4,5,32]{2,1,0} fusion(%ynn_fusion.4), kind=kLoop, calls=%fused_computation.40, metadata={op_name="jit(prefill)/jit(_where)/select_n" stack_frame_id=48}
+  %wrapped_reduce.7 = f32[4,5]{1,0} fusion(%multiply_select_fusion, %constant.25), kind=kLoop, calls=%wrapped_reduce_computation.7, metadata={op_name="jit(prefill)/reduce_max" stack_frame_id=11}
+  %subtract_exponential_fusion = f32[4,5,32]{2,1,0} fusion(%multiply_select_fusion, %wrapped_reduce.7), kind=kLoop, calls=%fused_computation.39, metadata={op_name="jit(prefill)/exp" stack_frame_id=50}
+  %reduce_divide_fusion = f32[4,5]{1,0} fusion(%subtract_exponential_fusion), kind=kLoop, calls=%fused_computation.38, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %broadcast_multiply_fusion = f32[4,5,32]{2,1,0} fusion(%subtract_exponential_fusion, %reduce_divide_fusion), kind=kLoop, calls=%fused_computation.37, metadata={op_name="jit(prefill)/div" stack_frame_id=51}
+  %ynn_fusion.3 = f32[4,16,5]{2,1,0} fusion(%transpose_copy_fusion.2, %broadcast_multiply_fusion), kind=kCustom, calls=%fused_computation.3, metadata={op_name="jit(prefill)/hts,shd->thd/dot_general" stack_frame_id=52}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %copy_bitcast_fusion = f32[5,64]{1,0} fusion(%ynn_fusion.3), kind=kLoop, calls=%fused_computation.36, metadata={op_name="jit(prefill)/hts,shd->thd/transpose" stack_frame_id=52}
+  %ynn_fusion.2 = f32[5,64]{1,0} fusion(%copy_bitcast_fusion, %slice_bitcast_fusion.2), kind=kCustom, calls=%fused_computation.2, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=53}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %wrapped_add.1 = f32[5,64]{1,0} fusion(%add_add_fusion, %ynn_fusion.2), kind=kLoop, calls=%wrapped_add_computation.1, metadata={op_name="jit(prefill)/add" stack_frame_id=54}
+  %wrapped_reduce-window.10 = f32[5,2]{1,0} fusion(%wrapped_add.1, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.10
+  %wrapped_reduce.8 = f32[5]{0} fusion(%wrapped_reduce-window.10, %constant.16), kind=kLoop, calls=%wrapped_reduce_computation.8, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=14}
+  %subtract_multiply_fusion.1 = f32[5,64]{1,0} fusion(%wrapped_add.1, %wrapped_reduce.8), kind=kLoop, calls=%fused_computation.34, metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=56}
+  %wrapped_reduce-window.11 = f32[5,2]{1,0} fusion(%subtract_multiply_fusion.1, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.11
+  %add_rsqrt_fusion.1 = f32[5]{0} fusion(%wrapped_reduce-window.11), kind=kLoop, calls=%fused_computation.33, metadata={op_name="jit(prefill)/sqrt" stack_frame_id=59}
+  %broadcast_add_fusion = f32[5,64]{1,0} fusion(%params__blocks____ln2____beta__.1, %add_rsqrt_fusion.1, %wrapped_add.1, %wrapped_reduce.8, %params__blocks____ln2____gamma__.1), kind=kLoop, calls=%fused_computation.32, metadata={op_name="jit(prefill)/add" stack_frame_id=61}
+  %ynn_fusion.1 = f32[5,256]{1,0} fusion(%broadcast_add_fusion, %slice_bitcast_fusion.1), kind=kCustom, calls=%fused_computation.1, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=64}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %add_maximum_fusion = f32[5,256]{1,0} fusion(%ynn_fusion.1, %params__blocks____ffn____b1__.1), kind=kLoop, calls=%fused_computation.30, metadata={op_name="jit(prefill)/max" stack_frame_id=65}
+  %ynn_fusion = f32[5,64]{1,0} fusion(%add_maximum_fusion, %slice_bitcast_fusion), kind=kCustom, calls=%fused_computation, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=67}, backend_config={"fusion_config":{"kind":"__ynn_fusion"},"outer_dimension_partitions":[]}
+  %add_slice_fusion = f32[1,64]{1,0} fusion(%wrapped_add.1, %ynn_fusion, %params__blocks____ffn____b2__.1), kind=kLoop, calls=%fused_computation.28, metadata={op_name="jit(prefill)/slice" stack_frame_id=69}
+  %wrapped_reduce-window.12 = f32[1,2]{1,0} fusion(%add_slice_fusion, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.12
+  %wrapped_reduce.9 = f32[1]{0} fusion(%wrapped_reduce-window.12, %constant.16), kind=kLoop, calls=%wrapped_reduce_computation.9, metadata={op_name="jit(prefill)/reduce_sum" stack_frame_id=18}
+  %subtract_multiply_fusion = f32[1,64]{1,0} fusion(%wrapped_reduce.9, %wrapped_add.1, %ynn_fusion, %params__blocks____ffn____b2__.1), kind=kLoop, calls=%fused_computation.27, metadata={op_name="jit(prefill)/integer_pow" stack_frame_id=71}
+  %wrapped_reduce-window.13 = f32[1,2]{1,0} fusion(%subtract_multiply_fusion, %constant.16), kind=kLoop, calls=%wrapped_reduce-window_computation.13
+  %add_rsqrt_fusion = f32[1]{0} fusion(%wrapped_reduce-window.13), kind=kLoop, calls=%fused_computation.26, metadata={op_name="jit(prefill)/sqrt" stack_frame_id=74}
+  %bitcast_bitcast_fusion.1 = f32[64,1]{1,0} fusion(%params__ln_f____beta__.1, %add_rsqrt_fusion, %wrapped_reduce.9, %wrapped_add.1, %ynn_fusion, /*index=5*/%params__blocks____ffn____b2__.1, %params__ln_f____gamma__.1), kind=kLoop, calls=%fused_computation.25, metadata={op_name="jit(prefill)/add" stack_frame_id=76}
+  %dot.7 = f32[1,100]{1,0} dot(%bitcast_bitcast_fusion.1, %params__unembed__.1), lhs_contracting_dims={0}, rhs_contracting_dims={0}
+  %bitcast_bitcast_fusion = f32[1,100]{1,0} fusion(%dot.7), kind=kLoop, calls=%fused_computation.24, metadata={op_name="jit(prefill)/dot_general" stack_frame_id=77}
+  ROOT %tuple.1 = (f32[1,100]{1,0}, f32[3,32,4,16]{3,2,1,0}, f32[3,32,4,16]{3,2,1,0}) tuple(%bitcast_bitcast_fusion, %bitcast_dynamic-update-slice_fusion, %bitcast_dynamic-update-slice_fusion.1)
+}
+
