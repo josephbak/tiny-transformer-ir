@@ -18,10 +18,14 @@ A decoder-only Transformer written from scratch in `jax.numpy`, followed through
 ```
 tiny-transformer-ir/
 ├── README.md
-├── tinytr/     # your code: ops, attention, block, model, kv cache
-├── tests/      # pytest: shape checks, reference checks, causality
-├── ir/         # dumped jaxpr / StableHLO / HLO text
-└── notes/      # m0.md, m1.md, … one per milestone
+├── tinytr/        # your code: ops, attention, block, model, kv cache
+├── gpt_torch/     # the same model in PyTorch
+├── tests/         # pytest: shape checks, reference checks, causality
+├── experiments/   # scripts that trace, dump IR, analyze cost, benchmark
+├── scripts/       # shell scripts (e.g. the IREE benchmark)
+├── ir/            # dumped jaxpr / StableHLO / HLO / IREE IR text
+├── docs/          # this plan, notation
+└── notes/         # m0.md, m1.md, … one per milestone
 ```
 
 ## Config (fixed for the whole project)
@@ -46,8 +50,8 @@ After M9, `L` went from 2 to 3 and `S_max` from 16 to 32, so every size is disti
 
 ## M0 — Setup
 
-- Python virtual environment, then `pip install -U jax pytest`. The CPU build works on both macOS (Apple Silicon or Intel) and Linux; no GPU needed.
-- Verify: `python -c "import jax; print(jax.devices())"` prints a CPU device.
+- Python environment managed with [uv](https://docs.astral.sh/uv/): `uv sync` installs JAX and pytest. The CPU build works on both macOS (Apple Silicon or Intel) and Linux; no GPU needed.
+- Verify: `uv run python -c "import jax; print(jax.devices())"` prints a CPU device.
 
 **Done when:** an empty `pytest` run passes and JAX imports.
 
@@ -159,4 +163,6 @@ This milestone is the bridge into the scaling book (Chapters 1 and 4).
 
 ## M10 (optional) — Into IREE
 
-Take your model's StableHLO from M7 and compile it with `iree-compile` for the CPU backend. Inspect the dispatch regions IREE forms, and compare them with XLA's fusions. Optionally, write the same model in plain PyTorch, export it through torch-mlir, and compare the IR from the two frontends.
+Take your model's StableHLO and compile it with `iree-compile` for the CPU backend. Inspect the dispatch regions IREE forms, and compare them with XLA's fusions. Optionally, write the same model in plain PyTorch, export it through torch-mlir, and compare the IR from the two frontends.
+
+**Done:** M9's `decode_step` and `prefill` exported with `jax.export` (versioned StableHLO), compiled with `iree-compile` for `llvm-cpu`, and checked against JAX. IREE's dispatches compared with XLA's fusions (decode: 56 vs 127 kernels; epilogues fused, weight slices read in place, in-place cache update), and both timed on the M4 (decode: 34 vs 73 µs, with about the same cost per kernel). The torch-mlir comparison was not done. Code: `experiments/m10_*.py`, `scripts/m10_bench_iree.sh`.
